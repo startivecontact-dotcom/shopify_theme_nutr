@@ -1,20 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ request.locale.iso_code }}">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0">
   <meta name="theme-color" content="#0a0a0a">
 
   <title>
     {{ page_title }}
-    {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}
+    {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}
     {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}
     {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
   </title>
 
   {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}">
+  {% else %}
+    <meta name="description" content="{{ shop.description | default: 'MB Nutrition - Suppléments premium pour des performances maximales. Protéines, créatine, brûleurs de graisse et plus.' | escape }}">
   {% endif %}
 
   <link rel="canonical" href="{{ canonical_url }}">
@@ -23,25 +25,34 @@
     <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
   {% endif %}
 
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ page_title | default: shop.name | escape }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:site_name" content="{{ shop.name }}">
+  {% if page_description %}
+    <meta property="og:description" content="{{ page_description | escape }}">
+  {% endif %}
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
   <!-- Theme CSS -->
   {{ 'theme.css' | asset_url | stylesheet_tag }}
 
   <style>
     :root {
-      --color-bg: #0a0a0a;
-      --color-bg-secondary: #111111;
-      --color-bg-card: #1a1a1a;
-      --color-accent: #e63000;
+      --color-bg: {{ settings.color_bg | default: '#0a0a0a' }};
+      --color-bg-secondary: {{ settings.color_bg_secondary | default: '#111111' }};
+      --color-bg-card: {{ settings.color_bg_card | default: '#1a1a1a' }};
+      --color-accent: {{ settings.color_accent | default: '#e63000' }};
       --color-accent-hover: #cc2900;
-      --color-accent-secondary: #f5a623;
-      --color-text: #ffffff;
-      --color-text-subdued: #aaaaaa;
-      --color-border: #2a2a2a;
+      --color-accent-secondary: {{ settings.color_secondary | default: '#f5a623' }};
+      --color-text: {{ settings.color_text | default: '#ffffff' }};
+      --color-text-subdued: {{ settings.color_text_subdued | default: '#aaaaaa' }};
+      --color-border: {{ settings.color_border | default: '#2a2a2a' }};
       --color-border-light: #333333;
       --font-heading: 'Bebas Neue', sans-serif;
       --font-body: 'Inter', sans-serif;
@@ -69,6 +80,9 @@
   <!-- Cart Overlay -->
   <div class="cart-overlay" id="CartOverlay" aria-hidden="true"></div>
 
+  <!-- Mobile Menu Overlay -->
+  <div class="menu-overlay" id="MenuOverlay" aria-hidden="true"></div>
+
   <!-- Header -->
   {% section 'header' %}
 
@@ -80,10 +94,7 @@
   <!-- Footer -->
   {% section 'footer' %}
 
-  <!-- Theme JS -->
-  <script src="{{ 'theme.js' | asset_url }}" defer></script>
-
-  <!-- Shopify required scripts -->
+  <!-- Shopify global config -->
   <script>
     window.shopUrl = '{{ shop.url }}';
     window.routes = {
@@ -94,14 +105,33 @@
       predictive_search_url: '{{ routes.predictive_search_url }}'
     };
     window.cartStrings = {
-      error: `{{ 'sections.cart.cart_error' | t }}`,
-      quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`
+      error: "{{ 'sections.cart.cart_error' | t | escape }}",
+      quantityError: "{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' | escape }}"
     };
     window.variantStrings = {
-      addToCart: `{{ 'products.product.add_to_cart' | t }}`,
-      soldOut: `{{ 'products.product.sold_out' | t }}`,
-      unavailable: `{{ 'products.product.unavailable' | t }}`
+      addToCart: "{{ 'products.product.add_to_cart' | t | escape }}",
+      soldOut: "{{ 'products.product.sold_out' | t | escape }}",
+      unavailable: "{{ 'products.product.unavailable' | t | escape }}"
+    };
+    window.theme = {
+      moneyFormat: {{ shop.money_format | json }},
+      currency: '{{ shop.currency }}'
     };
   </script>
+
+  <!-- Theme JS -->
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    "url": {{ shop.url | json }},
+    "description": {{ shop.description | json }}
+  }
+  </script>
+
 </body>
 </html>
