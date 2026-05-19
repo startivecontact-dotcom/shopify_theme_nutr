@@ -9,14 +9,14 @@
   <title>
     {{ page_title }}
     {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}
-    {%- if current_page != 1 %} &ndash; Pagina {{ current_page }}{% endif %}
+    {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}
     {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
   </title>
 
   {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}">
   {% else %}
-    <meta name="description" content="{{ shop.description | default: 'MB Nutrition - Premium supplementen voor maximale prestaties.' | escape }}">
+    <meta name="description" content="{{ shop.description | default: 'MB Nutrition - Suppléments premium pour des performances maximales.' | escape }}">
   {% endif %}
 
   <link rel="canonical" href="{{ canonical_url }}">
@@ -29,6 +29,9 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ canonical_url }}">
   <meta property="og:site_name" content="{{ shop.name }}">
+  {% if page_image %}
+    <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
+  {% endif %}
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,23 +41,25 @@
 
   <style>
     :root {
-      --color-bg: #ffffff;
+      --color-bg: {{ settings.color_bg | default: '#ffffff' }};
       --color-bg-light: #f5f5f5;
-      --color-bg-dark: #1a1a1a;
+      --color-bg-dark: {{ settings.color_header_bg | default: '#1a1a1a' }};
       --color-bg-darker: #111111;
-      --color-accent: #C8A84B;
+      --color-accent: {{ settings.color_accent | default: '#C8A84B' }};
       --color-accent-hover: #b5943a;
-      --color-text: #1a1a1a;
+      --color-text: {{ settings.color_text | default: '#1a1a1a' }};
       --color-text-light: #ffffff;
       --color-text-muted: #777777;
+      --color-text-subdued: #777777;
       --color-border: #e5e5e5;
       --color-border-dark: #2a2a2a;
-      --font-body: 'Inter', sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --header-height: 64px;
       --announcement-height: 38px;
       --border-radius: 3px;
       --transition: 0.2s ease;
       --shadow: 0 4px 20px rgba(0,0,0,0.1);
+      --free-shipping-threshold: {{ settings.free_shipping_threshold | default: 80 }};
     }
   </style>
 
@@ -63,7 +68,7 @@
 
 <body class="template-{{ template.name }} {% if customer %}customer-logged-in{% endif %}">
 
-  <a class="skip-to-content" href="#MainContent">Skip to content</a>
+  <a class="skip-to-content" href="#MainContent">Passer au contenu</a>
 
   {% render 'cart-drawer' %}
   <div class="overlay" id="Overlay" aria-hidden="true"></div>
@@ -82,11 +87,25 @@
       cart_add_url: '{{ routes.cart_add_url }}',
       cart_change_url: '{{ routes.cart_change_url }}',
       cart_update_url: '{{ routes.cart_update_url }}',
-      cart_url: '{{ routes.cart_url }}'
+      cart_url: '{{ routes.cart_url }}',
+      predictive_search_url: '{{ routes.predictive_search_url }}'
     };
     window.theme = {
       moneyFormat: {{ shop.money_format | json }},
-      currency: '{{ shop.currency }}'
+      currency: '{{ shop.currency }}',
+      freeShippingThreshold: {{ settings.free_shipping_threshold | default: 80 }} * 100,
+      strings: {
+        addToCart: "Ajouter au panier",
+        added: "Ajouté !",
+        adding: "Ajout...",
+        soldOut: "Rupture de stock",
+        error: "Erreur — réessayez",
+        cartEmpty: "Votre panier est vide.",
+        continueShopping: "Continuer mes achats",
+        freeShipping: "Livraison gratuite !",
+        freeShippingRemaining: "Plus que {amount} pour la livraison gratuite",
+        remove: "Supprimer"
+      }
     };
   </script>
 
