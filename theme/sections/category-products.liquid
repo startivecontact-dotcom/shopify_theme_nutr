@@ -1,0 +1,88 @@
+<section class="cat-products">
+  <div class="container">
+
+    <div class="cat-products__header">
+      <div>
+        {% if section.settings.eyebrow != blank %}
+          <p class="bestsellers__label">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+        <h2 class="bestsellers__title">{{ section.settings.title }}</h2>
+        {% if section.settings.description != blank %}
+          <p class="cat-products__desc">{{ section.settings.description }}</p>
+        {% endif %}
+      </div>
+      {% if section.settings.view_all_link != blank %}
+        <a href="{{ section.settings.view_all_link }}" class="bestsellers__link cat-products__link">
+          Voir tout &rarr;
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="collection__grid">
+      {% for block in section.blocks %}
+        {% assign p = all_products[block.settings.product_handle] %}
+        {% if p and p != empty %}
+          {% render 'product-card', product: p %}
+        {% elsif block.settings.product_image_url != blank %}
+          <div class="product-card" {{ block.shopify_attributes }}>
+            <a href="{{ block.settings.product_url | default: '#' }}" class="product-card__image-wrap">
+              <img src="{{ block.settings.product_image_url }}"
+                   alt="{{ block.settings.product_title | escape }}"
+                   loading="lazy" width="600" height="600">
+              {% if block.settings.product_badge != blank %}
+                <span class="product-card__badge {% if block.settings.product_badge == 'NOUVEAU' %}product-card__badge--new{% endif %}">
+                  {{ block.settings.product_badge }}
+                </span>
+              {% endif %}
+            </a>
+            <div class="product-card__body">
+              <h3 class="product-card__title">
+                <a href="{{ block.settings.product_url | default: '#' }}">{{ block.settings.product_title }}</a>
+              </h3>
+              <div class="product-card__price {% if block.settings.product_compare_price != blank %}product-card__price--sale{% endif %}">
+                {{ block.settings.product_price }}
+                {% if block.settings.product_compare_price != blank %}
+                  <s>{{ block.settings.product_compare_price }}</s>
+                {% endif %}
+              </div>
+              <a href="{{ block.settings.product_url | default: '#' }}" class="product-card__atc">
+                Voir le produit
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Produits par catégorie",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Étiquette (au-dessus du titre)" },
+    { "type": "text", "id": "title", "label": "Titre de la catégorie", "default": "Perte de poids" },
+    { "type": "text", "id": "description", "label": "Description courte" },
+    { "type": "url", "id": "view_all_link", "label": "Lien « Voir tout »" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Produit",
+      "settings": [
+        { "type": "text", "id": "product_handle", "label": "Handle Shopify (après import)", "info": "Ex: whey-protein-pro-450g" },
+        { "type": "text", "id": "product_title", "label": "Nom du produit" },
+        { "type": "text", "id": "product_price", "label": "Prix", "default": "29,95 €" },
+        { "type": "text", "id": "product_compare_price", "label": "Prix barré (optionnel)" },
+        { "type": "text", "id": "product_badge", "label": "Badge (SOLDES / NOUVEAU / etc.)" },
+        { "type": "text", "id": "product_image_url", "label": "URL image Shopify CDN" },
+        { "type": "url", "id": "product_url", "label": "Lien produit" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "Produits par catégorie" }]
+}
+{% endschema %}

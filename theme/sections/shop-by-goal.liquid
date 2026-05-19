@@ -1,23 +1,4 @@
 <section class="shop-by-goal">
-  {% if section.settings.hero_image or section.settings.hero_title != blank %}
-    <div class="shop-by-goal__hero">
-      {% if section.settings.hero_image %}
-        <img src="{{ section.settings.hero_image | image_url: width: 1800 }}"
-             alt="{{ section.settings.hero_title | escape }}" loading="lazy" width="1800" height="700">
-      {% endif %}
-      <div class="shop-by-goal__hero-inner">
-        {% if section.settings.hero_tag != blank %}
-          <span class="bundle-banner__tag">{{ section.settings.hero_tag }}</span>
-        {% endif %}
-        {% if section.settings.hero_title != blank %}
-          <h2 class="bundle-banner__title" style="margin-top:1rem;">{{ section.settings.hero_title }}</h2>
-        {% endif %}
-        {% if section.settings.hero_btn_text != blank %}
-          <a href="{{ section.settings.hero_btn_link }}" class="btn btn--outline-light btn--lg">{{ section.settings.hero_btn_text }}</a>
-        {% endif %}
-      </div>
-    </div>
-  {% endif %}
 
   <div class="container">
     {% if section.settings.heading != blank %}
@@ -29,10 +10,16 @@
           {% if block.settings.image %}
             <img src="{{ block.settings.image | image_url: width: 900 }}"
                  alt="{{ block.settings.title | escape }}" loading="lazy" width="900" height="1100">
+          {% elsif block.settings.image_url != blank %}
+            <img src="{{ block.settings.image_url }}"
+                 alt="{{ block.settings.title | escape }}" loading="lazy" width="900" height="1100">
           {% else %}
             {{ 'lifestyle-1' | placeholder_svg_tag }}
           {% endif %}
           <div class="goal-card__inner">
+            {% if block.settings.count != blank %}
+              <span class="goal-card__count">{{ block.settings.count }}</span>
+            {% endif %}
             <h3 class="goal-card__title">{{ block.settings.title }}</h3>
             <span class="goal-card__btn">{{ block.settings.button_text | default: 'DÉCOUVRIR' }}</span>
           </div>
@@ -47,56 +34,17 @@
   "name": "Par objectif",
   "tag": "section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Bannière (optionnelle)"
-    },
-    {
-      "type": "image_picker",
-      "id": "hero_image",
-      "label": "Image de bannière"
-    },
-    {
-      "type": "text",
-      "id": "hero_tag",
-      "label": "Étiquette",
-      "default": "BUNDLES"
-    },
-    {
-      "type": "text",
-      "id": "hero_title",
-      "label": "Titre de la bannière",
-      "default": "Maintenant à prix imbattable"
-    },
-    {
-      "type": "text",
-      "id": "hero_btn_text",
-      "label": "Bouton bannière",
-      "default": "Voir tous les bundles"
-    },
-    {
-      "type": "url",
-      "id": "hero_btn_link",
-      "label": "Lien du bouton bannière"
-    },
-    {
-      "type": "header",
-      "content": "Grille des objectifs"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Titre de section",
-      "default": "PAR OBJECTIF"
-    }
+    { "type": "text", "id": "heading", "label": "Titre de section", "default": "PAR OBJECTIF" }
   ],
   "blocks": [
     {
       "type": "goal",
       "name": "Objectif",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "image_picker", "id": "image", "label": "Image (upload)" },
+        { "type": "text", "id": "image_url", "label": "URL image (CDN)", "info": "Utilisé si aucune image uploadée" },
         { "type": "text", "id": "title", "label": "Titre", "default": "Perte de poids" },
+        { "type": "text", "id": "count", "label": "Nombre de produits (ex: 6 produits)" },
         { "type": "text", "id": "button_text", "label": "Texte du bouton", "default": "DÉCOUVRIR" },
         { "type": "url", "id": "link", "label": "Lien" }
       ]

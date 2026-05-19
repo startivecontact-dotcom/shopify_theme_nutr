@@ -7,7 +7,7 @@
         <h2 class="bestsellers__title">{{ section.settings.title | default: 'MB NUTRITION' }}</h2>
       </div>
       <div class="bestsellers__nav">
-        <a href="{{ section.settings.view_all_link | default: routes.collections_url }}" class="bestsellers__link">
+        <a href="{{ section.settings.view_all_link | default: '/collections/all' }}" class="bestsellers__link">
           Voir tous les produits &rarr;
         </a>
         <button class="carousel-btn" id="CarouselPrev-{{ section.id }}" aria-label="Précédent">
@@ -25,25 +25,49 @@
 
     <div class="bestsellers__track-wrap">
       <div class="bestsellers__track" id="CarouselTrack-{{ section.id }}" role="list">
-        {% if section.settings.collection != blank and section.settings.collection.products_count > 0 %}
+
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks %}
+            {% assign p = all_products[block.settings.product_handle] %}
+            {% if p and p != empty %}
+              {% render 'product-card', product: p %}
+            {% else %}
+              <div class="product-card" role="listitem" {{ block.shopify_attributes }}>
+                <a href="{{ block.settings.product_url | default: '#' }}" class="product-card__image-wrap">
+                  {% if block.settings.product_image_url != blank %}
+                    <img src="{{ block.settings.product_image_url }}"
+                         alt="{{ block.settings.product_title | escape }}"
+                         loading="lazy" width="600" height="600">
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                  {% if block.settings.product_badge != blank %}
+                    <span class="product-card__badge">{{ block.settings.product_badge }}</span>
+                  {% endif %}
+                </a>
+                <div class="product-card__body">
+                  <h3 class="product-card__title">
+                    <a href="{{ block.settings.product_url | default: '#' }}">{{ block.settings.product_title }}</a>
+                  </h3>
+                  <div class="product-card__price {% if block.settings.product_compare_price != blank %}product-card__price--sale{% endif %}">
+                    {{ block.settings.product_price }}
+                    {% if block.settings.product_compare_price != blank %}
+                      <s>{{ block.settings.product_compare_price }}</s>
+                    {% endif %}
+                  </div>
+                  <a href="{{ block.settings.product_url | default: '#' }}" class="product-card__atc">
+                    Voir le produit
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+        {% elsif section.settings.collection != blank and section.settings.collection.products_count > 0 %}
           {% for product in section.settings.collection.products limit: section.settings.items_to_show %}
             {% render 'product-card', product: product %}
           {% endfor %}
-        {% else %}
-          {% for i in (1..4) %}
-            <div class="product-card" role="listitem">
-              <div class="product-card__image-wrap">
-                {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
-              </div>
-              <div class="product-card__body">
-                {% assign demo_titles = 'PACK DÉCOUVERTE,M3 + M4 SUPPORT,SECRET BALANCE + BURNER,SECRET BURNER AGRUMES' | split: ',' %}
-                {% assign demo_prices = '49,95 €|59,95 €|59,95 €|29,95 €' | split: '|' %}
-                <h3 class="product-card__title">{{ demo_titles[forloop.index0] }}</h3>
-                <div class="product-card__price">{{ demo_prices[forloop.index0] }}</div>
-                <button class="product-card__atc">Ajouter au panier</button>
-              </div>
-            </div>
-          {% endfor %}
+
         {% endif %}
       </div>
     </div>
@@ -85,40 +109,29 @@
   "name": "Meilleures ventes",
   "tag": "section",
   "settings": [
+    { "type": "text", "id": "label", "label": "Étiquette", "default": "DÉCOUVREZ NOS MEILLEURES VENTES" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "MB NUTRITION" },
+    { "type": "url", "id": "view_all_link", "label": "Lien « Voir tous »" },
+    { "type": "header", "content": "Fallback (si blocs vides)" },
+    { "type": "collection", "id": "collection", "label": "Collection à afficher" },
+    { "type": "range", "id": "items_to_show", "label": "Nombre max (collection)", "min": 4, "max": 12, "step": 1, "default": 8 }
+  ],
+  "blocks": [
     {
-      "type": "text",
-      "id": "label",
-      "label": "Étiquette (eyebrow)",
-      "default": "DÉCOUVREZ NOS MEILLEURES VENTES"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Titre",
-      "default": "MB NUTRITION"
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection à afficher"
-    },
-    {
-      "type": "url",
-      "id": "view_all_link",
-      "label": "Lien « Voir tous les produits »"
-    },
-    {
-      "type": "range",
-      "id": "items_to_show",
-      "label": "Nombre de produits",
-      "min": 4,
-      "max": 12,
-      "step": 1,
-      "default": 8
+      "type": "product",
+      "name": "Produit",
+      "settings": [
+        { "type": "text", "id": "product_handle", "label": "Handle produit Shopify", "info": "Ex: whey-protein-pro-450g (après import)" },
+        { "type": "text", "id": "product_title", "label": "Nom du produit" },
+        { "type": "text", "id": "product_price", "label": "Prix", "default": "29,95 €" },
+        { "type": "text", "id": "product_compare_price", "label": "Prix barré (optionnel)" },
+        { "type": "text", "id": "product_badge", "label": "Badge (ex: SOLDES, NOUVEAU)" },
+        { "type": "text", "id": "product_image_url", "label": "URL image (Shopify CDN)" },
+        { "type": "url", "id": "product_url", "label": "Lien vers le produit" }
+      ]
     }
   ],
-  "presets": [
-    { "name": "Meilleures ventes" }
-  ]
+  "max_blocks": 12,
+  "presets": [{ "name": "Meilleures ventes" }]
 }
 {% endschema %}

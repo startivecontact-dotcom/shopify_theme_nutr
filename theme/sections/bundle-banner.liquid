@@ -2,7 +2,13 @@
   {% if section.settings.image %}
     <div class="bundle-banner__bg">
       <img src="{{ section.settings.image | image_url: width: 1800 }}"
-           alt="{{ section.settings.image.alt | default: section.settings.title | escape }}"
+           alt="{{ section.settings.title | escape }}"
+           loading="lazy" width="1800" height="700">
+    </div>
+  {% elsif section.settings.image_url != blank %}
+    <div class="bundle-banner__bg">
+      <img src="{{ section.settings.image_url }}"
+           alt="{{ section.settings.title | escape }}"
            loading="lazy" width="1800" height="700">
     </div>
   {% endif %}
@@ -11,8 +17,11 @@
       <span class="bundle-banner__tag">{{ section.settings.tag }}</span>
     {% endif %}
     <h2 class="bundle-banner__title">{{ section.settings.title | default: 'Maintenant à prix imbattable' }}</h2>
+    {% if section.settings.subtitle != blank %}
+      <p class="bundle-banner__subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
     {% if section.settings.button_text != blank %}
-      <a href="{{ section.settings.button_link | default: '/collections/bundles' }}" class="btn btn--outline-light btn--lg">
+      <a href="{{ section.settings.button_link | default: '/collections/all' }}" class="btn btn--outline-light btn--lg">
         {{ section.settings.button_text }}
       </a>
     {% endif %}
@@ -24,37 +33,14 @@
   "name": "Bannière Bundle",
   "tag": "section",
   "settings": [
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Image de fond"
-    },
-    {
-      "type": "text",
-      "id": "tag",
-      "label": "Étiquette",
-      "default": "BUNDLES"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Titre",
-      "default": "Maintenant à prix imbattable"
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Texte du bouton",
-      "default": "Voir tous les bundles"
-    },
-    {
-      "type": "url",
-      "id": "button_link",
-      "label": "Lien du bouton"
-    }
+    { "type": "image_picker", "id": "image", "label": "Image de fond (upload)" },
+    { "type": "text", "id": "image_url", "label": "URL image de fond (CDN)", "default": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/pwo-combi.jpg?v=1774451813" },
+    { "type": "text", "id": "tag", "label": "Étiquette", "default": "PACKS & BUNDLES" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Maintenant à prix imbattable" },
+    { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Économisez jusqu'à 20% sur nos packs exclusifs" },
+    { "type": "text", "id": "button_text", "label": "Texte du bouton", "default": "Voir tous les packs" },
+    { "type": "url", "id": "button_link", "label": "Lien du bouton" }
   ],
-  "presets": [
-    { "name": "Bannière Bundle" }
-  ]
+  "presets": [{ "name": "Bannière Bundle" }]
 }
 {% endschema %}
