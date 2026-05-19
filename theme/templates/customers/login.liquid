@@ -1,101 +1,46 @@
-<div class="auth-page">
-  <div class="auth-card">
-    <!-- Logo -->
-    <div class="auth-card__logo">
-      <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
-        <span class="logo-text"><span>MB</span> NUTRITION</span>
-      </a>
-    </div>
+<div class="customer">
+  <div class="customer__card">
+    <h1 class="customer__title">SE CONNECTER</h1>
+    <p class="customer__subtitle">Accédez à votre compte MB Nutrition</p>
 
-    <h1 class="auth-card__title">CONNEXION</h1>
-    <p class="auth-card__sub">Connectez-vous à votre compte pour accéder à vos commandes.</p>
-
-    {% form 'customer_login' %}
+    {% form 'customer_login', novalidate: 'novalidate' %}
       {% if form.errors %}
-        <div style="background:rgba(230,48,0,0.1);border:1px solid var(--color-accent);border-radius:var(--border-radius);padding:1rem;margin-bottom:1.25rem;">
-          <p style="color:var(--color-accent);font-size:0.9rem;margin:0;">
-            {{ form.errors | default_errors }}
-          </p>
-        </div>
+        <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
       {% endif %}
 
-      <div class="form-group">
-        <label class="form-label" for="CustomerEmail">E-mail</label>
-        <input type="email"
-               name="customer[email]"
-               id="CustomerEmail"
-               class="form-input"
-               autocomplete="email"
-               autocorrect="off"
-               autocapitalize="off"
-               placeholder="votre@email.com"
-               required>
+      <div class="field">
+        <label class="field__label" for="CustomerEmail">E-mail</label>
+        <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" required>
       </div>
 
-      <div class="form-group">
-        <label class="form-label" for="CustomerPassword">
-          Mot de passe
-          <a href="{{ routes.root_url }}account/login#recover" style="float:right;font-size:0.8rem;color:var(--color-accent);font-weight:400;text-transform:none;letter-spacing:0;">
-            Mot de passe oublié ?
-          </a>
-        </label>
-        <input type="password"
-               name="customer[password]"
-               id="CustomerPassword"
-               class="form-input"
-               autocomplete="current-password"
-               placeholder="••••••••"
-               required>
+      <div class="field">
+        <label class="field__label" for="CustomerPassword">Mot de passe</label>
+        <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="current-password" required>
       </div>
 
-      <button type="submit" class="btn btn--primary btn--full btn--lg">
-        SE CONNECTER
-      </button>
+      <button type="submit" class="btn btn--primary btn--full">Connexion</button>
+
+      <div class="customer__actions">
+        <a href="#recover" onclick="document.getElementById('RecoverForm').style.display='block'; return false;">Mot de passe oublié ?</a>
+        <a href="{{ routes.account_register_url }}">Créer un compte</a>
+      </div>
     {% endform %}
 
-    <!-- Password Recovery (hidden by default) -->
-    <div id="RecoverPasswordForm" style="display:none;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--color-border);">
-      <h3 style="margin-bottom:0.5rem;font-size:1.4rem;">MOT DE PASSE OUBLIÉ</h3>
-      <p style="margin-bottom:1rem;font-size:0.9rem;">Entrez votre e-mail pour recevoir un lien de réinitialisation.</p>
+    <div id="RecoverForm" style="display:none; margin-top:1.5rem;">
+      <h2 style="font-size:1rem; margin-bottom:0.75rem;">Réinitialiser le mot de passe</h2>
       {% form 'recover_customer_password' %}
         {% if form.posted_successfully? %}
-          <div style="background:rgba(76,175,80,0.1);border:1px solid #4caf50;border-radius:var(--border-radius);padding:1rem;margin-bottom:1rem;">
-            <p style="color:#4caf50;font-size:0.9rem;margin:0;">Email envoyé ! Vérifiez votre boîte de réception.</p>
-          </div>
+          <div class="form-message form-message--success">Nous vous avons envoyé un e-mail pour réinitialiser votre mot de passe.</div>
         {% endif %}
-        <div class="form-group">
-          <input type="email"
-                 name="email"
-                 class="form-input"
-                 autocomplete="email"
-                 placeholder="votre@email.com"
-                 required>
+        <div class="field">
+          <label class="field__label" for="RecoverEmail">E-mail</label>
+          <input type="email" name="email" id="RecoverEmail" required>
         </div>
-        <button type="submit" class="btn btn--primary btn--full">
-          ENVOYER LE LIEN
-        </button>
+        <button type="submit" class="btn btn--outline btn--full">Envoyer le lien</button>
       {% endform %}
     </div>
 
-    <div class="auth-card__footer">
-      <p>Pas encore de compte ? <a href="{{ routes.account_register_url }}">Créer un compte</a></p>
-      <p style="margin-top:0.5rem;"><a href="{{ routes.root_url }}" style="color:var(--color-text-subdued);">← Retour à la boutique</a></p>
-    </div>
+    <div class="customer__divider"><span>OU</span></div>
+    <a href="/checkout" class="btn btn--outline btn--full">Commander en tant qu'invité</a>
   </div>
 </div>
-
-<script>
-  // Password recovery toggle
-  var recoverLink = document.querySelector('a[href*="#recover"]');
-  var recoverForm = document.getElementById('RecoverPasswordForm');
-  if (recoverLink && recoverForm) {
-    recoverLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      recoverForm.style.display = recoverForm.style.display === 'none' ? 'block' : 'none';
-    });
-  }
-  // Show if hash is #recover
-  if (window.location.hash === '#recover') {
-    if (recoverForm) recoverForm.style.display = 'block';
-  }
-</script>

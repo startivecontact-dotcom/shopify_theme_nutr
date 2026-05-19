@@ -1,0 +1,64 @@
+<div class="blog-page">
+  <div class="container">
+
+    <h1 class="blog-page__title">{{ blog.title | upcase }}</h1>
+
+    {% paginate blog.articles by section.settings.posts_per_page %}
+
+      {% if blog.articles.size == 0 %}
+        <p style="text-align:center; color:var(--color-text-muted);">Aucun article pour le moment.</p>
+      {% else %}
+        <div class="blog-grid">
+          {% for article in blog.articles %}
+            <article class="article-card">
+              <a href="{{ article.url }}" class="article-card__image">
+                {% if article.image %}
+                  <img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.image.alt | default: article.title | escape }}" loading="lazy" width="800" height="500">
+                {% endif %}
+              </a>
+              <div class="article-card__body">
+                {% if section.settings.show_date %}
+                  <div class="article-card__date">
+                    {{ article.published_at | date: '%d %B %Y' }}
+                    {% if section.settings.show_author %} &middot; {{ article.author }}{% endif %}
+                  </div>
+                {% endif %}
+                <h2 class="article-card__title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+                <p class="article-card__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 140 }}</p>
+                <a href="{{ article.url }}" class="article-card__link">Lire la suite &rarr;</a>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <nav class="pagination" aria-label="Pagination">
+            {% if paginate.previous %}<a href="{{ paginate.previous.url }}">&larr;</a>{% endif %}
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <a href="{{ part.url }}">{{ part.title }}</a>
+              {% else %}
+                <span class="{% if part.title == paginate.current_page %}page--current{% endif %}">{{ part.title }}</span>
+              {% endif %}
+            {% endfor %}
+            {% if paginate.next %}<a href="{{ paginate.next.url }}">&rarr;</a>{% endif %}
+          </nav>
+        {% endif %}
+      {% endif %}
+
+    {% endpaginate %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "posts_per_page", "label": "Articles par page", "min": 3, "max": 24, "step": 3, "default": 9 },
+    { "type": "checkbox", "id": "show_author", "label": "Afficher l'auteur", "default": false },
+    { "type": "checkbox", "id": "show_date", "label": "Afficher la date", "default": true }
+  ]
+}
+{% endschema %}

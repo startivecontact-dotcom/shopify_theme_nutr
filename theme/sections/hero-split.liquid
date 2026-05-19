@@ -1,14 +1,11 @@
-<div class="hero-split">
+<div class="hero-split" style="--hero-height: {{ section.settings.height | default: 70 }}vh;">
   <div class="hero-split__panel hero-split__panel--left">
     {% if section.settings.image_left %}
-      <img src="{{ section.settings.image_left | image_url: width: 900 }}"
-           alt="{{ section.settings.image_left_alt | default: 'MB Nutrition' }}"
-           loading="eager"
-           width="900" height="600">
+      <img src="{{ section.settings.image_left | image_url: width: 1200 }}"
+           alt="{{ section.settings.image_left_alt | default: 'MB Nutrition' | escape }}"
+           loading="eager" width="1200" height="900">
     {% else %}
-      <div class="hero-split__placeholder">
-        MB NUTRITION WAREHOUSE
-      </div>
+      <div class="hero-split__placeholder">MB NUTRITION — ENTREPÔT</div>
     {% endif %}
     <div class="hero-split__overlay"></div>
   </div>
@@ -17,51 +14,62 @@
 
   <div class="hero-split__panel hero-split__panel--right">
     {% if section.settings.image_right %}
-      <img src="{{ section.settings.image_right | image_url: width: 900 }}"
-           alt="{{ section.settings.image_right_alt | default: 'MB Nutrition' }}"
-           loading="eager"
-           width="900" height="600">
+      <img src="{{ section.settings.image_right | image_url: width: 1200 }}"
+           alt="{{ section.settings.image_right_alt | default: 'MB Nutrition' | escape }}"
+           loading="eager" width="1200" height="900">
     {% else %}
-      <div class="hero-split__placeholder">
-        MB NUTRITION FACILITY
-      </div>
+      <div class="hero-split__placeholder">MB NUTRITION — ATELIER</div>
     {% endif %}
     <div class="hero-split__overlay"></div>
   </div>
 </div>
 
+<style>
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .hero-split__panel { height: {{ section.settings.height | default: 70 }}vh; }
+  }
+</style>
+
 {% schema %}
 {
-  "name": "Hero - Gesplitst beeld",
+  "name": "Héros - Image divisée",
   "tag": "section",
   "settings": [
     {
       "type": "image_picker",
       "id": "image_left",
-      "label": "Afbeelding links"
+      "label": "Image gauche"
     },
     {
       "type": "text",
       "id": "image_left_alt",
-      "label": "Alt-tekst links",
+      "label": "Texte alternatif (gauche)",
       "default": "MB Nutrition"
     },
     {
       "type": "image_picker",
       "id": "image_right",
-      "label": "Afbeelding rechts"
+      "label": "Image droite"
     },
     {
       "type": "text",
       "id": "image_right_alt",
-      "label": "Alt-tekst rechts",
+      "label": "Texte alternatif (droite)",
       "default": "MB Nutrition"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Hauteur (desktop, en vh)",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "default": 70,
+      "unit": "vh"
     }
   ],
   "presets": [
-    {
-      "name": "Hero - Gesplitst beeld"
-    }
+    { "name": "Héros - Image divisée" }
   ]
 }
 {% endschema %}

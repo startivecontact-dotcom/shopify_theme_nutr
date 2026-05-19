@@ -53,12 +53,14 @@
       --color-text-subdued: #777777;
       --color-border: #e5e5e5;
       --color-border-dark: #2a2a2a;
+      --color-sale: #e53935;
       --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --header-height: 64px;
       --announcement-height: 38px;
       --border-radius: 3px;
       --transition: 0.2s ease;
       --shadow: 0 4px 20px rgba(0,0,0,0.1);
+      --container-max: 1400px;
       --free-shipping-threshold: {{ settings.free_shipping_threshold | default: 80 }};
     }
   </style>
@@ -72,6 +74,7 @@
 
   {% render 'cart-drawer' %}
   <div class="overlay" id="Overlay" aria-hidden="true"></div>
+  <div class="toast" id="Toast" role="status" aria-live="polite"></div>
 
   {% section 'header' %}
 

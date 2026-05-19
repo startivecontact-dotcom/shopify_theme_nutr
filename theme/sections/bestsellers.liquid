@@ -3,19 +3,19 @@
 
     <div class="bestsellers__header">
       <div>
-        <p class="bestsellers__label">Ontdek onze bestsellers</p>
-        <h2 class="bestsellers__title">{{ section.settings.title | default: shop.name }}</h2>
+        <p class="bestsellers__label">{{ section.settings.label | default: 'DÉCOUVREZ NOS MEILLEURES VENTES' }}</p>
+        <h2 class="bestsellers__title">{{ section.settings.title | default: 'MB NUTRITION' }}</h2>
       </div>
       <div class="bestsellers__nav">
         <a href="{{ section.settings.view_all_link | default: routes.collections_url }}" class="bestsellers__link">
-          Bekijk alle producten
+          Voir tous les produits &rarr;
         </a>
-        <button class="carousel-btn" id="CarouselPrev-{{ section.id }}" aria-label="Vorige">
+        <button class="carousel-btn" id="CarouselPrev-{{ section.id }}" aria-label="Précédent">
           <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
           </svg>
         </button>
-        <button class="carousel-btn" id="CarouselNext-{{ section.id }}" aria-label="Volgende">
+        <button class="carousel-btn" id="CarouselNext-{{ section.id }}" aria-label="Suivant">
           <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
           </svg>
@@ -25,50 +25,9 @@
 
     <div class="bestsellers__track-wrap">
       <div class="bestsellers__track" id="CarouselTrack-{{ section.id }}" role="list">
-        {% if section.settings.collection != blank %}
-          {% for product in section.settings.collection.products limit: 8 %}
-            <div class="product-card" role="listitem">
-              <a href="{{ product.url }}" class="product-card__image-wrap" tabindex="-1">
-                {% if product.featured_image %}
-                  <img src="{{ product.featured_image | image_url: width: 600 }}"
-                       alt="{{ product.featured_image.alt | default: product.title | escape }}"
-                       loading="lazy" width="600" height="600">
-                {% else %}
-                  {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                {% endif %}
-                {% if product.available == false %}
-                  <span class="product-card__badge" style="background:#999;">Uitverkocht</span>
-                {% elsif product.compare_at_price > product.price %}
-                  <span class="product-card__badge" style="background:#e53935;">Sale</span>
-                {% elsif product.created_at > 'now' | date: '%s' | minus: 2592000 | date: '%Y-%m-%dT%H:%M:%SZ' %}
-                  <span class="product-card__badge">Nieuw</span>
-                {% endif %}
-              </a>
-              <div class="product-card__body">
-                <h3 class="product-card__title">
-                  <a href="{{ product.url }}">{{ product.title | upcase }}</a>
-                </h3>
-                <div class="product-card__price">
-                  {% if product.compare_at_price > product.price %}
-                    {{ product.price | money }}
-                    <s>{{ product.compare_at_price | money }}</s>
-                  {% else %}
-                    {{ product.price | money }}
-                  {% endif %}
-                </div>
-                {% if product.available %}
-                  <button class="product-card__atc"
-                          data-product-id="{{ product.variants.first.id }}"
-                          data-add-to-cart>
-                    In winkelwagen
-                  </button>
-                {% else %}
-                  <button class="product-card__atc" disabled style="opacity:0.5;cursor:not-allowed;">
-                    Uitverkocht
-                  </button>
-                {% endif %}
-              </div>
-            </div>
+        {% if section.settings.collection != blank and section.settings.collection.products_count > 0 %}
+          {% for product in section.settings.collection.products limit: section.settings.items_to_show %}
+            {% render 'product-card', product: product %}
           {% endfor %}
         {% else %}
           {% for i in (1..4) %}
@@ -77,11 +36,11 @@
                 {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
               </div>
               <div class="product-card__body">
-                {% assign demo_titles = 'STARTER PACK,M3 + M4 SUPPORT,SECRET BALANCE + BURNER,SECRET BURNER CITRUS BERRIES' | split: ',' %}
-                {% assign demo_prices = '€49,95,€59,95,€59,95,€29,95' | split: ',' %}
+                {% assign demo_titles = 'PACK DÉCOUVERTE,M3 + M4 SUPPORT,SECRET BALANCE + BURNER,SECRET BURNER AGRUMES' | split: ',' %}
+                {% assign demo_prices = '49,95 €|59,95 €|59,95 €|29,95 €' | split: '|' %}
                 <h3 class="product-card__title">{{ demo_titles[forloop.index0] }}</h3>
                 <div class="product-card__price">{{ demo_prices[forloop.index0] }}</div>
-                <button class="product-card__atc">In winkelwagen</button>
+                <button class="product-card__atc">Ajouter au panier</button>
               </div>
             </div>
           {% endfor %}
@@ -101,14 +60,18 @@
   var nextBtn = section.querySelector('#CarouselNext-{{ section.id }}');
   var current = 0;
   function getVisible() {
-    return window.innerWidth <= 480 ? 1 : window.innerWidth <= 768 ? 2 : 4;
+    if (window.innerWidth < 600) return 1;
+    if (window.innerWidth < 1024) return 2;
+    return 4;
   }
   function getTotal() { return track.children.length; }
   function update() {
     var visible = getVisible();
     var maxIndex = Math.max(0, getTotal() - visible);
     current = Math.min(Math.max(current, 0), maxIndex);
-    var cardWidth = track.children[0] ? track.children[0].offsetWidth + 24 : 0;
+    var first = track.children[0];
+    var gap = 20;
+    var cardWidth = first ? first.offsetWidth + gap : 0;
     track.style.transform = 'translateX(-' + (current * cardWidth) + 'px)';
   }
   if (prevBtn) prevBtn.addEventListener('click', function() { current--; update(); });
@@ -119,30 +82,43 @@
 
 {% schema %}
 {
-  "name": "Bestsellers",
+  "name": "Meilleures ventes",
   "tag": "section",
   "settings": [
     {
       "type": "text",
+      "id": "label",
+      "label": "Étiquette (eyebrow)",
+      "default": "DÉCOUVREZ NOS MEILLEURES VENTES"
+    },
+    {
+      "type": "text",
       "id": "title",
-      "label": "Titel",
+      "label": "Titre",
       "default": "MB NUTRITION"
     },
     {
       "type": "collection",
       "id": "collection",
-      "label": "Collectie"
+      "label": "Collection à afficher"
     },
     {
       "type": "url",
       "id": "view_all_link",
-      "label": "Link 'Bekijk alle producten'"
+      "label": "Lien « Voir tous les produits »"
+    },
+    {
+      "type": "range",
+      "id": "items_to_show",
+      "label": "Nombre de produits",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
     }
   ],
   "presets": [
-    {
-      "name": "Bestsellers"
-    }
+    { "name": "Meilleures ventes" }
   ]
 }
 {% endschema %}

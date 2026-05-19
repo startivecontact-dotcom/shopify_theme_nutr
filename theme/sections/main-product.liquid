@@ -1,0 +1,166 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<div class="product">
+  <div class="container">
+
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a href="{{ routes.root_url }}">Accueil</a>
+      <span class="breadcrumb__separator">/</span>
+      {% if collection %}
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+        <span class="breadcrumb__separator">/</span>
+      {% endif %}
+      <span>{{ product.title }}</span>
+    </nav>
+
+    <div class="product__layout">
+
+      <div class="product__gallery">
+        <div class="product__media-main">
+          {% if product.featured_image %}
+            <img id="ProductMainImage" src="{{ product.featured_image | image_url: width: 1000 }}"
+                 alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                 width="1000" height="1000" loading="eager">
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag }}
+          {% endif %}
+        </div>
+        {% if product.images.size > 1 %}
+          <div class="product__media-thumbs">
+            {% for image in product.images %}
+              <button class="product__media-thumb {% if forloop.first %}is-active{% endif %}"
+                      data-thumb data-src="{{ image | image_url: width: 1000 }}"
+                      aria-label="Image {{ forloop.index }}">
+                <img src="{{ image | image_url: width: 200 }}" alt="" loading="lazy" width="200" height="200">
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="product__details">
+        {% if section.settings.show_vendor and product.vendor != blank %}
+          <div class="product__vendor">{{ product.vendor }}</div>
+        {% endif %}
+
+        <h1 class="product__title">{{ product.title }}</h1>
+
+        {% if section.settings.show_rating %}
+          <div class="product__rating">
+            <span class="product__rating-stars" aria-hidden="true">★★★★★</span>
+            <span>4.9 ({{ section.settings.review_count | default: 124 }} avis)</span>
+          </div>
+        {% endif %}
+
+        <div class="product__price {% if current_variant.compare_at_price > current_variant.price %}product__price--sale{% endif %}" id="ProductPriceWrap">
+          <span id="ProductPrice">{{ current_variant.price | money }}</span>
+          {% if current_variant.compare_at_price > current_variant.price %}
+            <s>{{ current_variant.compare_at_price | money }}</s>
+          {% endif %}
+        </div>
+
+        <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" id="ProductForm" class="product__form">
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+          {% unless product.has_only_default_variant %}
+            <div class="product__variants">
+              {% for option in product.options_with_values %}
+                <div class="product__option">
+                  <label class="product__option-label">{{ option.name }}</label>
+                  <div class="product__option-values">
+                    {% for value in option.values %}
+                      <button type="button" class="variant-swatch {% if option.selected_value == value %}is-active{% endif %}"
+                              data-variant-option
+                              data-option-index="{{ forloop.parentloop.index0 }}"
+                              data-option-value="{{ value | escape }}">
+                        {{ value }}
+                      </button>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endunless %}
+
+          <div class="product__qty-row">
+            <div class="product__qty">
+              <button type="button" data-qty-change="-1" aria-label="Diminuer">−</button>
+              <input id="Quantity" name="quantity" type="number" min="1" value="1" aria-label="Quantité">
+              <button type="button" data-qty-change="1" aria-label="Augmenter">+</button>
+            </div>
+            <button type="submit" id="ProductATC" class="btn btn--primary product__atc" {% unless current_variant.available %}disabled{% endunless %}>
+              {% if current_variant.available %}Ajouter au panier{% else %}Rupture de stock{% endif %}
+            </button>
+          </div>
+        </form>
+
+        {% if section.settings.show_trust_badges %}
+          <div class="product__trust">
+            <div class="product__trust-item">
+              <strong>Livraison rapide</strong>
+              <span>Avant 23h45 = demain</span>
+            </div>
+            <div class="product__trust-item">
+              <strong>Satisfait ou remboursé</strong>
+              <span>14 jours</span>
+            </div>
+            <div class="product__trust-item">
+              <strong>Paiement sécurisé</strong>
+              <span>3D Secure</span>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="product__tabs">
+          <div class="product__tab-buttons" role="tablist">
+            <button class="product__tab-btn is-active" data-tab="description" role="tab">Description</button>
+            <button class="product__tab-btn" data-tab="utilisation" role="tab">Utilisation</button>
+            <button class="product__tab-btn" data-tab="livraison" role="tab">Livraison &amp; Retours</button>
+          </div>
+          <div class="product__tab-panel is-active" data-tab-panel="description">
+            {{ product.description }}
+          </div>
+          <div class="product__tab-panel" data-tab-panel="utilisation">
+            <p>{{ section.settings.usage_text | default: 'Mélangez 1 dose avec 250 ml d''eau. À consommer avant l''entraînement ou selon les recommandations.' }}</p>
+          </div>
+          <div class="product__tab-panel" data-tab-panel="livraison">
+            <p>Livraison gratuite dès 80€. Commande passée avant 23h45 = expédition le jour même. Retours sous 14 jours.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script id="ProductData" type="application/json">
+{
+  "id": {{ product.id }},
+  "options": {{ product.options | json }},
+  "variants": [
+    {% for v in product.variants %}
+    {
+      "id": {{ v.id }},
+      "available": {{ v.available }},
+      "price": {{ v.price }},
+      "compare_at_price": {{ v.compare_at_price | default: 0 }},
+      "options": {{ v.options | json }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+</script>
+
+{% schema %}
+{
+  "name": "Produit principal",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_vendor", "label": "Afficher le fournisseur", "default": true },
+    { "type": "checkbox", "id": "show_rating", "label": "Afficher la note", "default": true },
+    { "type": "number", "id": "review_count", "label": "Nombre d'avis affiché", "default": 124 },
+    { "type": "checkbox", "id": "show_trust_badges", "label": "Afficher les badges de confiance", "default": true },
+    { "type": "textarea", "id": "usage_text", "label": "Texte « Utilisation »", "default": "Mélangez 1 dose avec 250 ml d'eau." }
+  ]
+}
+{% endschema %}

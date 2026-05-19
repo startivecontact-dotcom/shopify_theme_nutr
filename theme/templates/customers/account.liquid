@@ -1,123 +1,72 @@
-<div class="account-page">
-  <div class="container">
-    <div class="account-header">
-      <div>
-        <h1 style="font-size:2.5rem;margin-bottom:0.25rem;">MON COMPTE</h1>
-        <p style="color:var(--color-text-subdued);">Bonjour, <strong style="color:var(--color-text);">{{ customer.first_name }}</strong> !</p>
-      </div>
-      <a href="{{ routes.account_logout_url }}" class="btn btn--secondary">Se déconnecter</a>
+<div class="customer customer--wide">
+
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
+    <div>
+      <h1 style="font-size:clamp(1.5rem,4vw,2.25rem); text-transform:uppercase; letter-spacing:0.04em;">MON COMPTE</h1>
+      <p style="color:var(--color-text-muted); margin-top:0.25rem;">Bonjour, {{ customer.first_name | default: customer.email }}</p>
     </div>
+    <a href="{{ routes.account_logout_url }}" class="btn btn--outline btn--sm">Se déconnecter</a>
+  </div>
 
-    <!-- Order History -->
-    <div style="display:grid;grid-template-columns:1fr 280px;gap:2rem;align-items:start;">
-
-      <div>
-        <h2 style="font-size:1.5rem;margin-bottom:1.25rem;border-bottom:1px solid var(--color-border);padding-bottom:0.75rem;">
-          MES COMMANDES
-        </h2>
-
-        <div class="account-orders">
-          {% if customer.orders.size > 0 %}
-            <table>
-              <thead>
+  <div class="account-grid">
+    <section>
+      <h2 style="font-size:1.05rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:1rem;">Mes commandes</h2>
+      {% if customer.orders.size == 0 %}
+        <p style="color:var(--color-text-muted);">Vous n'avez pas encore passé de commande.</p>
+      {% else %}
+        {% paginate customer.orders by 20 %}
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>N° commande</th>
+                <th>Date</th>
+                <th>Paiement</th>
+                <th>Livraison</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in customer.orders %}
                 <tr>
-                  <th>Commande</th>
-                  <th>Date</th>
-                  <th>Statut</th>
-                  <th>Livraison</th>
-                  <th>Total</th>
+                  <td><a href="{{ order.customer_url }}" style="color:var(--color-accent); font-weight:600;">{{ order.name }}</a></td>
+                  <td>{{ order.created_at | date: '%d/%m/%Y' }}</td>
+                  <td>{{ order.financial_status_label }}</td>
+                  <td>{{ order.fulfillment_status_label | default: 'En attente' }}</td>
+                  <td>{{ order.total_price | money }}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {% for order in customer.orders %}
-                  <tr>
-                    <td>
-                      <a href="{{ order.customer_url }}" style="color:var(--color-accent);font-weight:600;">
-                        {{ order.name }}
-                      </a>
-                    </td>
-                    <td>{{ order.created_at | date: '%d/%m/%Y' }}</td>
-                    <td>
-                      {% case order.financial_status %}
-                        {% when 'paid' %}
-                          <span class="order-status order-status--fulfilled">Payé</span>
-                        {% when 'pending' %}
-                          <span class="order-status order-status--unfulfilled">En attente</span>
-                        {% when 'refunded' %}
-                          <span class="order-status order-status--partial">Remboursé</span>
-                        {% else %}
-                          <span class="order-status">{{ order.financial_status }}</span>
-                      {% endcase %}
-                    </td>
-                    <td>
-                      {% case order.fulfillment_status %}
-                        {% when 'fulfilled' %}
-                          <span class="order-status order-status--fulfilled">Livré</span>
-                        {% when 'partial' %}
-                          <span class="order-status order-status--partial">Partiel</span>
-                        {% else %}
-                          <span class="order-status order-status--unfulfilled">En préparation</span>
-                      {% endcase %}
-                    </td>
-                    <td>
-                      <strong>{{ order.total_price | money }}</strong>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          {% else %}
-            <div style="padding:3rem;text-align:center;">
-              <div style="font-size:3rem;opacity:0.2;margin-bottom:1rem;">📦</div>
-              <p>Aucune commande pour l'instant.</p>
-              <a href="{{ routes.collections_url }}" class="btn btn--primary" style="margin-top:1rem;">
-                COMMENCER MES ACHATS
-              </a>
-            </div>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          {% if paginate.pages > 1 %}
+            <nav class="pagination">
+              {% if paginate.previous %}<a href="{{ paginate.previous.url }}">&larr;</a>{% endif %}
+              {% for part in paginate.parts %}
+                {% if part.is_link %}<a href="{{ part.url }}">{{ part.title }}</a>{% else %}<span class="{% if part.title == paginate.current_page %}page--current{% endif %}">{{ part.title }}</span>{% endif %}
+              {% endfor %}
+              {% if paginate.next %}<a href="{{ paginate.next.url }}">&rarr;</a>{% endif %}
+            </nav>
           {% endif %}
+        {% endpaginate %}
+      {% endif %}
+    </section>
+
+    <aside>
+      <h2 style="font-size:1.05rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:1rem;">Adresse de livraison</h2>
+      {% if customer.default_address %}
+        <div style="background:#fafafa; border:1px solid var(--color-border); padding:1rem; font-size:0.9rem; line-height:1.6;">
+          <strong>{{ customer.default_address.first_name }} {{ customer.default_address.last_name }}</strong><br>
+          {% if customer.default_address.company != blank %}{{ customer.default_address.company }}<br>{% endif %}
+          {{ customer.default_address.address1 }}<br>
+          {% if customer.default_address.address2 != blank %}{{ customer.default_address.address2 }}<br>{% endif %}
+          {{ customer.default_address.zip }} {{ customer.default_address.city }}<br>
+          {{ customer.default_address.country }}<br>
+          {% if customer.default_address.phone != blank %}{{ customer.default_address.phone }}{% endif %}
         </div>
-      </div>
-
-      <!-- Account Info Sidebar -->
-      <div>
-        <h2 style="font-size:1.5rem;margin-bottom:1.25rem;border-bottom:1px solid var(--color-border);padding-bottom:0.75rem;">
-          INFORMATIONS
-        </h2>
-
-        <div class="account-address">
-          <h3 style="font-size:1rem;margin-bottom:0.75rem;color:var(--color-text-subdued);letter-spacing:0.06em;">ADRESSE PAR DÉFAUT</h3>
-          {% if customer.default_address %}
-            <address style="font-style:normal;font-size:0.9rem;color:var(--color-text-subdued);line-height:1.8;">
-              {{ customer.default_address.first_name }} {{ customer.default_address.last_name }}<br>
-              {% if customer.default_address.company != blank %}
-                {{ customer.default_address.company }}<br>
-              {% endif %}
-              {{ customer.default_address.address1 }}<br>
-              {% if customer.default_address.address2 != blank %}
-                {{ customer.default_address.address2 }}<br>
-              {% endif %}
-              {{ customer.default_address.zip }} {{ customer.default_address.city }}<br>
-              {{ customer.default_address.country }}
-            </address>
-          {% else %}
-            <p style="font-size:0.9rem;color:var(--color-text-subdued);">Aucune adresse enregistrée.</p>
-          {% endif %}
-          <a href="{{ routes.account_addresses_url }}" class="btn btn--outline-accent btn--sm btn--full" style="margin-top:1rem;">
-            Gérer mes adresses
-          </a>
-        </div>
-
-        <!-- Account details -->
-        <div class="account-address">
-          <h3 style="font-size:1rem;margin-bottom:0.75rem;color:var(--color-text-subdued);letter-spacing:0.06em;">MON PROFIL</h3>
-          <p style="font-size:0.9rem;color:var(--color-text-subdued);line-height:1.8;">
-            {{ customer.first_name }} {{ customer.last_name }}<br>
-            {{ customer.email }}
-          </p>
-        </div>
-
-      </div>
-    </div>
-
+      {% else %}
+        <p style="color:var(--color-text-muted);">Aucune adresse enregistrée.</p>
+      {% endif %}
+      <a href="{{ routes.account_addresses_url }}" class="btn btn--outline btn--full" style="margin-top:1rem;">Gérer mes adresses</a>
+    </aside>
   </div>
 </div>

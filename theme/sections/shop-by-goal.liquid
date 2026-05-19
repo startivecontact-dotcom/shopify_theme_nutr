@@ -1,124 +1,116 @@
 <section class="shop-by-goal">
-
   {% if section.settings.hero_image or section.settings.hero_title != blank %}
-  <div class="shop-by-goal__hero">
-    {% if section.settings.hero_image %}
-      <div class="shop-by-goal__hero-bg">
-        <img src="{{ section.settings.hero_image | image_url: width: 1600 }}"
-             alt="{{ section.settings.hero_image.alt | default: 'Bundles' }}"
-             loading="lazy" width="1600" height="600">
+    <div class="shop-by-goal__hero">
+      {% if section.settings.hero_image %}
+        <img src="{{ section.settings.hero_image | image_url: width: 1800 }}"
+             alt="{{ section.settings.hero_title | escape }}" loading="lazy" width="1800" height="700">
+      {% endif %}
+      <div class="shop-by-goal__hero-inner">
+        {% if section.settings.hero_tag != blank %}
+          <span class="bundle-banner__tag">{{ section.settings.hero_tag }}</span>
+        {% endif %}
+        {% if section.settings.hero_title != blank %}
+          <h2 class="bundle-banner__title" style="margin-top:1rem;">{{ section.settings.hero_title }}</h2>
+        {% endif %}
+        {% if section.settings.hero_btn_text != blank %}
+          <a href="{{ section.settings.hero_btn_link }}" class="btn btn--outline-light btn--lg">{{ section.settings.hero_btn_text }}</a>
+        {% endif %}
       </div>
-    {% else %}
-      <div class="shop-by-goal__hero-bg" style="background:#222;"></div>
-    {% endif %}
-    <div class="shop-by-goal__hero-overlay"></div>
-    <div class="shop-by-goal__hero-content">
-      {% if section.settings.hero_tag != blank %}
-        <span class="shop-by-goal__hero-tag">{{ section.settings.hero_tag }}</span>
-      {% endif %}
-      <h2 class="shop-by-goal__hero-title">{{ section.settings.hero_title | default: 'Nu extra scherp geprijsd' }}</h2>
-      {% if section.settings.hero_btn_text != blank %}
-        <a href="{{ section.settings.hero_btn_link | default: '/collections/bundles' }}" class="shop-by-goal__hero-btn">
-          {{ section.settings.hero_btn_text }}
-        </a>
-      {% endif %}
     </div>
-  </div>
   {% endif %}
 
-  <div class="shop-by-goal__grid">
-    {% for block in section.blocks %}
-      <div class="goal-card" {{ block.shopify_attributes }}>
-        {% if block.settings.image %}
-          <div class="goal-card__bg">
-            <img src="{{ block.settings.image | image_url: width: 800 }}"
-                 alt="{{ block.settings.title }}"
-                 loading="lazy" width="800" height="600">
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="bestsellers__title" style="margin-bottom:2rem; text-align:center;">{{ section.settings.heading }}</h2>
+    {% endif %}
+    <div class="shop-by-goal__grid">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.link | default: '#' }}" class="goal-card" {{ block.shopify_attributes }}>
+          {% if block.settings.image %}
+            <img src="{{ block.settings.image | image_url: width: 900 }}"
+                 alt="{{ block.settings.title | escape }}" loading="lazy" width="900" height="1100">
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag }}
+          {% endif %}
+          <div class="goal-card__inner">
+            <h3 class="goal-card__title">{{ block.settings.title }}</h3>
+            <span class="goal-card__btn">{{ block.settings.button_text | default: 'DÉCOUVRIR' }}</span>
           </div>
-        {% else %}
-          <div class="goal-card__bg" style="background:{% cycle '#2a2a2a', '#1e1e1e', '#252525', '#1a1a1a' %};">
-            <div class="goal-card__placeholder"></div>
-          </div>
-        {% endif %}
-        <div class="goal-card__overlay"></div>
-        <div class="goal-card__content">
-          <h3 class="goal-card__title">{{ block.settings.title }}</h3>
-          <a href="{{ block.settings.link | default: routes.collections_url }}" class="goal-card__btn">
-            Shop nu
-          </a>
-        </div>
-      </div>
-    {% endfor %}
+        </a>
+      {% endfor %}
+    </div>
   </div>
-
 </section>
 
 {% schema %}
 {
-  "name": "Shop op doel",
+  "name": "Par objectif",
   "tag": "section",
   "settings": [
     {
+      "type": "header",
+      "content": "Bannière (optionnelle)"
+    },
+    {
       "type": "image_picker",
       "id": "hero_image",
-      "label": "Hero achtergrondafbeelding"
+      "label": "Image de bannière"
     },
     {
       "type": "text",
       "id": "hero_tag",
-      "label": "Hero label",
-      "default": "Bundles"
+      "label": "Étiquette",
+      "default": "BUNDLES"
     },
     {
       "type": "text",
       "id": "hero_title",
-      "label": "Hero titel",
-      "default": "Nu extra scherp geprijsd"
+      "label": "Titre de la bannière",
+      "default": "Maintenant à prix imbattable"
     },
     {
       "type": "text",
       "id": "hero_btn_text",
-      "label": "Hero knooptekst",
-      "default": "Shop alle bundles"
+      "label": "Bouton bannière",
+      "default": "Voir tous les bundles"
     },
     {
       "type": "url",
       "id": "hero_btn_link",
-      "label": "Hero knoplink"
+      "label": "Lien du bouton bannière"
+    },
+    {
+      "type": "header",
+      "content": "Grille des objectifs"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre de section",
+      "default": "PAR OBJECTIF"
     }
   ],
   "blocks": [
     {
       "type": "goal",
-      "name": "Doelstelling",
+      "name": "Objectif",
       "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Afbeelding"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Naam",
-          "default": "Afvallen"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        }
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Perte de poids" },
+        { "type": "text", "id": "button_text", "label": "Texte du bouton", "default": "DÉCOUVRIR" },
+        { "type": "url", "id": "link", "label": "Lien" }
       ]
     }
   ],
+  "max_blocks": 8,
   "presets": [
     {
-      "name": "Shop op doel",
+      "name": "Par objectif",
       "blocks": [
-        { "type": "goal", "settings": { "title": "Afvallen" } },
-        { "type": "goal", "settings": { "title": "Spieropbouw" } },
+        { "type": "goal", "settings": { "title": "Perte de poids" } },
+        { "type": "goal", "settings": { "title": "Prise de masse" } },
         { "type": "goal", "settings": { "title": "Lifestyle" } },
-        { "type": "goal", "settings": { "title": "Stamina" } }
+        { "type": "goal", "settings": { "title": "Endurance" } }
       ]
     }
   ]

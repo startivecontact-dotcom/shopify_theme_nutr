@@ -1,0 +1,73 @@
+<article class="article">
+  <div class="container">
+
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a href="{{ routes.root_url }}">Accueil</a>
+      <span class="breadcrumb__separator">/</span>
+      <a href="{{ blog.url }}">{{ blog.title }}</a>
+      <span class="breadcrumb__separator">/</span>
+      <span>{{ article.title }}</span>
+    </nav>
+
+    <header class="article__header">
+      <h1 class="article__title">{{ article.title }}</h1>
+      <div class="article__meta">
+        Publié le {{ article.published_at | date: '%d %B %Y' }}
+        {% if article.author %} par {{ article.author }}{% endif %}
+        {% if article.tags.size > 0 %}
+          &middot; {% for tag in article.tags %}<a href="{{ blog.url }}/tagged/{{ tag | handle }}" style="color:var(--color-accent);">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}
+        {% endif %}
+      </div>
+    </header>
+
+    {% if article.image %}
+      <div class="article__image">
+        <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.image.alt | default: article.title | escape }}" loading="eager" width="1200" height="675">
+      </div>
+    {% endif %}
+
+    <div class="article__content rte">
+      {{ article.content }}
+    </div>
+
+    <div class="article__back">
+      <a href="{{ blog.url }}" class="btn btn--outline">&larr; Retour au blog</a>
+    </div>
+
+    {% if blog.comments_enabled? %}
+      <section style="margin-top:3rem;">
+        <h2 style="margin-bottom:1rem;">Commentaires ({{ article.comments_count }})</h2>
+        {% for comment in article.comments %}
+          <div style="padding:1rem 0; border-bottom:1px solid var(--color-border);">
+            <strong>{{ comment.author }}</strong>
+            <span style="color:var(--color-text-muted); font-size:0.85rem;"> &middot; {{ comment.created_at | date: '%d %B %Y' }}</span>
+            <div style="margin-top:0.5rem;">{{ comment.content }}</div>
+          </div>
+        {% endfor %}
+
+        {% form 'new_comment', article %}
+          {% if form.errors %}
+            <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
+          {% endif %}
+          {% if form.posted_successfully? %}
+            <div class="form-message form-message--success">Merci pour votre commentaire !</div>
+          {% endif %}
+          <div class="field">
+            <label class="field__label" for="CommentAuthor">Nom</label>
+            <input type="text" name="comment[author]" id="CommentAuthor" required>
+          </div>
+          <div class="field">
+            <label class="field__label" for="CommentEmail">E-mail</label>
+            <input type="email" name="comment[email]" id="CommentEmail" required>
+          </div>
+          <div class="field">
+            <label class="field__label" for="CommentBody">Commentaire</label>
+            <textarea name="comment[body]" id="CommentBody" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary">Publier</button>
+        {% endform %}
+      </section>
+    {% endif %}
+
+  </div>
+</article>

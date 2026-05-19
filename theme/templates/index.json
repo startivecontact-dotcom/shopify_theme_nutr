@@ -2,61 +2,46 @@
   "sections": {
     "hero-split": {
       "type": "hero-split",
-      "settings": {}
+      "settings": {
+        "height": 70
+      }
     },
     "bestsellers": {
       "type": "bestsellers",
       "settings": {
-        "title": "MB NUTRITION"
+        "title": "MB NUTRITION",
+        "label": "DÉCOUVREZ NOS MEILLEURES VENTES",
+        "items_to_show": 8
       }
     },
     "bundle-banner": {
       "type": "bundle-banner",
       "settings": {
-        "tag": "Bundles",
-        "title": "Nu extra scherp geprijsd",
-        "button_text": "Shop alle bundles",
+        "tag": "BUNDLES",
+        "title": "Maintenant à prix imbattable",
+        "button_text": "Voir tous les bundles",
         "button_link": "/collections/bundles"
       }
     },
     "shop-by-goal": {
       "type": "shop-by-goal",
       "blocks": {
-        "goal-1": {
-          "type": "goal",
-          "settings": {
-            "title": "Afvallen",
-            "link": "/collections/afvallen"
-          }
-        },
-        "goal-2": {
-          "type": "goal",
-          "settings": {
-            "title": "Spieropbouw",
-            "link": "/collections/spieropbouw"
-          }
-        },
-        "goal-3": {
-          "type": "goal",
-          "settings": {
-            "title": "Lifestyle",
-            "link": "/collections/lifestyle"
-          }
-        },
-        "goal-4": {
-          "type": "goal",
-          "settings": {
-            "title": "Stamina",
-            "link": "/collections/stamina"
-          }
-        }
+        "goal-1": { "type": "goal", "settings": { "title": "Perte de poids", "link": "/collections/perte-de-poids", "button_text": "DÉCOUVRIR" } },
+        "goal-2": { "type": "goal", "settings": { "title": "Prise de masse", "link": "/collections/prise-de-masse", "button_text": "DÉCOUVRIR" } },
+        "goal-3": { "type": "goal", "settings": { "title": "Lifestyle", "link": "/collections/lifestyle", "button_text": "DÉCOUVRIR" } },
+        "goal-4": { "type": "goal", "settings": { "title": "Endurance", "link": "/collections/endurance", "button_text": "DÉCOUVRIR" } }
       },
       "block_order": ["goal-1", "goal-2", "goal-3", "goal-4"],
       "settings": {
-        "hero_tag": "Bundles",
-        "hero_title": "Nu extra scherp geprijsd",
-        "hero_btn_text": "Shop alle bundles",
-        "hero_btn_link": "/collections/bundles"
+        "heading": "PAR OBJECTIF"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "COMMUNAUTÉ",
+        "title": "REJOIGNEZ LA COMMUNAUTÉ",
+        "subtitle": "Restez informé de nos offres et actualités."
       }
     }
   },
@@ -64,6 +49,7 @@
     "hero-split",
     "bestsellers",
     "bundle-banner",
-    "shop-by-goal"
+    "shop-by-goal",
+    "newsletter"
   ]
 }
