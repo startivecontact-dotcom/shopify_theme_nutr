@@ -1,0 +1,20 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "MB Nutrition Theme",
+    "theme_version": "1.0.0",
+    "theme_author": "MB Nutrition",
+    "theme_documentation_url": "https://mbnutrition.com",
+    "theme_support_url": "https://mbnutrition.com/pages/contact"
+  },
+  {
+    "name": "Algemeen",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  }
+]

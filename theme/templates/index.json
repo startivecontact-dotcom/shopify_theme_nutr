@@ -1,0 +1,69 @@
+{
+  "sections": {
+    "hero-split": {
+      "type": "hero-split",
+      "settings": {}
+    },
+    "bestsellers": {
+      "type": "bestsellers",
+      "settings": {
+        "title": "MB NUTRITION"
+      }
+    },
+    "bundle-banner": {
+      "type": "bundle-banner",
+      "settings": {
+        "tag": "Bundles",
+        "title": "Nu extra scherp geprijsd",
+        "button_text": "Shop alle bundles",
+        "button_link": "/collections/bundles"
+      }
+    },
+    "shop-by-goal": {
+      "type": "shop-by-goal",
+      "blocks": {
+        "goal-1": {
+          "type": "goal",
+          "settings": {
+            "title": "Afvallen",
+            "link": "/collections/afvallen"
+          }
+        },
+        "goal-2": {
+          "type": "goal",
+          "settings": {
+            "title": "Spieropbouw",
+            "link": "/collections/spieropbouw"
+          }
+        },
+        "goal-3": {
+          "type": "goal",
+          "settings": {
+            "title": "Lifestyle",
+            "link": "/collections/lifestyle"
+          }
+        },
+        "goal-4": {
+          "type": "goal",
+          "settings": {
+            "title": "Stamina",
+            "link": "/collections/stamina"
+          }
+        }
+      },
+      "block_order": ["goal-1", "goal-2", "goal-3", "goal-4"],
+      "settings": {
+        "hero_tag": "Bundles",
+        "hero_title": "Nu extra scherp geprijsd",
+        "hero_btn_text": "Shop alle bundles",
+        "hero_btn_link": "/collections/bundles"
+      }
+    }
+  },
+  "order": [
+    "hero-split",
+    "bestsellers",
+    "bundle-banner",
+    "shop-by-goal"
+  ]
+}

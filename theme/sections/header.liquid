@@ -1,0 +1,238 @@
+<!-- Announcement Bar Ticker -->
+<div class="announcement-bar" role="banner">
+  <div class="announcement-bar__track" id="AnnouncementTrack">
+    <span class="announcement-bar__item">Shop Sale</span>
+    <span class="announcement-bar__item">Gratis verzending vanaf €80,-</span>
+    <span class="announcement-bar__item">Voor 23:45 besteld = morgen in huis</span>
+    <span class="announcement-bar__item">Achteraf betalen met Klarna</span>
+    <span class="announcement-bar__item">Nieuwe releases</span>
+    <span class="announcement-bar__item">Shop Sale</span>
+    <span class="announcement-bar__item">Gratis verzending vanaf €80,-</span>
+    <span class="announcement-bar__item">Voor 23:45 besteld = morgen in huis</span>
+    <span class="announcement-bar__item">Achteraf betalen met Klarna</span>
+    <span class="announcement-bar__item">Nieuwe releases</span>
+  </div>
+</div>
+
+<header class="site-header" id="SiteHeader" role="banner">
+  <div class="container">
+    <div class="header__inner">
+
+      <!-- Left Nav -->
+      <nav class="header__nav-left" aria-label="Hoofdnavigatie links">
+        <ul class="nav__list" role="list">
+
+          <li class="nav__item">
+            <a href="{{ routes.root_url }}" class="nav__link">Home</a>
+          </li>
+
+          <li class="nav__item">
+            <a href="{{ routes.collections_url }}" class="nav__link" aria-haspopup="true" aria-expanded="false">
+              Shop
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <div class="nav__mega" role="region" aria-label="Shop menu">
+              <div class="nav__mega-row">
+                <div class="nav__mega-col">
+                  <h4>Supplementen</h4>
+                  <a href="/collections/new" class="is-new">Nieuw: Secret Balance</a>
+                  <a href="/collections/secret-burner">Secret Burner</a>
+                  <a href="/collections/creatine">Creatine</a>
+                  <a href="/collections/pre-workout">Pre-workout</a>
+                  <a href="/collections/eiwitten">Eiwitten</a>
+                </div>
+                <div class="nav__mega-col">
+                  <h4>Populair</h4>
+                  <a href="/collections/new" class="is-new">Nieuw: Secret Balance</a>
+                  <a href="/collections/secret-burner">Secret Burner</a>
+                  <a href="/collections/pre-workout-m4">Pre-Workout M4 Extreme</a>
+                  <a href="/collections/pre-workout-m3">Pre Workout M3</a>
+                  <a href="/collections/sleep-shredder">Sleep Shredder</a>
+                  <a href="/collections/eaa">EAA</a>
+                  <a href="/collections/diet-shake">Diet Shake</a>
+                </div>
+                <div class="nav__mega-col">
+                  <h4>Eiwitten</h4>
+                  <a href="/collections/eiwitten">Whey Protein Pro</a>
+                </div>
+                <div class="nav__mega-col">
+                  <h4>Extra</h4>
+                  <a href="/collections/sauzen">Samurai sauce</a>
+                  <a href="/collections/sauzen">Teriyaki sauce</a>
+                  <a href="/collections/omega-3">Omega 3</a>
+                  <a href="/collections/cla">CLA</a>
+                </div>
+                <div class="nav__mega-col">
+                  <h4>Voordeelpakketten</h4>
+                  <a href="/collections/voordeelpakketten">Shop all</a>
+                </div>
+              </div>
+              <div class="nav__mega-row nav__mega-row--2">
+                <div class="nav__mega-col">
+                  <h4>Combideals</h4>
+                  <a href="/collections/bundles">Shop all</a>
+                </div>
+                <div class="nav__mega-col">
+                  <h4>Kennisbank</h4>
+                  <a href="/blogs/news">Blog &amp; Artikelen</a>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav__item">
+            <a href="/pages/shop-op-doel" class="nav__link" aria-haspopup="true">
+              Shop op doel
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <div class="nav__mega" style="width:400px;">
+              <div class="nav__mega-row" style="grid-template-columns: repeat(2,1fr);">
+                <div class="nav__mega-col">
+                  <h4>Doel</h4>
+                  <a href="/collections/afvallen">Afvallen</a>
+                  <a href="/collections/spieropbouw">Spieropbouw</a>
+                  <a href="/collections/lifestyle">Lifestyle</a>
+                  <a href="/collections/stamina">Stamina</a>
+                </div>
+                <div class="nav__mega-col">
+                  <h4>Populair</h4>
+                  <a href="/collections/secret-burner">Secret Burner</a>
+                  <a href="/collections/eiwitten">Whey Protein Pro</a>
+                  <a href="/collections/pre-workout">Pre-Workout M4</a>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav__item">
+            <a href="/pages/caloriebehoefte" class="nav__link">Caloriebehoefte</a>
+          </li>
+
+          <li class="nav__item">
+            <a href="/pages/coaching" class="nav__link">Coaching by Mobicep</a>
+          </li>
+
+        </ul>
+      </nav>
+
+      <!-- Center Logo -->
+      <div class="header__logo">
+        <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+          {% if section.settings.logo %}
+            <img src="{{ section.settings.logo | image_url: width: 220 }}"
+                 alt="{{ shop.name }}"
+                 width="{{ section.settings.logo_width | default: 180 }}"
+                 height="44"
+                 loading="eager">
+          {% else %}
+            <span class="logo-text">
+              <span class="logo-bars">&#x2016;</span>MB NUTRITION<span class="logo-bars">&#x2016;</span>
+            </span>
+          {% endif %}
+        </a>
+      </div>
+
+      <!-- Right Nav -->
+      <div class="header__actions header__nav-right">
+        <a href="/collections/bundles" class="header__action header__action--text">Combideals</a>
+        <div class="header__divider"></div>
+        <span class="header__action header__action--text">EUR | €</span>
+        <div class="header__divider"></div>
+        <button class="header__action" id="SearchToggle" aria-label="Zoeken">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/>
+          </svg>
+        </button>
+        <a href="{{ routes.account_url }}" class="header__action" aria-label="Mijn account">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/>
+          </svg>
+        </a>
+        <button class="header__action" id="CartToggle" data-open-cart aria-label="Winkelwagen ({{ cart.item_count }} artikelen)">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <span class="cart-count" id="CartCount" {% if cart.item_count == 0 %}style="display:none"{% endif %} aria-live="polite">
+            {{ cart.item_count }}
+          </span>
+        </button>
+        <button class="hamburger" id="Hamburger" aria-controls="MobileNav" aria-expanded="false" aria-label="Menu openen">
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- Search Overlay -->
+<div class="search-overlay" id="SearchOverlay" style="display:none; position:fixed; top:0; left:0; right:0; z-index:1100; background:#fff; border-bottom:1px solid #e5e5e5; padding:1rem 2rem; align-items:center; gap:1rem; box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+  <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0; color:#777;" aria-hidden="true">
+    <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/>
+  </svg>
+  <input type="search" id="SearchInput" placeholder="Zoek producten..." style="flex:1; border:none; font-size:1rem; font-family:inherit; outline:none;" aria-label="Zoeken">
+  <button id="SearchClose" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1px solid #e5e5e5;background:#fff;font-size:1rem;cursor:pointer;" aria-label="Sluiten">&#x2715;</button>
+</div>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="MobileNav" aria-label="Mobiel menu" aria-hidden="true">
+  <div class="mobile-nav__header">
+    <span class="logo-text" style="font-size:1.1rem;">
+      <span class="logo-bars">&#x2016;</span>MB NUTRITION<span class="logo-bars">&#x2016;</span>
+    </span>
+    <button class="mobile-nav__close" id="MobileNavClose" aria-label="Menu sluiten">&#x2715;</button>
+  </div>
+
+  <ul>
+    <li><a href="{{ routes.root_url }}" class="mobile-nav__link">Home</a></li>
+    <li>
+      <a href="{{ routes.collections_url }}" class="mobile-nav__link" id="MobileShopToggle">
+        Shop <span style="float:right;">&#x203A;</span>
+      </a>
+      <div class="mobile-nav__sub" id="MobileShopSub" style="display:none;">
+        <a href="/collections/new">Nieuw: Secret Balance</a>
+        <a href="/collections/secret-burner">Secret Burner</a>
+        <a href="/collections/creatine">Creatine</a>
+        <a href="/collections/pre-workout">Pre-workout</a>
+        <a href="/collections/eiwitten">Eiwitten</a>
+        <a href="/collections/voordeelpakketten">Voordeelpakketten</a>
+        <a href="/collections/all">Alle producten</a>
+      </div>
+    </li>
+    <li><a href="/pages/shop-op-doel" class="mobile-nav__link">Shop op doel</a></li>
+    <li><a href="/pages/caloriebehoefte" class="mobile-nav__link">Caloriebehoefte</a></li>
+    <li><a href="/pages/coaching" class="mobile-nav__link">Coaching by Mobicep</a></li>
+    <li><a href="/collections/bundles" class="mobile-nav__link" style="color:var(--color-accent);">Combideals</a></li>
+    <li><a href="{{ routes.account_url }}" class="mobile-nav__link">Mijn account</a></li>
+    <li><a href="{{ routes.cart_url }}" class="mobile-nav__link">Winkelwagen ({{ cart.item_count }})</a></li>
+  </ul>
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo afbeelding"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 280,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo breedte",
+      "default": 180
+    }
+  ]
+}
+{% endschema %}

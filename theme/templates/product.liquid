@@ -1,0 +1,145 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<div class="product-page">
+  <div class="container">
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">/</span>
+      {% if collection %}
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+        <span aria-hidden="true">/</span>
+      {% endif %}
+      <span aria-current="page">{{ product.title }}</span>
+    </nav>
+
+    <div class="product-layout">
+
+      <!-- Gallery -->
+      <div class="product-gallery">
+        <div class="product-gallery__main" id="ProductMainImage">
+          {% if product.featured_image %}
+            <img src="{{ product.featured_image | image_url: width: 800 }}"
+                 alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                 id="MainProductImg"
+                 loading="eager" width="800" height="800">
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+
+        {% if product.images.size > 1 %}
+          <div class="product-gallery__thumbs">
+            {% for image in product.images %}
+              <button class="gallery-thumb {% if forloop.first %}active{% endif %}"
+                      data-src="{{ image | image_url: width: 800 }}"
+                      aria-label="{{ image.alt | default: product.title | escape }}"
+                      aria-pressed="{{ forloop.first }}">
+                <img src="{{ image | image_url: width: 150 }}"
+                     alt="{{ image.alt | default: product.title | escape }}"
+                     loading="lazy" width="150" height="150">
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        {% if product.vendor %}
+          <div class="product-info__vendor">{{ product.vendor }}</div>
+        {% endif %}
+
+        <h1 class="product-info__title">{{ product.title | upcase }}</h1>
+
+        <div class="product-info__price-wrap">
+          {% if current_variant.compare_at_price > current_variant.price %}
+            <span class="product-info__price" style="color:#e53935;">{{ current_variant.price | money }}</span>
+            <span class="product-info__compare">{{ current_variant.compare_at_price | money }}</span>
+          {% else %}
+            <span class="product-info__price">{{ current_variant.price | money }}</span>
+          {% endif %}
+        </div>
+
+        {% unless product.has_only_default_variant %}
+          {% for option in product.options_with_values %}
+            <div class="variant-selector">
+              <label>{{ option.name }}: <span>{{ option.selected_value }}</span></label>
+              <div class="variant-options" role="group" aria-label="{{ option.name }}">
+                {% for value in option.values %}
+                  <button type="button"
+                          class="variant-btn {% if option.selected_value == value %}active{% endif %}"
+                          data-option-name="{{ option.name | escape }}"
+                          data-option-value="{{ value | escape }}"
+                          data-variant-id="{{ product.variants | where: 'title', value | map: 'id' | first }}">
+                    {{ value }}
+                  </button>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        {% endunless %}
+
+        <form id="ProductForm" method="post" action="/cart/add" novalidate>
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+          <div class="product-atc-wrap">
+            <div class="product-qty-wrap">
+              <button type="button" class="product-qty-btn" data-delta="-1" aria-label="Minder">&#x2212;</button>
+              <input type="number" name="quantity" value="1" min="1" class="product-qty-input" aria-label="Aantal">
+              <button type="button" class="product-qty-btn" data-delta="+1" aria-label="Meer">+</button>
+            </div>
+            {% if current_variant.available %}
+              <button type="submit" class="product-atc-btn" aria-label="Toevoegen aan winkelwagen">
+                In winkelwagen
+              </button>
+            {% else %}
+              <button type="button" class="product-atc-btn" disabled style="opacity:0.5;cursor:not-allowed;">
+                Uitverkocht
+              </button>
+            {% endif %}
+          </div>
+        </form>
+
+        {% if product.description != blank %}
+          <div class="product-tabs">
+            <div class="product-tabs__nav" role="tablist">
+              <button class="product-tab-btn active" data-tab="TabDesc" role="tab" aria-selected="true">Beschrijving</button>
+              <button class="product-tab-btn" data-tab="TabUsage" role="tab" aria-selected="false">Gebruik</button>
+              <button class="product-tab-btn" data-tab="TabShip" role="tab" aria-selected="false">Verzending</button>
+            </div>
+            <div id="TabDesc" class="product-tab-panel active" role="tabpanel">
+              {{ product.description }}
+            </div>
+            <div id="TabUsage" class="product-tab-panel" role="tabpanel">
+              <p>Raadpleeg de verpakking voor de aanbevolen dosering. Bewaar op een koele, droge plaats buiten bereik van kinderen.</p>
+            </div>
+            <div id="TabShip" class="product-tab-panel" role="tabpanel">
+              <ul>
+                <li>Gratis verzending vanaf €80,-</li>
+                <li>Voor 23:45 besteld = morgen in huis</li>
+                <li>Achteraf betalen met Klarna</li>
+                <li>14 dagen retourrecht</li>
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% if recommendations.performed and recommendations.products.size > 0 %}
+  <div class="related-products">
+    <div class="container">
+      <h2 class="related-products__title">Gerelateerde producten</h2>
+      <div class="products-grid">
+        {% for rec in recommendations.products limit: 4 %}
+          {% render 'product-card', product: rec %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}

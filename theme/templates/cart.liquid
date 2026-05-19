@@ -1,0 +1,97 @@
+<div class="cart-page">
+  <div class="container">
+    <h1 class="cart-page__title">Winkelwagen</h1>
+
+    {% if cart.item_count == 0 %}
+      <div style="text-align:center; padding:4rem 0;">
+        <p style="color:#777; margin-bottom:1.5rem; font-size:1.1rem;">Je winkelwagen is leeg.</p>
+        <a href="/collections/all" class="btn btn--primary">Verder winkelen</a>
+      </div>
+    {% else %}
+      <div class="cart-layout">
+        <div class="cart-items">
+          <form action="{{ routes.cart_url }}" method="post" novalidate>
+            <table class="cart-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Prijs</th>
+                  <th>Aantal</th>
+                  <th>Totaal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in cart.items %}
+                  <tr>
+                    <td>
+                      <div class="cart-table-product">
+                        <div class="cart-table-img">
+                          {% if item.image %}
+                            <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | escape }}" loading="lazy">
+                          {% endif %}
+                        </div>
+                        <div class="cart-table-info">
+                          <a href="{{ item.url }}" class="product-name">{{ item.product_title | upcase }}</a>
+                          {% if item.variant_title %}
+                            <span class="product-variant">{{ item.variant_title }}</span>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </td>
+                    <td class="cart-table-price">{{ item.price | money }}</td>
+                    <td>
+                      <div class="cart-table-qty">
+                        <input type="number"
+                               name="updates[]"
+                               id="updates_{{ item.key }}"
+                               value="{{ item.quantity }}"
+                               min="0"
+                               aria-label="Aantal van {{ item.product_title | escape }}"
+                               style="width:52px; text-align:center; border:1px solid #e5e5e5; padding:0.4rem;">
+                      </div>
+                    </td>
+                    <td class="cart-table-total">{{ item.final_line_price | money }}</td>
+                    <td>
+                      <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
+                         class="cart-remove"
+                         aria-label="{{ item.product_title | escape }} verwijderen">Verwijderen</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.25rem;">
+              <button type="submit" name="update" class="btn btn--outline">Bijwerken</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="cart-summary">
+          <h2 class="cart-summary__title">Overzicht</h2>
+          {% if cart.cart_level_discount_applications.size > 0 %}
+            {% for discount in cart.cart_level_discount_applications %}
+              <div class="cart-summary__line">
+                <span>{{ discount.title }}</span>
+                <span style="color:#e53935;">-{{ discount.total_allocated_amount | money }}</span>
+              </div>
+            {% endfor %}
+          {% endif %}
+          <div class="cart-summary__line">
+            <span>Verzending</span>
+            <span>Berekend bij afrekenen</span>
+          </div>
+          <div class="cart-summary__total">
+            <span>Totaal</span>
+            <span class="cart-summary__total-price">{{ cart.total_price | money }}</span>
+          </div>
+          <p class="cart-summary__note">Btw inbegrepen. Verzending berekend bij afrekenen.</p>
+          <a href="/checkout" class="btn btn--primary btn--full">Afrekenen</a>
+          <a href="/collections/all" class="btn btn--outline btn--full" style="margin-top:0.5rem;">Verder winkelen</a>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</div>

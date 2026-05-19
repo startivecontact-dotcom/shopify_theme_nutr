@@ -1,0 +1,136 @@
+{
+  "general": {
+    "password_page": {
+      "login_form_heading": "Voer het wachtwoord in",
+      "login_form_password_label": "Wachtwoord",
+      "login_form_password_placeholder": "Je wachtwoord",
+      "login_form_submit": "Inloggen",
+      "signup_button_text": "Aanmelden"
+    },
+    "meta": {
+      "tags": "Getagd met",
+      "page": "Pagina"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "In winkelwagen",
+      "sold_out": "Uitverkocht",
+      "unavailable": "Niet beschikbaar",
+      "on_sale": "Sale",
+      "quantity": {
+        "label": "Aantal"
+      }
+    },
+    "general": {
+      "from": "Vanaf"
+    }
+  },
+  "sections": {
+    "cart": {
+      "cart_error": "Er is een fout opgetreden.",
+      "cart_quantity_error_html": "Je kunt maximaal [quantity] van dit product bestellen."
+    },
+    "header": {
+      "cart_count": {
+        "one": "1 artikel",
+        "other": "{{ count }} artikelen"
+      }
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "Naar inhoud gaan",
+    "close": "Sluiten",
+    "next": "Volgende",
+    "previous": "Vorige"
+  },
+  "blogs": {
+    "article": {
+      "written_by": "Geschreven door",
+      "read_more": "Lees meer",
+      "back_to_blog": "Terug naar blog"
+    },
+    "comments": {
+      "title": "Reacties",
+      "moderated": "Reacties worden gemodereerd.",
+      "success_moderated": "Je reactie is succesvol geplaatst.",
+      "success": "Bedankt voor je reactie.",
+      "author": "Naam",
+      "email": "E-mail",
+      "message": "Reactie",
+      "post": "Plaatsen"
+    }
+  },
+  "cart": {
+    "title": "Winkelwagen",
+    "empty": "Je winkelwagen is leeg.",
+    "note": "Opmerkingen voor de bestelling",
+    "estimated_total": "Geschat totaal",
+    "subtotal": "Subtotaal",
+    "savings": "Je bespaart",
+    "checkout": "Afrekenen",
+    "continue_shopping": "Verder winkelen",
+    "remove": "Verwijderen",
+    "update": "Bijwerken",
+    "taxes_and_shipping_policy_at_checkout_html": "Btw en verzendkosten worden berekend bij afrekenen."
+  },
+  "customer": {
+    "login": {
+      "title": "Inloggen",
+      "desc": "Heb je al een account? Log hieronder in.",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "submit": "Inloggen",
+      "forgot_password": "Wachtwoord vergeten?",
+      "sign_up": "Account aanmaken",
+      "cancel": "Annuleren",
+      "guest": "Doorgaan als gast"
+    },
+    "register": {
+      "title": "Account aanmaken",
+      "first_name": "Voornaam",
+      "last_name": "Achternaam",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "submit": "Aanmaken"
+    },
+    "account": {
+      "title": "Mijn account",
+      "orders": "Bestellingen",
+      "details": "Accountgegevens",
+      "logout": "Uitloggen"
+    },
+    "orders": {
+      "title": "Bestelgeschiedenis",
+      "order_number": "Bestelnummer",
+      "date": "Datum",
+      "payment_status": "Betaalstatus",
+      "fulfillment_status": "Verzendstatus",
+      "total": "Totaal",
+      "none": "Je hebt nog geen bestellingen geplaatst."
+    },
+    "addresses": {
+      "title": "Adressen",
+      "default": "Standaard",
+      "add_new": "Nieuw adres toevoegen",
+      "edit_address": "Adres bewerken",
+      "first_name": "Voornaam",
+      "last_name": "Achternaam",
+      "company": "Bedrijf",
+      "address1": "Adres 1",
+      "address2": "Adres 2",
+      "city": "Stad",
+      "country": "Land",
+      "province": "Provincie",
+      "zip": "Postcode",
+      "phone": "Telefoonnummer",
+      "set_default": "Instellen als standaard",
+      "add": "Adres toevoegen",
+      "update": "Adres bijwerken",
+      "cancel": "Annuleren",
+      "edit": "Bewerken",
+      "delete": "Verwijderen",
+      "delete_confirm": "Weet je zeker dat je dit adres wilt verwijderen?"
+    }
+  }
+}

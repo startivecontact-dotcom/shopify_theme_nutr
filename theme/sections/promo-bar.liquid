@@ -1,0 +1,73 @@
+{% comment %}
+  MB Nutrition — Bundle Banner Section
+  Full width black bg, athlete image (b&w), centered text overlay
+  "Nu extra scherp geprijsd" + shop bundles CTA
+{% endcomment %}
+
+<section class="bundle-banner" id="bundle-banner" aria-labelledby="bundle-title">
+
+  <div class="bundle-banner__bg">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1920 }}"
+        alt="{{ section.settings.image.alt | default: 'MB Nutrition bundles' }}"
+        loading="lazy">
+    {%- else -%}
+      <div class="bundle-banner__bg-placeholder"></div>
+    {%- endif -%}
+  </div>
+
+  <div class="bundle-banner__content">
+    <div class="bundle-banner__tag">
+      {{ section.settings.tag | default: 'BUNDLES' }}
+    </div>
+    <h2 class="bundle-banner__title" id="bundle-title">
+      {{ section.settings.heading | default: 'Nu extra scherp geprijsd' }}
+    </h2>
+    <a href="{{ section.settings.cta_url | default: '/collections/bundles' }}" class="btn btn--outline-white btn--sm">
+      {{ section.settings.cta_label | default: 'SHOP ALLE BUNDLES' }}
+    </a>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Bundle banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Achtergrond afbeelding (athlete)"
+    },
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Tag label",
+      "default": "BUNDLES"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Koptekst",
+      "default": "Nu extra scherp geprijsd"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Knoptekst",
+      "default": "SHOP ALLE BUNDLES"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Knop link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle banner"
+    }
+  ]
+}
+{% endschema %}

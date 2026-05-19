@@ -1,0 +1,219 @@
+{
+  "general": {
+    "search": {
+      "title": "Recherche",
+      "placeholder": "Rechercher des produits...",
+      "results_with_count": {
+        "one": "{{ count }} résultat pour \"{{ terms }}\"",
+        "other": "{{ count }} résultats pour \"{{ terms }}\""
+      },
+      "no_results": "Aucun résultat pour \"{{ terms }}\""
+    },
+    "newsletter": {
+      "label": "S'inscrire à la newsletter"
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "Passer au contenu principal",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "search": "Recherche"
+  },
+  "layout": {
+    "cart": {
+      "title": "Panier",
+      "empty": "Votre panier est vide",
+      "note": "Note sur la commande"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Ajouter au panier",
+      "sold_out": "Rupture de stock",
+      "unavailable": "Non disponible",
+      "on_sale": "Promo",
+      "description": "Description",
+      "quantity": "Quantité",
+      "quantity_minimum": "Quantité minimum : {{ minimum }}",
+      "vendor": "Fournisseur",
+      "see_all": "Voir tous les produits",
+      "quantity_not_available": "{{ quantity }} non disponible",
+      "view_full_details": "Voir tous les détails"
+    },
+    "general": {
+      "sale_badge_html": "Promo",
+      "new_badge_html": "Nouveau"
+    }
+  },
+  "sections": {
+    "header": {
+      "menu": "Menu",
+      "search": "Recherche",
+      "account": "Mon compte",
+      "cart": "Panier"
+    },
+    "cart": {
+      "title": "Votre panier",
+      "subtotal": "Sous-total",
+      "taxes_and_shipping_policy_at_checkout_html": "Taxes incluses et <a href=\"{{ link }}\">frais de livraison</a> calculés à la caisse",
+      "empty": "Votre panier est vide.",
+      "cart_error": "Impossible de mettre à jour votre panier pour le moment. Veuillez réessayer.",
+      "cart_quantity_error_html": "Vous ne pouvez ajouter que {{ quantity }} article(s) à votre panier.",
+      "update": "Mettre à jour",
+      "checkout": "Passer à la caisse",
+      "clear": "Vider le panier",
+      "remove": "Supprimer",
+      "item_singular": "article",
+      "item_plural": "articles"
+    },
+    "footer": {
+      "copyright": "© {{ year }} {{ shop_name }}. Tous droits réservés.",
+      "navigation": "Navigation",
+      "categories": "Catégories",
+      "help": "Aide",
+      "social": "Réseaux sociaux"
+    },
+    "contact_form": {
+      "name": "Nom",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "message": "Message",
+      "submit": "Envoyer",
+      "post_success": "Merci de nous avoir contactés. Nous vous répondrons dès que possible."
+    }
+  },
+  "customers": {
+    "login": {
+      "title": "Connexion",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "forgot_password": "Mot de passe oublié ?",
+      "submit": "Se connecter",
+      "guest_title": "Continuer en tant qu'invité",
+      "guest_paragraph": "Continuez sans créer de compte",
+      "sign_in": "Se connecter",
+      "create_account": "Créer un compte"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "submit": "Créer mon compte"
+    },
+    "account": {
+      "title": "Mon compte",
+      "details": "Détails du compte",
+      "orders": "Mes commandes",
+      "logout": "Se déconnecter",
+      "default_address": "Adresse par défaut",
+      "no_orders": "Vous n'avez pas encore passé de commande."
+    },
+    "orders": {
+      "title": "Historique des commandes",
+      "order_number": "Numéro",
+      "date": "Date",
+      "payment_status": "Statut",
+      "fulfillment_status": "Livraison",
+      "total": "Total",
+      "details": "Voir les détails",
+      "none": "Vous n'avez pas encore passé de commande."
+    },
+    "addresses": {
+      "title": "Mes adresses",
+      "default": "Adresse par défaut",
+      "add_new": "Ajouter une nouvelle adresse",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "delete_confirm": "Supprimer cette adresse ?",
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "company": "Entreprise",
+      "address1": "Adresse",
+      "address2": "Appartement, suite, etc. (optionnel)",
+      "city": "Ville",
+      "country": "Pays",
+      "province": "Province",
+      "zip": "Code postal",
+      "phone": "Téléphone",
+      "set_default": "Définir comme adresse par défaut",
+      "cancel": "Annuler",
+      "update": "Mettre à jour",
+      "add": "Ajouter l'adresse"
+    },
+    "recover_password": {
+      "title": "Réinitialiser le mot de passe",
+      "subtext": "Entrez votre e-mail pour recevoir un lien de réinitialisation.",
+      "email": "E-mail",
+      "submit": "Envoyer le lien",
+      "cancel": "Annuler",
+      "success": "Un e-mail de réinitialisation vous a été envoyé."
+    }
+  },
+  "blogs": {
+    "article": {
+      "back_to_blog": "Retour au blog",
+      "read_more": "Lire la suite",
+      "share": "Partager"
+    },
+    "comments": {
+      "title": "Commentaires",
+      "name": "Nom",
+      "email": "E-mail",
+      "message": "Commentaire",
+      "post": "Publier",
+      "moderated": "Ce blog est modéré. Votre commentaire sera visible après validation."
+    }
+  },
+  "collections": {
+    "general": {
+      "title": "Collections",
+      "items_with_count": {
+        "one": "{{ count }} produit",
+        "other": "{{ count }} produits"
+      },
+      "filter": "Filtrer",
+      "sort_by": "Trier par",
+      "sort": {
+        "title": "Trier par",
+        "manual": "En vedette",
+        "best-selling": "Meilleures ventes",
+        "title-ascending": "A → Z",
+        "title-descending": "Z → A",
+        "price-ascending": "Prix : croissant",
+        "price-descending": "Prix : décroissant",
+        "created-ascending": "Le plus ancien",
+        "created-descending": "Le plus récent"
+      },
+      "no_products": "Aucun produit trouvé.",
+      "clear_all": "Effacer les filtres",
+      "from_price_html": "Dès {{ price }}",
+      "label_availability": "Disponibilité",
+      "label_in_stock": "En stock",
+      "label_out_of_stock": "Rupture de stock"
+    }
+  },
+  "404": {
+    "title": "Page introuvable",
+    "subtext": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "link": "Retour à l'accueil"
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Votre carte cadeau MB Nutrition",
+      "subtext": "Félicitations ! Votre carte cadeau est disponible.",
+      "gift_card_code": "Code de la carte cadeau",
+      "shop_link": "Commencer mes achats",
+      "expiry_date": "Expire le {{ expiry }}"
+    }
+  },
+  "payment_methods": {
+    "title": "Moyens de paiement acceptés"
+  },
+  "shipping": {
+    "free": "Livraison gratuite",
+    "free_threshold": "Livraison gratuite dès {{ threshold }}",
+    "calculated": "Calculée à la commande"
+  }
+}

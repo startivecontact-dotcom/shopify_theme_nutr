@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0">
-  <meta name="theme-color" content="#0a0a0a">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
 
   <title>
     {{ page_title }}
     {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}
-    {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}
+    {%- if current_page != 1 %} &ndash; Pagina {{ current_page }}{% endif %}
     {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
   </title>
 
   {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}">
   {% else %}
-    <meta name="description" content="{{ shop.description | default: 'MB Nutrition - Suppléments premium pour des performances maximales. Protéines, créatine, brûleurs de graisse et plus.' | escape }}">
+    <meta name="description" content="{{ shop.description | default: 'MB Nutrition - Premium supplementen voor maximale prestaties.' | escape }}">
   {% endif %}
 
   <link rel="canonical" href="{{ canonical_url }}">
@@ -25,44 +25,36 @@
     <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
   {% endif %}
 
-  <!-- Open Graph -->
   <meta property="og:title" content="{{ page_title | default: shop.name | escape }}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ canonical_url }}">
   <meta property="og:site_name" content="{{ shop.name }}">
-  {% if page_description %}
-    <meta property="og:description" content="{{ page_description | escape }}">
-  {% endif %}
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Theme CSS -->
   {{ 'theme.css' | asset_url | stylesheet_tag }}
 
   <style>
     :root {
-      --color-bg: {{ settings.color_bg | default: '#0a0a0a' }};
-      --color-bg-secondary: {{ settings.color_bg_secondary | default: '#111111' }};
-      --color-bg-card: {{ settings.color_bg_card | default: '#1a1a1a' }};
-      --color-accent: {{ settings.color_accent | default: '#e63000' }};
-      --color-accent-hover: #cc2900;
-      --color-accent-secondary: {{ settings.color_secondary | default: '#f5a623' }};
-      --color-text: {{ settings.color_text | default: '#ffffff' }};
-      --color-text-subdued: {{ settings.color_text_subdued | default: '#aaaaaa' }};
-      --color-border: {{ settings.color_border | default: '#2a2a2a' }};
-      --color-border-light: #333333;
-      --font-heading: 'Bebas Neue', sans-serif;
+      --color-bg: #ffffff;
+      --color-bg-light: #f5f5f5;
+      --color-bg-dark: #1a1a1a;
+      --color-bg-darker: #111111;
+      --color-accent: #C8A84B;
+      --color-accent-hover: #b5943a;
+      --color-text: #1a1a1a;
+      --color-text-light: #ffffff;
+      --color-text-muted: #777777;
+      --color-border: #e5e5e5;
+      --color-border-dark: #2a2a2a;
       --font-body: 'Inter', sans-serif;
-      --header-height: 80px;
-      --announcement-height: 44px;
-      --border-radius: 4px;
-      --border-radius-lg: 8px;
-      --transition: 0.25s ease;
-      --shadow: 0 4px 24px rgba(0,0,0,0.5);
-      --shadow-accent: 0 4px 24px rgba(230,48,0,0.3);
+      --header-height: 64px;
+      --announcement-height: 38px;
+      --border-radius: 3px;
+      --transition: 0.2s ease;
+      --shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
   </style>
 
@@ -71,47 +63,26 @@
 
 <body class="template-{{ template.name }} {% if customer %}customer-logged-in{% endif %}">
 
-  <!-- Skip to content -->
-  <a class="skip-to-content" href="#MainContent">{{ 'accessibility.skip_to_text' | t }}</a>
+  <a class="skip-to-content" href="#MainContent">Skip to content</a>
 
-  <!-- Cart Drawer -->
   {% render 'cart-drawer' %}
+  <div class="overlay" id="Overlay" aria-hidden="true"></div>
 
-  <!-- Cart Overlay -->
-  <div class="cart-overlay" id="CartOverlay" aria-hidden="true"></div>
-
-  <!-- Mobile Menu Overlay -->
-  <div class="menu-overlay" id="MenuOverlay" aria-hidden="true"></div>
-
-  <!-- Header -->
   {% section 'header' %}
 
-  <!-- Main Content -->
   <main id="MainContent" class="main-content" role="main" tabindex="-1">
     {{ content_for_layout }}
   </main>
 
-  <!-- Footer -->
   {% section 'footer' %}
 
-  <!-- Shopify global config -->
   <script>
     window.shopUrl = '{{ shop.url }}';
     window.routes = {
       cart_add_url: '{{ routes.cart_add_url }}',
       cart_change_url: '{{ routes.cart_change_url }}',
       cart_update_url: '{{ routes.cart_update_url }}',
-      cart_url: '{{ routes.cart_url }}',
-      predictive_search_url: '{{ routes.predictive_search_url }}'
-    };
-    window.cartStrings = {
-      error: "{{ 'sections.cart.cart_error' | t | escape }}",
-      quantityError: "{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' | escape }}"
-    };
-    window.variantStrings = {
-      addToCart: "{{ 'products.product.add_to_cart' | t | escape }}",
-      soldOut: "{{ 'products.product.sold_out' | t | escape }}",
-      unavailable: "{{ 'products.product.unavailable' | t | escape }}"
+      cart_url: '{{ routes.cart_url }}'
     };
     window.theme = {
       moneyFormat: {{ shop.money_format | json }},
@@ -119,19 +90,7 @@
     };
   </script>
 
-  <!-- Theme JS -->
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": {{ shop.name | json }},
-    "url": {{ shop.url | json }},
-    "description": {{ shop.description | json }}
-  }
-  </script>
 
 </body>
 </html>

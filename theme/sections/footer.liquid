@@ -1,0 +1,129 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer__main">
+
+      <!-- Brand / Address -->
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+            {% if section.settings.logo %}
+              <img src="{{ section.settings.logo | image_url: width: 200 }}"
+                   alt="{{ shop.name }}" width="160" height="40" loading="lazy">
+            {% else %}
+              <span class="logo-text">
+                <span class="logo-bars">&#x2016;</span>MB NUTRITION<span class="logo-bars">&#x2016;</span>
+              </span>
+            {% endif %}
+          </a>
+        </div>
+        <div class="footer__address">
+          <strong>MB Nutrition</strong>
+          Nikkelstraat 21<br>
+          4823 AE, Breda<br>
+          Nederland
+        </div>
+        <div class="footer__social">
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+          {% else %}
+            <a href="#" aria-label="Instagram">Instagram</a>
+          {% endif %}
+          {% if section.settings.facebook_url != blank %}
+            <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+          {% else %}
+            <a href="#" aria-label="Facebook">Facebook</a>
+          {% endif %}
+          <a href="#" aria-label="TikTok">TikTok</a>
+        </div>
+      </div>
+
+      <!-- Navigatie -->
+      <div class="footer__col">
+        <h4>Navigatie</h4>
+        <ul class="footer__links">
+          <li><a href="{{ routes.root_url }}">Home</a></li>
+          <li><a href="{{ routes.collections_url }}">Shop</a></li>
+          <li><a href="/collections/bundles">Combideals</a></li>
+          <li><a href="/collections/new">Nieuwe producten</a></li>
+          <li><a href="/collections/sale">Sale</a></li>
+          <li><a href="/blogs/news">Kennisbank</a></li>
+          <li><a href="/pages/caloriebehoefte">Caloriebehoefte</a></li>
+        </ul>
+      </div>
+
+      <!-- Klantenservice -->
+      <div class="footer__col">
+        <h4>Klantenservice</h4>
+        <ul class="footer__links">
+          <li><a href="{{ routes.account_url }}">Mijn account</a></li>
+          <li><a href="/account/orders">Bestellingen</a></li>
+          <li><a href="/pages/contact">Contact</a></li>
+          <li><a href="/pages/retourneren">Retourneren</a></li>
+          <li><a href="/pages/verzending">Verzending</a></li>
+          <li><a href="/pages/veelgestelde-vragen">FAQ</a></li>
+          <li><a href="/pages/privacybeleid">Privacybeleid</a></li>
+        </ul>
+      </div>
+
+      <!-- Nieuwsbrief -->
+      <div class="footer__col">
+        <h4>Nieuwsbrief</h4>
+        <p class="footer__newsletter-label">Blijf op de hoogte van nieuws en acties.</p>
+        {% form 'customer', class: 'footer-newsletter-form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="footer__newsletter-form">
+            <input type="email"
+                   name="contact[email]"
+                   id="FooterEmail"
+                   class="footer__newsletter-input"
+                   placeholder="Vul hier je email in..."
+                   required
+                   aria-label="E-mailadres nieuwsbrief">
+            <button type="submit" class="footer__newsletter-btn">OK</button>
+          </div>
+        {% endform %}
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">&copy; {{ 'now' | date: '%Y' }} MB Nutrition. Alle rechten voorbehouden.</p>
+      <div class="footer__payments">
+        <span class="payment-badge">VISA</span>
+        <span class="payment-badge">MC</span>
+        <span class="payment-badge">IDEAL</span>
+        <span class="payment-badge">KLARNA</span>
+        <span class="payment-badge">PAYPAL</span>
+        <span class="payment-badge">BANCONTACT</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo in footer"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    }
+  ]
+}
+{% endschema %}

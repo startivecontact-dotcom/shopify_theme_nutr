@@ -1,0 +1,95 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-card__logo">
+      <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+        <span class="logo-text"><span>MB</span> NUTRITION</span>
+      </a>
+    </div>
+
+    <h1 class="auth-card__title">CRÉER UN COMPTE</h1>
+    <p class="auth-card__sub">Rejoignez la communauté MB Nutrition et profitez d'avantages exclusifs.</p>
+
+    {% form 'create_customer' %}
+      {% if form.errors %}
+        <div style="background:rgba(230,48,0,0.1);border:1px solid var(--color-accent);border-radius:var(--border-radius);padding:1rem;margin-bottom:1.25rem;">
+          <p style="color:var(--color-accent);font-size:0.9rem;margin:0;">
+            {{ form.errors | default_errors }}
+          </p>
+        </div>
+      {% endif %}
+
+      <div class="grid-2" style="gap:1rem;">
+        <div class="form-group">
+          <label class="form-label" for="FirstName">Prénom</label>
+          <input type="text"
+                 name="customer[first_name]"
+                 id="FirstName"
+                 class="form-input"
+                 value="{{ form.first_name }}"
+                 autocomplete="given-name"
+                 placeholder="Jean"
+                 required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="LastName">Nom</label>
+          <input type="text"
+                 name="customer[last_name]"
+                 id="LastName"
+                 class="form-input"
+                 value="{{ form.last_name }}"
+                 autocomplete="family-name"
+                 placeholder="Dupont"
+                 required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="Email">E-mail</label>
+        <input type="email"
+               name="customer[email]"
+               id="Email"
+               class="form-input"
+               value="{{ form.email }}"
+               autocomplete="email"
+               placeholder="votre@email.com"
+               required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="Password">Mot de passe</label>
+        <input type="password"
+               name="customer[password]"
+               id="Password"
+               class="form-input"
+               autocomplete="new-password"
+               placeholder="Minimum 5 caractères"
+               minlength="5"
+               required>
+      </div>
+
+      <!-- Newsletter opt-in -->
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1.25rem;">
+        <input type="checkbox"
+               name="customer[accepts_marketing]"
+               id="AcceptsMarketing"
+               style="width:16px;height:16px;accent-color:var(--color-accent);">
+        <label for="AcceptsMarketing" style="font-size:0.85rem;color:var(--color-text-subdued);cursor:pointer;">
+          Je souhaite recevoir les offres et nouveautés MB Nutrition
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--full btn--lg">
+        CRÉER MON COMPTE
+      </button>
+
+      <p style="font-size:0.78rem;color:var(--color-text-subdued);text-align:center;margin-top:1rem;">
+        En créant un compte, vous acceptez nos <a href="/policies/terms-of-service" style="color:var(--color-accent);">CGV</a> et notre <a href="/policies/privacy-policy" style="color:var(--color-accent);">politique de confidentialité</a>.
+      </p>
+    {% endform %}
+
+    <div class="auth-card__footer">
+      <p>Déjà un compte ? <a href="{{ routes.account_login_url }}">Se connecter</a></p>
+      <p style="margin-top:0.5rem;"><a href="{{ routes.root_url }}" style="color:var(--color-text-subdued);">← Retour à la boutique</a></p>
+    </div>
+  </div>
+</div>

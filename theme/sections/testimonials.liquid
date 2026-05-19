@@ -1,0 +1,110 @@
+{% comment %}
+  MB Nutrition — Shop By Goal Grid Section
+  2x2 grid with black & white images and centered text overlay
+  Replaces old testimonials section (now reused as shop-by-goal)
+{% endcomment %}
+
+<section class="shop-goal" id="shop-by-goal" aria-labelledby="goal-section-title">
+  <div class="container">
+    <div class="shop-goal__header">
+      <p class="shop-goal__label">{{ section.settings.label | default: 'SHOP OP DOEL' }}</p>
+      <h2 class="shop-goal__title" id="goal-section-title">{{ section.settings.heading | default: 'WAT IS JOUW DOEL?' }}</h2>
+    </div>
+  </div>
+
+  <div class="shop-goal__grid">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'goal' -%}
+        <a href="{{ block.settings.link | default: '#' }}" class="goal-cell" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.title }}" loading="lazy">
+          {%- else -%}
+            <div class="goal-cell__placeholder"></div>
+          {%- endif -%}
+          <div class="goal-cell__overlay" aria-hidden="true"></div>
+          <div class="goal-cell__content">
+            <h3 class="goal-cell__title">{{ block.settings.title }}</h3>
+            <span class="goal-cell__btn">{{ block.settings.cta | default: 'Shop nu' }}</span>
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if section.blocks.size == 0 -%}
+      <a href="/collections/afvallen" class="goal-cell">
+        <div class="goal-cell__placeholder"></div>
+        <div class="goal-cell__overlay"></div>
+        <div class="goal-cell__content"><h3 class="goal-cell__title">Afvallen</h3><span class="goal-cell__btn">Shop nu</span></div>
+      </a>
+      <a href="/collections/spieropbouw" class="goal-cell">
+        <div class="goal-cell__placeholder"></div>
+        <div class="goal-cell__overlay"></div>
+        <div class="goal-cell__content"><h3 class="goal-cell__title">Spieropbouw</h3><span class="goal-cell__btn">Shop nu</span></div>
+      </a>
+      <a href="/collections/lifestyle" class="goal-cell">
+        <div class="goal-cell__placeholder"></div>
+        <div class="goal-cell__overlay"></div>
+        <div class="goal-cell__content"><h3 class="goal-cell__title">Lifestyle</h3><span class="goal-cell__btn">Shop nu</span></div>
+      </a>
+      <a href="/collections/stamina" class="goal-cell">
+        <div class="goal-cell__placeholder"></div>
+        <div class="goal-cell__overlay"></div>
+        <div class="goal-cell__content"><h3 class="goal-cell__title">Stamina</h3><span class="goal-cell__btn">Shop nu</span></div>
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop op doel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Klein label",
+      "default": "SHOP OP DOEL"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Koptekst",
+      "default": "WAT IS JOUW DOEL?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "goal",
+      "name": "Doel",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Afbeelding"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Afvallen"
+        },
+        {
+          "type": "text",
+          "id": "cta",
+          "label": "Knoptekst",
+          "default": "Shop nu"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop op doel"
+    }
+  ]
+}
+{% endschema %}
