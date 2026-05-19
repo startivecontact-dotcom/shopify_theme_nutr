@@ -1,4 +1,6 @@
 <div class="product-card">
+  <a href="{{ product.url }}" class="product-card__full-link" aria-label="{{ product.title | escape | append: ' — voir le produit' }}"></a>
+
   <a href="{{ product.url }}" class="product-card__image-wrap" tabindex="-1" aria-hidden="true">
     {% if product.featured_image %}
       <img src="{{ product.featured_image | image_url: width: 600 }}"
@@ -15,14 +17,14 @@
       <span class="product-card__badge product-card__badge--new">Nouveau</span>
     {% endif %}
   </a>
+
   <div class="product-card__body">
     <h3 class="product-card__title">
       <a href="{{ product.url }}">{{ product.title | upcase }}</a>
     </h3>
     <div class="product-card__price {% if product.compare_at_price > product.price %}product-card__price--sale{% endif %}">
       {% if product.compare_at_price > product.price %}
-        {{ product.price | money }}
-        <s>{{ product.compare_at_price | money }}</s>
+        {{ product.price | money }}<s>{{ product.compare_at_price | money }}</s>
       {% else %}
         {{ product.price | money }}
       {% endif %}

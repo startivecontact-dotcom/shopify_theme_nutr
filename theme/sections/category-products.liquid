@@ -24,8 +24,10 @@
         {% if p and p != empty %}
           {% render 'product-card', product: p %}
         {% elsif block.settings.product_image_url != blank %}
+          {% assign card_url = block.settings.product_url | default: '/collections/all' %}
           <div class="product-card" {{ block.shopify_attributes }}>
-            <a href="{{ block.settings.product_url | default: '#' }}" class="product-card__image-wrap">
+            <a href="{{ card_url }}" class="product-card__full-link" aria-label="{{ block.settings.product_title | escape }}"></a>
+            <a href="{{ card_url }}" class="product-card__image-wrap" tabindex="-1" aria-hidden="true">
               <img src="{{ block.settings.product_image_url }}"
                    alt="{{ block.settings.product_title | escape }}"
                    loading="lazy" width="600" height="600">
@@ -37,7 +39,7 @@
             </a>
             <div class="product-card__body">
               <h3 class="product-card__title">
-                <a href="{{ block.settings.product_url | default: '#' }}">{{ block.settings.product_title }}</a>
+                <a href="{{ card_url }}">{{ block.settings.product_title | upcase }}</a>
               </h3>
               <div class="product-card__price {% if block.settings.product_compare_price != blank %}product-card__price--sale{% endif %}">
                 {{ block.settings.product_price }}
@@ -45,8 +47,8 @@
                   <s>{{ block.settings.product_compare_price }}</s>
                 {% endif %}
               </div>
-              <a href="{{ block.settings.product_url | default: '#' }}" class="product-card__atc">
-                Voir le produit
+              <a href="{{ card_url }}" class="product-card__atc" style="position:relative;z-index:2;">
+                Voir le produit →
               </a>
             </div>
           </div>
