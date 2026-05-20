@@ -1,0 +1,52 @@
+<section class="mb-shop-by-goal page-width">
+  <div class="mb-shop-by-goal__inner">
+    {% if section.settings.heading != blank %}
+      <h2 class="mb-shop-by-goal__title">{{ section.settings.heading }}</h2>
+    {% endif %}
+    <div class="mb-goal-grid">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.link | default: '/collections/all' }}" class="mb-goal-card" {{ block.shopify_attributes }}>
+          {% if block.settings.image %}
+            <img src="{{ block.settings.image | image_url: width: 900 }}" alt="{{ block.settings.title | escape }}" loading="lazy" width="900" height="1100">
+          {% elsif block.settings.image_url != blank %}
+            <img src="{{ block.settings.image_url }}" alt="{{ block.settings.title | escape }}" loading="lazy" width="900" height="1100">
+          {% endif %}
+          <div class="mb-goal-card__inner">
+            {% if block.settings.count != blank %}
+              <span class="mb-goal-card__count">{{ block.settings.count }}</span>
+            {% endif %}
+            <h3 class="mb-goal-card__title">{{ block.settings.title }}</h3>
+            <span class="mb-goal-card__btn">{{ block.settings.button_text | default: 'DÉCOUVRIR' }}</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MB — Par objectif",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre", "default": "PAR OBJECTIF" }
+  ],
+  "blocks": [
+    {
+      "type": "goal",
+      "name": "Objectif",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (upload)" },
+        { "type": "text", "id": "image_url", "label": "URL image CDN" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Perte de poids" },
+        { "type": "text", "id": "count", "label": "Nb produits" },
+        { "type": "text", "id": "button_text", "label": "Bouton", "default": "DÉCOUVRIR" },
+        { "type": "url", "id": "link", "label": "Lien" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "MB — Par objectif" }]
+}
+{% endschema %}

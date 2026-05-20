@@ -1,0 +1,130 @@
+<section class="mb-bestsellers page-width" id="MbBestsellers-{{ section.id }}">
+
+  <div class="mb-bestsellers__header">
+    <div>
+      <p class="mb-bestsellers__label">{{ section.settings.label | default: 'DÉCOUVREZ NOS MEILLEURES VENTES' }}</p>
+      <h2 class="mb-bestsellers__title">{{ section.settings.title | default: 'MB NUTRITION' }}</h2>
+    </div>
+    <div class="mb-bestsellers__nav">
+      <a href="{{ section.settings.view_all_link | default: '/collections/all' }}" class="mb-bestsellers__link">Voir tous les produits &rarr;</a>
+      <button class="mb-carousel-btn" id="MbCarouselPrev-{{ section.id }}" aria-label="Précédent">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button class="mb-carousel-btn" id="MbCarouselNext-{{ section.id }}" aria-label="Suivant">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mb-bestsellers__track-wrap">
+    <div class="mb-bestsellers__track" id="MbCarouselTrack-{{ section.id }}">
+      {% for block in section.blocks %}
+        {% assign p = all_products[block.settings.product_handle] %}
+        {% if p and p != empty %}
+          <div class="mb-product-card" {{ block.shopify_attributes }}>
+            <a href="{{ p.url }}" class="mb-product-card__full-link" aria-label="{{ p.title | escape }}"></a>
+            <a href="{{ p.url }}" class="mb-product-card__image-wrap" tabindex="-1" aria-hidden="true">
+              {% if p.featured_image %}
+                <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.title | escape }}" loading="lazy" width="600" height="600">
+              {% endif %}
+              {% if p.available == false %}<span class="mb-product-card__badge" style="background:#999">Épuisé</span>
+              {% elsif p.compare_at_price > p.price %}<span class="mb-product-card__badge">Soldes</span>{% endif %}
+            </a>
+            <div class="mb-product-card__body">
+              <h3 class="mb-product-card__title"><a href="{{ p.url }}">{{ p.title | upcase }}</a></h3>
+              <div class="mb-product-card__price {% if p.compare_at_price > p.price %}mb-product-card__price--sale{% endif %}">
+                {{ p.price | money }}{% if p.compare_at_price > p.price %}<s>{{ p.compare_at_price | money }}</s>{% endif %}
+              </div>
+              {% if p.available %}
+                <button class="mb-product-card__atc" data-product-id="{{ p.variants.first.id }}">Ajouter au panier</button>
+              {% else %}
+                <button class="mb-product-card__atc" disabled style="background:#ccc;cursor:not-allowed">Rupture de stock</button>
+              {% endif %}
+            </div>
+          </div>
+        {% else %}
+          {% assign card_url = block.settings.product_url | default: '/collections/all' %}
+          <div class="mb-product-card" {{ block.shopify_attributes }}>
+            <a href="{{ card_url }}" class="mb-product-card__full-link" aria-label="{{ block.settings.product_title | escape }}"></a>
+            <a href="{{ card_url }}" class="mb-product-card__image-wrap" tabindex="-1" aria-hidden="true">
+              {% if block.settings.product_image_url != blank %}
+                <img src="{{ block.settings.product_image_url }}" alt="{{ block.settings.product_title | escape }}" loading="lazy" width="600" height="600">
+              {% endif %}
+              {% if block.settings.product_badge != blank %}
+                <span class="mb-product-card__badge {% if block.settings.product_badge == 'NOUVEAU' %}mb-product-card__badge--new{% endif %}">{{ block.settings.product_badge }}</span>
+              {% endif %}
+            </a>
+            <div class="mb-product-card__body">
+              <h3 class="mb-product-card__title"><a href="{{ card_url }}">{{ block.settings.product_title | upcase }}</a></h3>
+              <div class="mb-product-card__price {% if block.settings.product_compare_price != blank %}mb-product-card__price--sale{% endif %}">
+                {{ block.settings.product_price }}{% if block.settings.product_compare_price != blank %}<s>{{ block.settings.product_compare_price }}</s>{% endif %}
+              </div>
+              <a href="{{ card_url }}" class="mb-product-card__atc" style="position:relative;z-index:2">Voir le produit &rarr;</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+</section>
+
+<script>
+(function(){
+  var el = document.getElementById('MbBestsellers-{{ section.id }}');
+  if (!el) return;
+  var track = el.querySelector('#MbCarouselTrack-{{ section.id }}');
+  var prev = el.querySelector('#MbCarouselPrev-{{ section.id }}');
+  var next = el.querySelector('#MbCarouselNext-{{ section.id }}');
+  var cur = 0;
+  function vis(){ return window.innerWidth < 600 ? 1 : window.innerWidth < 1024 ? 2 : 4; }
+  function upd(){
+    var max = Math.max(0, track.children.length - vis());
+    cur = Math.min(Math.max(cur,0), max);
+    var w = track.children[0] ? track.children[0].offsetWidth + 20 : 0;
+    track.style.transform = 'translateX(-' + (cur * w) + 'px)';
+  }
+  if (prev) prev.addEventListener('click', function(){ cur--; upd(); });
+  if (next) next.addEventListener('click', function(){ cur++; upd(); });
+  window.addEventListener('resize', upd);
+  // ATC
+  track.querySelectorAll('[data-product-id]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      var id = btn.getAttribute('data-product-id');
+      fetch('/cart/add.js', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id: id, quantity: 1}) })
+        .then(function(){ window.location.href = '/cart'; });
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "MB — Meilleures ventes",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Étiquette", "default": "DÉCOUVREZ NOS MEILLEURES VENTES" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "MB NUTRITION" },
+    { "type": "url", "id": "view_all_link", "label": "Lien voir tout" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Produit",
+      "settings": [
+        { "type": "text", "id": "product_handle", "label": "Handle Shopify" },
+        { "type": "text", "id": "product_title", "label": "Nom" },
+        { "type": "text", "id": "product_price", "label": "Prix", "default": "29,95 €" },
+        { "type": "text", "id": "product_compare_price", "label": "Prix barré" },
+        { "type": "text", "id": "product_badge", "label": "Badge" },
+        { "type": "text", "id": "product_image_url", "label": "URL image CDN" },
+        { "type": "url", "id": "product_url", "label": "Lien produit" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "MB — Meilleures ventes" }]
+}
+{% endschema %}

@@ -1,0 +1,70 @@
+/* Photo Grid Section Styles */
+.photo-grid-section {
+  padding: 30px 20px;
+  box-sizing: border-box;
+}
+
+/* Animation for photo grid items */
+.photo-item img {
+  transition: transform 0.5s ease;
+}
+
+.photo-item:hover img {
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 749px) {
+  .photo-grid-section .title {
+    font-size: 2.6rem;
+  }
+  
+  .photo-grid-section .subtitle {
+    font-size: 1rem;
+  }
+  
+  .photo-grid {
+    padding: 5px;
+  }
+}
+
+/* Hover effect for captions */
+.photo-item .photo-caption {
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.photo-item:hover .photo-caption {
+  opacity: 1;
+}
+
+/* Layout enhancements */
+.photo-grid-section .title,
+.photo-grid-section .subtitle,
+.photo-grid-section .social-views-badge {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Improve accessibility - ensure links are clearly interactive */
+.photo-item {
+  cursor: pointer;
+}
+
+.photo-link:focus {
+  outline: 2px solid var(--color-link);
+  outline-offset: -2px;
+}
+
+/* Support for high contrast mode */
+@media (forced-colors: active) {
+  .photo-item {
+    border: 2px solid CanvasText;
+  }
+  
+  .photo-caption {
+    background-color: Canvas;
+    color: CanvasText;
+  }
+} 

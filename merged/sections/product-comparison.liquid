@@ -1,0 +1,1531 @@
+{% comment %}
+  CHANGES:
+  1. Added image display above product title in the header row
+  2. Added image picker in schema settings
+  3. Added CSS styling for the product image
+  4. Added custom subtitle icons and glass effect styling
+{% endcomment %}
+
+<div
+  class="comparison-section section-{{ section.id }}"
+  style="background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.background_color }}{% endif %};"
+>
+  <div class="comparison-container">
+    {% if section.settings.show_heading %}
+      <div class="comparison-header">
+        <h2 class="comparison-heading">
+          <span
+            class="title-part-1"
+            style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.text_color }}{% endif %};"
+          >
+            {{- section.settings.title_part_1 -}}
+          </span>
+          <span
+            class="global-accent-text"
+            style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.accent_1_color }}{% endif %};"
+          >
+            {{- section.settings.title_part_2 -}}
+          </span>
+        </h2>
+        {% if section.settings.subheading != blank %}
+          <div
+            class="comparison-subheading"
+            style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.subheading_color }}{% endif %};"
+          >
+            {{ section.settings.subheading }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="table-wrapper">
+      <table class="comparison-table">
+        <!-- Header Row -->
+        <thead>
+          <tr class="table-header">
+            <th class="feature-header"></th>
+            {% for block in section.blocks %}
+              {% if block.type == 'product_column' and forloop.index <= 2 %}
+                <th
+                  class="product-header column-{{ forloop.index }} {% if block.settings.highlight_column %}highlighted{% endif %}"
+                  data-column="{{ forloop.index }}"
+                >
+                  {% if block.settings.product_image != blank %}
+                    <div class="comparison-img-wrapper">
+                      <img
+                        src="{{ block.settings.product_image | img_url: '150x' }}"
+                        alt="{{ block.settings.product_name }}"
+                        class="comparison-img column-{{ forloop.index }}-img"
+                        width="auto"
+                        height="auto"
+                        loading="lazy"
+                      >
+                    </div>
+                  {% endif %}
+                  <div
+                    class="comparison-product-title"
+                    style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{% if block.settings.highlight_column %}{{ section.settings.highlighted_text_color }}{% else %}{{ section.settings.text_color }}{% endif %}{% endif %};"
+                  >
+                    {{ block.settings.product_name }}
+                  </div>
+                  {% if block.settings.product_subtitle != blank %}
+                    <div
+                      class="product-subtitle {% if block.settings.use_subtitle_background != true %}no-background{% endif %}"
+                      style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{% if block.settings.highlight_column %}{{ section.settings.highlighted_subtitle_color }}{% else %}{{ section.settings.subtitle_color }}{% endif %}{% endif %};"
+                    >
+                      {% if block.settings.show_subtitle_icon != false %}
+                        {% if block.settings.subtitle_custom_icon != blank %}
+                          <span class="subtitle-icon">{{ block.settings.subtitle_custom_icon }}</span>
+                        {% else %}
+                          {% if block.settings.highlight_column %}
+                            <span class="subtitle-icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="16" height="16" fill="currentColor"><path d="M225.86,102.82c-3.77-3.94-7.67-8-9.14-11.57-1.36-3.27-1.44-8.69-1.52-13.94-.15-9.76-.31-20.82-8-28.51s-18.75-7.85-28.51-8c-5.25-.08-10.67-.16-13.94-1.52-3.56-1.47-7.63-5.37-11.57-9.14C146.28,23.51,138.44,16,128,16s-18.27,7.51-25.18,14.14c-3.94,3.77-8,7.67-11.57,9.14C88,40.64,82.56,40.72,77.31,40.8c-9.76.15-20.82.31-28.51,8S41,67.55,40.8,77.31c-.08,5.25-.16,10.67-1.52,13.94-1.47,3.56-5.37,7.63-9.14,11.57C23.51,109.72,16,117.56,16,128s7.51,18.27,14.14,25.18c3.77,3.94,7.67,8,9.14,11.57,1.36,3.27,1.44,8.69,1.52,13.94.15,9.76.31,20.82,8,28.51s18.75,7.85,28.51,8c5.25.08,10.67.16,13.94,1.52,3.56,1.47,7.63,5.37,11.57,9.14C109.72,232.49,117.56,240,128,240s18.27-7.51,25.18-14.14c3.94-3.77,8-7.67,11.57-9.14,3.27-1.36,8.69-1.44,13.94-1.52,9.76-.15,20.82-.31,28.51-8s7.85-18.75,8-28.51c.08-5.25.16-10.67,1.52-13.94,1.47-3.56,5.37-7.63,9.14-11.57C232.49,146.28,240,138.44,240,128S232.49,109.73,225.86,102.82Zm-52.2,6.84-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32Z"/></svg>
+                            </span>
+                          {% endif %}
+                        {% endif %}
+                      {% endif %}
+                      {{ block.settings.product_subtitle }}
+                    </div>
+                  {% endif %}
+                </th>
+              {% endif %}
+            {% endfor %}
+          </tr>
+        </thead>
+
+        <!-- Feature Rows -->
+        <tbody>
+          {% for block in section.blocks %}
+            {% if block.type == 'feature_row' %}
+              <tr class="feature-row">
+                <td class="feature-cell">
+                  <div class="feature-content">
+                    {% if block.settings.show_icon %}
+                      {% if block.settings.feature_image != blank %}
+                        <div class="feature-icon">
+                          <img
+                            src="{{ block.settings.feature_image | img_url: '48x' }}"
+                            alt="{{ block.settings.feature_name }}"
+                            width="24"
+                            height="24"
+                          >
+                        </div>
+                      {% elsif block.settings.feature_icon != blank %}
+                        <div class="feature-icon">{{ block.settings.feature_icon }}</div>
+                      {% endif %}
+                    {% endif %}
+                    <div
+                      class="feature-name"
+                      style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.text_color }}{% endif %};"
+                    >
+                      {{ block.settings.feature_name }}
+                    </div>
+                  </div>
+                </td>
+
+                {% for i in (1..2) %}
+                  {% assign value_setting = 'value_' | append: i %}
+                  {% assign text_value_setting = 'text_value_' | append: i %}
+
+                  <td
+                    class="value-cell column-{{ i }} {% if block.settings.highlight_column %}highlighted{% endif %}"
+                    data-column="{{ i }}"
+                  >
+                    {% if block.settings.value_type == 'checkmark' %}
+                      {% if block.settings[value_setting] == 'yes' %}
+                        <span class="check-yes">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="24" height="24">
+                            <rect width="256" height="256" fill="none"/><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm45.66,85.66-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32Z" fill="currentColor"/>
+                          </svg>
+                        </span>
+                      {% else %}
+                        <span class="check-no">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="24" height="24">
+                            <rect width="256" height="256" fill="none"/><path d="M128,24A104,104,0,1,0,232,128,104.12,104.12,0,0,0,128,24Zm36.44,132.88a8,8,0,0,1,0,11.31,8.17,8.17,0,0,1-11.31,0L128,143.31l-25.13,24.88a8.17,8.17,0,0,1-11.31,0,8,8,0,0,1,0-11.31L116.69,132,91.56,107.13a8,8,0,0,1,11.31-11.32L128,120.69l25.13-24.88a8,8,0,0,1,11.31,11.32L139.31,132Z" fill="currentColor"/>
+                          </svg>
+                        </span>
+                      {% endif %}
+                    {% else %}
+                      {% assign is_highlighted_column = false %}
+                      {% for product_block in section.blocks %}
+                        {% if product_block.type == 'product_column' and product_block.settings.highlight_column and forloop.index == i %}
+                          {% assign is_highlighted_column = true %}
+                        {% endif %}
+                      {% endfor %}
+                      
+                      <span
+                        class="text-value"
+                        style="
+                          color: {% if section.settings.use_theme_colors %}
+                            {% if is_highlighted_column %}{{ settings.global_section_background_color }}{% else %}{{ settings.global_section_text_color }}{% endif %}
+                          {% else %}
+                            {% if is_highlighted_column %}{{ section.settings.highlighted_check_color }}{% else %}{{ section.settings.text_color }}{% endif %} !important;
+                          {% endif %} !important;
+                          letter-spacing: var(--letter-spacing-body);
+                        "
+                      >
+                        {{- block.settings[text_value_setting] -}}
+                      </span>
+                    {% endif %}
+                  </td>
+                {% endfor %}
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  .section-{{ section.id }} {
+    padding: 40px 20px;
+    {% if section.settings.use_gradient_background %}
+      background: linear-gradient({{ section.settings.gradient_direction }}deg, {{ section.settings.gradient_color_1 }}, {{ section.settings.gradient_color_2 }});
+    {% else %}
+      background-color: {{ section.settings.background_color }};
+    {% endif %}
+    font-family: var(--font-body-family-override);
+    letter-spacing: var(--letter-spacing-heading);
+    position: relative;
+    z-index: 1; /* Lower z-index for the entire section */
+  }
+
+  /* Remove custom property from the entire section */
+  .section-{{ section.id }} * {
+    --border-shadow-offset: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .section-{{ section.id }} .comparison-container {
+    max-width: {{ section.settings.table_width }}px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .section-{{ section.id }} .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .section-{{ section.id }} .comparison-header {
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 20px;
+    line-height: 20px;
+    position: relative;
+    z-index: 2; /* Higher than the comparison table */
+  }
+
+  .section-{{ section.id }} .comparison-heading {
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-heading);
+    margin: 0 0 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1px;
+  }
+
+  .section-{{ section.id }} .title-part-1 {
+    color: {{ section.settings.title_part_1_color }};
+  }
+
+  .section-{{ section.id }} .global-accent-text {
+    margin-left: 5px;
+    color: {{ section.settings.title_part_2_color | default: settings.accent_text_color }};
+    font-family: {{ settings.accent_text_font.family }}, {{ settings.accent_text_font.fallback_families }};
+    font-weight: {{ section.settings.title_part_2_weight | default: settings.accent_text_weight }};
+    font-style: {{ section.settings.title_part_2_style | default: settings.accent_text_style }};
+  }
+
+  .section-{{ section.id }} .comparison-subheading {
+    font-size: {{ section.settings.subheading_size }}px;
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-body);
+    color: {{ section.settings.subheading_color }};
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .section-{{ section.id }} .comparison-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    position: relative;
+    table-layout: fixed;
+    margin: 0 auto;
+    max-width: 680px !important; /* Increased from 520px for desktop */
+  }
+
+  .section-{{ section.id }} .table-header th {
+    border-bottom: 1px solid {{ section.settings.border_color }};
+    position: relative;
+  }
+
+  .section-{{ section.id }} .product-header {
+    padding: 20px 12px; /* Increased padding */
+    text-align: center;
+    width: 140px; /* Fixed width for 2 columns */
+  }
+
+  /* New styles for product image with column-specific sizing */
+  .section-{{ section.id }} .comparison-img-wrapper {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .section-{{ section.id }} .comparison-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 80px; /* Default fallback */
+    border-radius: 4px;
+    object-fit: contain;
+    background: transparent;
+  }
+
+  /* Generate per-column styles for image sizes */
+  {% for block in section.blocks %}
+    {% if block.type == 'product_column' %}
+      .section-{{ section.id }} .column-{{ forloop.index }}-img {
+        max-height: {{ block.settings.product_image_size | default: 80 }}px;
+      }
+    {% endif %}
+  {% endfor %}
+
+  .section-{{ section.id }} .feature-header {
+    text-align: left;
+    width: 180px; /* Increased from 140px */
+    position: relative;
+    z-index: 1;
+    border-bottom: 1px solid {{ section.settings.border_color }};
+  }
+
+  .section-{{ section.id }} .comparison-product-title {
+    font-weight: var(--font-weight-semibold);
+    font-size: {{ section.settings.product_title_size }}px;
+    line-height: 1.2;
+    letter-spacing: var(--letter-spacing-body);
+    color: {{ section.settings.text_color }};
+    margin-bottom: 6px; /* Increased from 4px */
+  }
+
+  /* Add glass effect styling to product subtitles */
+  .section-{{ section.id }} .product-subtitle {
+    font-size: {{ section.settings.subtitle_size }}px;
+    letter-spacing: var(--letter-spacing-body);
+    font-weight: var(--font-weight-regular);
+    color: {{ section.settings.subtitle_color }};
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    gap: 0px;
+    padding: 0px 10px;
+    /* Glass effect */
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  /* Style for subtitle without background */
+  .section-{{ section.id }} .product-subtitle.no-background {
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    padding: 0;
+  }
+
+  .section-{{ section.id }} .subtitle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+    vertical-align: middle;
+    line-height: 1;
+  }
+
+  .section-{{ section.id }} .subtitle-icon svg {
+    width: 13px;
+    height: 13px;
+    display: block;
+    vertical-align: middle;
+  }
+
+  .section-{{ section.id }} .feature-icon {
+    margin-right: 14px; /* Increased from 12px */
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.icon_color }}{% endif %};
+    width: 24px; /* Increased from 20px */
+    height: 24px; /* Increased from 20px */
+    display: flex;
+    align-items: center;
+  }
+
+  .section-{{ section.id }} .feature-icon svg {
+    width: 24px; /* Increased from 20px */
+    height: 24px; /* Increased from 20px */
+    stroke: currentColor;
+  }
+
+  .section-{{ section.id }} .close-icon {
+    color: #000000;
+  }
+
+  .section-{{ section.id }} .check-icon {
+    color: #FFFFFF !important;
+  }
+
+  /* Override for custom icon colors - now handled per column */
+  {% for block in section.blocks %}
+    {% if block.type == 'product_column' %}
+      .section-{{ section.id }} .column-{{ forloop.index }} .subtitle-icon {
+        {% if forloop.index == 1 %}
+        color: #FFFFFF !important;
+        {% else %}
+        color: {% if block.settings.subtitle_icon_color != blank %}{{ block.settings.subtitle_icon_color }}{% else %}#000000{% endif %} !important;
+        {% endif %}
+      }
+    {% endif %}
+  {% endfor %}
+
+  .section-{{ section.id }} .feature-row td {
+    border-bottom: 1px solid {{ section.settings.border_color }};
+  }
+
+  .section-{{ section.id }} .feature-cell {
+    padding: 16px 12px; /* Increased padding */
+    text-align: left;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-{{ section.id }} .feature-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .section-{{ section.id }} .feature-name {
+    font-weight: var(--font-weight-regular);
+    line-height: 1.4;
+    letter-spacing: var(--letter-spacing-body);
+    font-size: {{ section.settings.feature_name_size }}px;
+    color: {{ section.settings.text_color }};
+  }
+
+  .section-{{ section.id }} .value-cell {
+    padding: 16px 12px; /* Increased padding */
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Regular column checkmark styling */
+  .section-{{ section.id }} .check-yes {
+    color: {{ section.settings.check_color }};
+    font-size: 24px; /* Increased from 20px */
+    font-weight: var(--font-weight-bold);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .section-{{ section.id }} .check-yes svg {
+    width: 28px; /* Increased from 24px */
+    height: 28px; /* Increased from 24px */
+  }
+
+  .section-{{ section.id }} .check-no {
+    color: {{ section.settings.x_color }};
+    font-size: 24px; /* Increased from 20px */
+    font-weight: var(--font-weight-bold);
+  }
+
+  /* Highlighted column specific checkmark styling */
+  .section-{{ section.id }} .value-cell.highlighted .check-yes {
+    color: {{ section.settings.highlighted_check_color }};
+  }
+
+  .section-{{ section.id }} .value-cell.highlighted .check-no {
+    color: {{ section.settings.highlighted_x_color }};
+  }
+
+  /* Add highlighted text value styling */
+  .section-{{ section.id }} .value-cell.highlighted .text-value {
+    color: {{ section.settings.highlighted_check_color }};
+  }
+
+  /* Theme colors override for highlighted and regular columns */
+  {% if section.settings.use_theme_colors %}
+    .section-{{ section.id }} .check-yes {
+      color: {{ settings.global_section_accent_1_color }};
+    }
+    .section-{{ section.id }} .check-no {
+      color: {{ settings.global_section_text_color }};
+    }
+    .section-{{ section.id }} .value-cell.highlighted .check-yes {
+      color: {{ settings.global_section_background_color }};
+    }
+    .section-{{ section.id }} .value-cell.highlighted .check-no {
+      color: {{ settings.global_section_background_color }};
+    }
+    .section-{{ section.id }} .value-cell.highlighted .text-value {
+      color: {{ settings.global_section_background_color }} !important;
+    }
+    .section-{{ section.id }} .product-header.highlighted .comparison-product-title {
+      color: {{ settings.global_section_background_color }} !important;
+    }
+    .section-{{ section.id }} .product-header.highlighted .product-subtitle {
+      color: {{ settings.global_section_background_color }} !important;
+    }
+  {% endif %}
+
+  .section-{{ section.id }} .text-value {
+    font-weight: var(--font-weight-regular);
+    font-size: {{ section.settings.text_value_size }}px;
+    color: {{ section.settings.text_color }};
+    font-family: var(--font-body-family-override);
+    letter-spacing: var(--letter-spacing-body);
+  }
+
+  /* Special styling for the highlighted column */
+  .section-{{ section.id }} .product-header.highlighted {
+    position: relative;
+    z-index: 2; /* Lower z-index than the header */
+    margin-top: -12px; /* Increased from -10px */
+    padding-top: 30px; /* Increased from 25px */
+    padding-bottom: 30px; /* Increased from 25px */
+    border: none !important;
+  }
+
+  /* Create the highlight column effect */
+  .section-{{ section.id }} .product-header.highlighted:before,
+  .section-{{ section.id }} .value-cell.highlighted:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    {% if section.settings.use_theme_colors %}
+      background-color: {{ settings.global_section_accent_1_color }};
+    {% else %}
+      {% for block in section.blocks %}
+        {% if block.type == 'product_column' and block.settings.highlight_column %}
+          background-color: {{ block.settings.highlight_color }};
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  }
+
+  /* Apply border radius to the header */
+  .section-{{ section.id }} .product-header.highlighted:before {
+    border-radius: {{ section.settings.highlight_border_radius }}px {{ section.settings.highlight_border_radius }}px 0 0;
+  }
+
+  .section-{{ section.id }} .value-cell.highlighted {
+    position: relative;
+    z-index: 2; /* Lower z-index than the header */
+    border: none !important;
+  }
+
+  /* Remove the actual bottom border from cells in highlighted column */
+  .section-{{ section.id }} td.highlighted,
+  .section-{{ section.id }} th.highlighted {
+    border-bottom: 0 !important;
+  }
+
+  /* Remove bottom border from the last row for all cells */
+  .section-{{ section.id }} tr:last-child td {
+    border-bottom: 0 !important;
+  }
+
+  /* Special rounded corners for bottom cells */
+  .section-{{ section.id }} tr:last-child .value-cell.highlighted:before {
+    border-radius: 0 0 {{ section.settings.highlight_border_radius }}px {{ section.settings.highlight_border_radius }}px;
+    padding-bottom: 5px;
+  }
+
+  /* Add shadow to highlighted column */
+  .section-{{ section.id }} .product-header.highlighted:after,
+  .section-{{ section.id }} .value-cell.highlighted:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -2;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08) !important;
+    pointer-events: none;
+  }
+
+  /* Apply shadow border radius to match the background */
+  .section-{{ section.id }} .product-header.highlighted:after {
+    border-radius: {{ section.settings.highlight_border_radius }}px {{ section.settings.highlight_border_radius }}px 0 0;
+  }
+
+  .section-{{ section.id }} tr:last-child .value-cell.highlighted:after {
+    border-radius: 0 0 {{ section.settings.highlight_border_radius }}px {{ section.settings.highlight_border_radius }}px;
+  }
+
+  /* Override for highlighted column to ensure icons have correct color */
+  .section-{{ section.id }} .product-header.highlighted .subtitle-icon {
+    color: {{ section.settings.highlighted_subtitle_color }};
+  }
+
+  /* Make the glass background and border color customizable in the product column settings */
+  {% for block in section.blocks %}
+    {% if block.type == 'product_column' %}
+      .section-{{ section.id }} .column-{{ forloop.index }} .product-subtitle {
+        {% if block.settings.use_subtitle_background != false %}
+          background: {% if block.settings.subtitle_glass_color != blank %}{{ block.settings.subtitle_glass_color | color_modify: 'alpha', 0.2 }}{% else %}rgba(255, 255, 255, 0.2){% endif %};
+          border: 1px solid {% if block.settings.subtitle_border_color != blank %}{{ block.settings.subtitle_border_color | color_modify: 'alpha', 0.3 }}{% else %}{% if block.settings.subtitle_glass_color != blank %}{{ block.settings.subtitle_glass_color | color_modify: 'alpha', 0.3 }}{% else %}rgba(255, 255, 255, 0.3){% endif %}{% endif %};
+        {% else %}
+          background: transparent;
+          box-shadow: none;
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+          border: none;
+          padding: 0;
+        {% endif %}
+      }
+    {% endif %}
+  {% endfor %}
+
+  @media (max-width: 991px) {
+    .section-{{ section.id }} .comparison-table {
+      max-width: 100%; /* Allow full width on tablet */
+    }
+
+    .section-{{ section.id }} .product-header {
+      width: 100px; /* Reset to smaller size for tablets, decreased from 110px */
+      padding: 15px 8px; /* Reset padding for tablets */
+    }
+
+    .section-{{ section.id }} .feature-header {
+      width: 150px; /* Reset for tablet */
+    }
+
+    .section-{{ section.id }} .comparison-product-title {
+      font-size: {{ section.settings.product_title_size }}px; /* Use the setting instead of hardcoded value */
+    }
+
+    /* Reduce subtitle size on tablet */
+    .section-{{ section.id }} .product-subtitle {
+      font-size: {{ section.settings.subtitle_size }}px; /* Use the setting instead of hardcoded value */
+      padding: 1px 8px;
+    }
+
+    .section-{{ section.id }} .subtitle-icon svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* Column-specific tablet image sizes */
+    {% for block in section.blocks %}
+      {% if block.type == 'product_column' %}
+        .section-{{ section.id }} .column-{{ forloop.index }}-img {
+          max-height: {{ block.settings.product_image_size_tablet | default: 60 }}px;
+        }
+      {% endif %}
+    {% endfor %}
+
+    .section-{{ section.id }} .feature-name {
+      font-size: {{ section.settings.feature_name_size }}px; /* Use the setting instead of hardcoded value */
+    }
+
+    .section-{{ section.id }} .text-value {
+      font-size: {{ section.settings.text_value_size }}px; /* Use the setting instead of hardcoded value */
+    }
+
+    .section-{{ section.id }} .check-yes,
+    .section-{{ section.id }} .check-no {
+      font-size: 22px; /* Increased from 20px for tablet */
+    }
+
+    .section-{{ section.id }} .check-yes svg {
+      width: 24px; /* Increased from 20px */
+      height: 24px; /* Increased from 20px */
+    }
+
+    .section-{{ section.id }} .feature-cell,
+    .section-{{ section.id }} .value-cell {
+      padding: 12px 8px; /* Reset padding for tablets */
+    }
+
+    .section-{{ section.id }} .feature-icon,
+    .section-{{ section.id }} .feature-icon svg {
+      width: 20px; /* Reset for tablet */
+      height: 20px; /* Reset for tablet */
+    }
+  }
+
+  /* New breakpoint for optimized column proportions */
+  @media (max-width: 800px) {
+    .section-{{ section.id }} .feature-header {
+      width: 150px; /* Narrower feature column */
+    }
+
+    .section-{{ section.id }} .product-header {
+      width: 100px; /* Decreased from 120px */
+      padding: 14px 6px;
+    }
+
+    .section-{{ section.id }} .feature-cell {
+      width: 100px; /* Narrower feature column */
+      padding: 12px 6px;
+    }
+
+    .section-{{ section.id }} .value-cell {
+      width: 100px; /* Decreased from 120px */
+      padding: 12px 6px;
+    }
+
+    .section-{{ section.id }} .feature-icon {
+      margin-right: 12px; /* Less spacing for icon */
+    }
+
+    .section-{{ section.id }} .feature-name {
+      font-size: {{ section.settings.feature_name_size }}px; /* Use settings instead of hardcoded value */
+    }
+  }
+
+  @media (max-width: 767px) {
+    .section-{{ section.id }} .comparison-table {
+      table-layout: fixed; /* Keep fixed layout on mobile */
+      width: 100%;
+      min-width: 0; /* Remove minimum width */
+    }
+
+    /* Apply mobile text sizes */
+    .section-{{ section.id }} .comparison-product-title {
+      font-size: {{ section.settings.product_title_size_mobile }}px !important;
+    }
+    
+    .section-{{ section.id }} .product-subtitle {
+      font-size: {{ section.settings.subtitle_size_mobile }}px !important;
+      padding: 1px 6px;
+      gap: 1px;
+      border-radius: 12px;
+    }
+    
+    .section-{{ section.id }} .feature-name {
+      font-size: {{ section.settings.feature_name_size_mobile }}px !important;
+    }
+    
+    .section-{{ section.id }} .text-value {
+      font-size: {{ section.settings.text_value_size_mobile }}px !important;
+    }
+    
+    .section-{{ section.id }} .subtitle-icon svg {
+      width: 11px;
+      height: 11px;
+    }
+
+    /* Column-specific mobile image sizes */
+    {% for block in section.blocks %}
+      {% if block.type == 'product_column' %}
+        .section-{{ section.id }} .column-{{ forloop.index }}-img {
+          max-height: {{ block.settings.product_image_size_mobile | default: 50 }}px;
+        }
+      {% endif %}
+    {% endfor %}
+
+    .section-{{ section.id }} .comparison-heading {
+      font-size: {{ section.settings.heading_size }}px; /* Use setting instead of hardcoded value */
+      line-height: 1.1;
+    }
+    
+    .section-{{ section.id }} .comparison-subheading {
+      font-size: {{ section.settings.subheading_size }}px; /* Use setting instead of hardcoded value */
+    }
+  }
+
+  /* Ensure mobile styles always take precedence */
+  @media (max-width: 767px) {
+    /* Text sizes with very specific selectors */
+    .section-{{ section.id }} table.comparison-table .text-value,
+    .section-{{ section.id }} table.comparison-table td .text-value,
+    .section-{{ section.id }} table.comparison-table .value-cell .text-value {
+      font-size: {{ section.settings.text_value_size_mobile }}px !important;
+    }
+
+    .section-{{ section.id }} table.comparison-table .comparison-product-title,
+    .section-{{ section.id }} table.comparison-table th .comparison-product-title {
+      font-size: {{ section.settings.product_title_size_mobile }}px !important;
+    }
+
+    .section-{{ section.id }} table.comparison-table .product-subtitle {
+      font-size: {{ section.settings.subtitle_size_mobile }}px !important;
+    }
+
+    .section-{{ section.id }} table.comparison-table .feature-name,
+    .section-{{ section.id }} table.comparison-table td .feature-name {
+      font-size: {{ section.settings.feature_name_size_mobile }}px !important;
+    }
+    
+    /* Force more controlled column width changes at small screens */
+    /* Apply specified width with !important */
+    .section-{{ section.id }} table.comparison-table {
+      width: 100% !important;
+      table-layout: fixed !important;
+    }
+    
+    .section-{{ section.id }} .feature-header,
+    .section-{{ section.id }} .feature-cell {
+      width: 150px !important; /* Force to exactly 150px as requested */
+    }
+    
+    .section-{{ section.id }} .product-header,
+    .section-{{ section.id }} .value-cell {
+      /* Remaining width will be distributed between product columns */
+      width: auto !important;
+    }
+    
+    /* Keep feature-content as row layout */
+    .section-{{ section.id }} .feature-content {
+      flex-direction: row !important;
+      align-items: center !important;
+    }
+
+    /* Scale down the icon at mobile sizes */
+    .section-{{ section.id }} .feature-icon {
+      margin-right: 12px !important;
+      margin-bottom: 0 !important;
+      width: 18px !important;
+      height: 18px !important;
+    }
+    
+    .section-{{ section.id }} .feature-icon svg {
+      width: 18px !important;
+      height: 18px !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .section-{{ section.id }} .comparison-heading {
+      font-size: {{ section.settings.heading_size }}px; /* Use setting instead of hardcoded value */
+    }
+
+    .section-{{ section.id }} .comparison-subheading {
+      font-size: {{ section.settings.subheading_size }}px; /* Use setting instead of hardcoded value */
+    }
+
+    .section-{{ section.id }} .product-header {
+      width: 80px; /* Decreased from 90px */
+      padding: 12px 4px;
+    }
+
+    .section-{{ section.id }} .feature-cell,
+    .section-{{ section.id }} .value-cell {
+      padding: 10px 4px;
+    }
+
+    .section-{{ section.id }} .feature-name {
+      font-size: {{ section.settings.feature_name_size_mobile }}px; /* Use mobile setting */
+    }
+
+    .section-{{ section.id }} .text-value {
+      font-size: {{ section.settings.text_value_size_mobile }}px; /* Use mobile setting */
+    }
+
+    .section-{{ section.id }} .check-yes svg {
+      width: 22px; /* Increased from 18px */
+      height: 22px; /* Increased from 18px */
+    }
+
+    .section-{{ section.id }} .check-yes,
+    .section-{{ section.id }} .check-no {
+      font-size: 20px; /* Increased from 16px */
+    }
+  }
+
+  /* Additional typography fixes for this section */
+  .section-{{ section.id }} span,
+  .section-{{ section.id }} .comparison-product-title,
+  .section-{{ section.id }} .product-subtitle,
+  .section-{{ section.id }} .check-yes,
+  .section-{{ section.id }} .check-no,
+  .section-{{ section.id }} .text-value,
+  .section-{{ section.id }} .feature-name,
+  .section-{{ section.id }} .comparison-subheading,
+  .section-{{ section.id }} .title-part-1,
+  .section-{{ section.id }} .title-part-2 {
+    font-family: var(--font-body-family-override) !important;
+  }
+
+  .section-{{ section.id }} .comparison-product-title,
+  .section-{{ section.id }} .comparison-heading,
+  .section-{{ section.id }} .title-part-1,
+  .section-{{ section.id }} .title-part-2 {
+    font-family: var(--font-heading-family-override) !important;
+      font-weight: var(--font-weight-bold) !important;
+  }
+
+  /* Text styles */
+  .section-{{ section.id }} .text-value {
+    font-weight: var(--font-weight-regular);
+    font-size: {{ section.settings.text_value_size }}px;
+    color: {{ section.settings.text_color }};
+    font-family: var(--font-body-family-override);
+    letter-spacing: var(--letter-spacing-body);
+  }
+
+  @media (max-width: 479px) {
+    /* Additional scaling for the smallest screens */
+    .section-{{ section.id }} .feature-icon {
+      width: 16px !important;
+      height: 16px !important;
+      margin-right: 12px !important;
+    }
+
+    .section-{{ section.id }} .feature-icon svg {
+      width: 16px !important;
+      height: 16px !important;
+    }
+
+    /* Further text size adjustment */
+    .section-{{ section.id }} .feature-name {
+      font-size: {{ section.settings.feature_name_size_mobile }}px; /* Use mobile setting */
+      line-height: 1.2;
+    }
+
+    /* Even smaller subtitle on smallest screens */
+    .section-{{ section.id }} .product-subtitle {
+      font-size: {{ section.settings.subtitle_size_mobile }}px; /* Use mobile setting */
+      padding: 1px 5px;
+      border-radius: 10px;
+    }
+
+    .section-{{ section.id }} .subtitle-icon svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    /* Checkmark SVG size for mobile */
+    .section-{{ section.id }} .check-yes svg {
+      width: 20px; /* Increased from 18px */
+      height: 20px; /* Increased from 18px */
+    }
+
+    .section-{{ section.id }} .check-yes,
+    .section-{{ section.id }} .check-no {
+      font-size: 18px; /* Increased from 16px */
+    }
+  }
+  @media (max-width: 380px) {
+    /* Additional scaling for the smallest screens */
+    .section-{{ section.id }} .feature-icon {
+      width: 16px !important;
+      height: 16px !important;
+      margin-right: 12px !important;
+    }
+
+    .section-{{ section.id }} .feature-icon svg {
+      width: 16px !important;
+      height: 16px !important;
+    }
+
+    /* Further text size adjustment */
+    .section-{{ section.id }} .feature-name {
+      font-size: {{ section.settings.feature_name_size_mobile }}px; /* Use mobile setting */
+      line-height: 1.2;
+    }
+
+    /* Even smaller subtitle on smallest screens */
+    .section-{{ section.id }} .product-subtitle {
+      font-size: {{ section.settings.subtitle_size_mobile }}px; /* Use mobile setting */
+      padding: 1px 5px;
+      border-radius: 10px;
+    }
+    .section-{{ section.id }} .comparison-product-title {
+      font-size: {{ section.settings.product_title_size_mobile }}px !important; /* Use setting with !important */
+    }
+
+    .section-{{ section.id }} .subtitle-icon svg {
+      width: 10px;
+      height: 10px;
+      margin-top: 2px;
+    }
+
+    /* Checkmark SVG size for mobile */
+    .section-{{ section.id }} .check-yes svg {
+      width: 20px; /* Increased from 18px */
+      height: 20px; /* Increased from 18px */
+    }
+
+    .section-{{ section.id }} .check-yes,
+    .section-{{ section.id }} .check-no {
+      font-size: 18px; /* Increased from 16px */
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('.section-{{ section.id }}');
+    if (!section) return;
+    
+    // Add CSS classes to all cells in the same column as the highlighted header
+    const highlightedHeaders = section.querySelectorAll('.product-header.highlighted');
+    highlightedHeaders.forEach(header => {
+      const columnIndex = header.getAttribute('data-column');
+      if (!columnIndex) return;
+      
+      // Select all cells in the same column
+      const columnCells = section.querySelectorAll(`.value-cell[data-column="${columnIndex}"]`);
+      columnCells.forEach(cell => {
+        cell.classList.add('highlighted');
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Comparison",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use Theme Colors",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Heading & Subheading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_heading",
+      "label": "Show Heading & Subheading",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title_part_1",
+      "label": "Title Text Part 1",
+      "default": "Us Vs."
+    },
+    {
+      "type": "text",
+      "id": "title_part_2",
+      "label": "Title Text Part 2",
+      "default": "Them"
+    },
+    {
+      "type": "color",
+      "id": "title_part_1_color",
+      "label": "Title Part 1 Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "title_part_2_color",
+      "label": "Title Part 2 Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Here's why we're the industry leader"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "default": 32,
+      "label": "Heading Size"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "label": "Subheading Size"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Text Sizing (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 14,
+      "max": 36,
+      "step": 1,
+      "default": 21,
+      "label": "Product Title Size - Desktop (px)"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "default": 12,
+      "label": "Product Subtitle Size - Desktop (px)"
+    },
+    {
+      "type": "range",
+      "id": "feature_name_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "label": "Feature Name Size - Desktop (px)"
+    },
+    {
+      "type": "range",
+      "id": "text_value_size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "default": 14,
+      "label": "Text Value Size - Desktop (px)"
+    },
+    {
+      "type": "header",
+      "content": "Text Sizing (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size_mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "label": "Product Title Size - Mobile (px)"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "default": 10,
+      "label": "Product Subtitle Size - Mobile (px)"
+    },
+    {
+      "type": "range",
+      "id": "feature_name_size_mobile",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 12,
+      "label": "Feature Name Size - Mobile (px)"
+    },
+    {
+      "type": "range",
+      "id": "text_value_size_mobile",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "default": 11,
+      "label": "Text Value Size - Mobile (px)"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Background"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient_background",
+      "label": "Use Gradient Background",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "gradient_direction",
+      "min": 0,
+      "max": 360,
+      "step": 5,
+      "default": 90,
+      "label": "Gradient Direction",
+      "info": "Angle in degrees"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_1",
+      "label": "Gradient Color 1",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_2",
+      "label": "Gradient Color 2",
+      "default": "#F5F5F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Subtitle Styling"
+    },
+    {
+      "type": "header",
+      "content": "Highlighted Column Settings"
+    },
+    {
+      "type": "color",
+      "id": "highlighted_text_color",
+      "label": "Highlighted Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "highlighted_subtitle_color",
+      "label": "Highlighted Subtitle Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "highlighted_check_color",
+      "label": "Highlighted Checkmark Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "highlighted_x_color",
+      "label": "Highlighted X Mark Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Regular Column Settings"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#EEEEEE"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "check_color",
+      "label": "Checkmark Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "x_color",
+      "label": "X Mark Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "highlight_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "default": 8,
+      "label": "Border Radius for Highlight"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_column",
+      "name": "Product Column",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product Name",
+          "default": "Your Product"
+        },
+        {
+          "type": "text",
+          "id": "product_subtitle",
+          "label": "Product Subtitle",
+          "default": "Premium"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product Image",
+          "info": "Optional image to display above the product title"
+        },
+        {
+          "type": "range",
+          "id": "product_image_size",
+          "min": 40,
+          "max": 200,
+          "step": 10,
+          "default": 80,
+          "label": "Image Size - Desktop (px)",
+          "info": "Maximum height of product image in desktop view"
+        },
+        {
+          "type": "range",
+          "id": "product_image_size_tablet",
+          "min": 30,
+          "max": 150,
+          "step": 10,
+          "default": 60,
+          "label": "Image Size - Tablet (px)",
+          "info": "Maximum height of product image in tablet view"
+        },
+        {
+          "type": "range",
+          "id": "product_image_size_mobile",
+          "min": 30,
+          "max": 100,
+          "step": 5,
+          "default": 50,
+          "label": "Image Size - Mobile (px)",
+          "info": "Maximum height of product image in mobile view"
+        },
+        {
+          "type": "html",
+          "id": "subtitle_custom_icon",
+          "label": "Custom Subtitle Icon (SVG)",
+          "info": "Paste SVG code here to replace the default icon"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_subtitle_icon",
+          "label": "Show Subtitle Icon",
+          "default": true,
+          "info": "Toggle to show or hide the icon in the product subtitle"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_subtitle_background",
+          "label": "Use Subtitle Background",
+          "default": true,
+          "info": "Toggle to enable or disable the glass background effect"
+        },
+        {
+          "type": "color",
+          "id": "subtitle_border_color",
+          "label": "Subtitle Border Color",
+          "default": "#FFFFFF",
+          "info": "Border color for the glass effect (will be applied with transparency)"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight_column",
+          "label": "Highlight This Column",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "highlight_color",
+          "label": "Highlight Color",
+          "default": "#EF4A65"
+        },
+        {
+          "type": "color",
+          "id": "subtitle_glass_color",
+          "label": "Subtitle Glass Background",
+          "default": "#FFFFFF",
+          "info": "This color will be used with transparency for the glass effect"
+        },
+        {
+          "type": "color",
+          "id": "subtitle_icon_color",
+          "label": "Subtitle Icon Color",
+          "default": "#000000",
+          "info": "Color for the icon in this column's subtitle"
+        }
+      ]
+    },
+    {
+      "type": "feature_row",
+      "name": "Feature Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature_name",
+          "label": "Feature Name",
+          "default": "Feature"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show Icon",
+          "default": true,
+          "info": "Toggle to show or hide the feature icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "feature_image",
+          "label": "Feature Image",
+          "info": "Alternative to using SVG code. Will be used instead of SVG if provided."
+        },
+        {
+          "type": "html",
+          "id": "feature_icon",
+          "label": "Feature Icon (SVG)",
+          "default": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><path d='M12 8v8'></path><path d='M8 12h8'></path></svg>",
+          "info": "To ensure your custom SVG icon adopts the theme color settings, include 'stroke=\"currentColor\"' and/or 'fill=\"currentColor\"' attributes in your SVG code. This will make your icon automatically match the icon color setting."
+        },
+        {
+          "type": "select",
+          "id": "value_type",
+          "label": "Value Type",
+          "options": [
+            {
+              "value": "checkmark",
+              "label": "Checkmark/X"
+            },
+            {
+              "value": "text",
+              "label": "Text"
+            }
+          ],
+          "default": "checkmark"
+        },
+        {
+          "type": "select",
+          "id": "value_1",
+          "label": "Column 1 Value",
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
+          ],
+          "default": "yes"
+        },
+        {
+          "type": "text",
+          "id": "text_value_1",
+          "label": "Column 1 Text Value",
+          "default": "Yes",
+          "info": "Used when Value Type is Text"
+        },
+        {
+          "type": "select",
+          "id": "value_2",
+          "label": "Column 2 Value",
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
+          ],
+          "default": "no"
+        },
+        {
+          "type": "text",
+          "id": "text_value_2",
+          "label": "Column 2 Text Value",
+          "default": "No",
+          "info": "Used when Value Type is Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Comparison",
+      "blocks": [
+        {
+          "type": "product_column",
+          "settings": {
+            "product_name": "Our Product",
+            "product_subtitle": "Original",
+            "highlight_column": true,
+            "highlight_color": "#EF4A65"
+          }
+        },
+        {
+          "type": "product_column",
+          "settings": {
+            "product_name": "Others",
+            "product_subtitle": "Knock-off",
+            "highlight_column": false,
+            "subtitle_custom_icon": "<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='currentColor'><path d='M22 15h-3V3h3a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h3v12H7a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h5.09l-.58 3.33a1 1 0 0 0 1 1.17h1a1 1 0 0 0 .95-.8l1.03-5.7H22a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1z' transform='rotate(180, 12, 12)'/></svg>"
+          }
+        },
+        {
+          "type": "feature_row",
+          "settings": {
+            "feature_name": "Core feature",
+            "feature_icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><path d='M12 8v8'></path><path d='M8 12h8'></path></svg>",
+            "value_1": "yes",
+            "value_2": "yes"
+          }
+        },
+        {
+          "type": "feature_row",
+          "settings": {
+            "feature_name": "Advanced feature",
+            "feature_icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'></polygon></svg>",
+            "value_1": "yes",
+            "value_2": "no"
+          }
+        },
+        {
+          "type": "feature_row",
+          "settings": {
+            "feature_name": "Premium feature",
+            "feature_icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'></path></svg>",
+            "value_type": "text",
+            "text_value_1": "Yes",
+            "text_value_2": "No"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

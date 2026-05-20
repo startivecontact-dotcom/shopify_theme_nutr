@@ -1,0 +1,689 @@
+{{ 'photo-grid-section.css' | asset_url | stylesheet_tag }}
+
+<style>
+  /* Inline critical CSS to ensure grid behavior */
+  .photo-grid-section {
+    text-align: {{ section.settings.text_alignment }};
+    background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.background_color }}{% endif %};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    padding-left: {{ section.settings.padding_horizontal }}px;
+    padding-right: {{ section.settings.padding_horizontal }}px;
+    border-radius: {{ section.settings.section_border_radius | default: 0 }}px;
+    overflow: hidden;
+  }
+  
+  .photo-grid-section .title {
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 10px;
+    font-size: 3.4rem;
+  }
+  
+  .photo-grid-section .title .primary {
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.title_primary_color }}{% endif %};
+    font-family: var(--font-heading-family);
+  }
+  
+  .photo-grid-section .title .accent {
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.title_accent_color | default: settings.accent_text_color }}{% endif %};
+    font-family: {{ settings.accent_text_font.family }}, {{ settings.accent_text_font.fallback_families }};
+    font-weight: {{ settings.accent_text_weight }};
+    font-style: {{ settings.accent_text_style }};
+    letter-spacing: var(--letter-spacing-heading);
+  }
+  
+  .photo-grid-section .subtitle {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-regular);
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.title_primary_color }}{% endif %};
+  }
+  
+  /* Social Media Badge Styles */
+  .social-views-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 4px 12px !important;
+    background-color: #f8f9fa !important;
+    border-radius: 999px !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+    font-size: 10.1px !important;
+    color: #262626 !important;
+    position: relative !important;
+    border: 1px solid transparent !important;
+    background-clip: padding-box !important;
+    margin-bottom: 20px;
+  }
+  
+  .social-views-badge::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -1px !important;
+    right: -1px !important;
+    bottom: -1px !important;
+    left: -1px !important;
+    z-index: -1 !important;
+    border-radius: 999px !important;
+  }
+  
+  .social-icon {
+    margin-right: 8px !important;
+  }
+  
+  .social-text {
+    letter-spacing: var(--letter-spacing-body);
+    font-weight: var(--font-weight-regular);
+  }
+  
+  .social-counter {
+    font-weight: var(--font-weight-semibold);
+  }
+  
+  /* TikTok Badge Specific */
+  .tiktok-views-badge::before {
+    background: linear-gradient(45deg, #00f2ea, #ff0050) !important;
+  }
+  
+  .tiktok-views-badge {
+    /* Box shadow removed */
+  }
+  
+  /* Facebook Badge Specific */
+  .facebook-views-badge::before {
+    background: #1877F2 !important;
+  }
+  
+  .facebook-views-badge {
+    /* Box shadow removed */
+  }
+  
+  /* Instagram Badge Specific */
+  .instagram-views-badge::before {
+    background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045) !important;
+  }
+  
+  .instagram-views-badge {
+    /* Box shadow removed */
+  }
+  
+  @media (max-width: 768px) {
+    .social-views-badge {
+      font-size: 11.6px !important;
+      padding: 4px 14px !important;
+    }
+    
+    .social-icon {
+      width: 13.8px !important;
+      height: 13.8px !important;
+      margin-right: 9px !important;
+    }
+  }
+  
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+    gap: {{ section.settings.grid_gap }}px;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 10px;
+  }
+  
+  @media only screen and (min-width: 769px) {
+    .photo-grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+      max-width: {% if section.settings.columns_desktop == '3' %}600px{% elsif section.settings.columns_desktop == '4' %}800px{% else %}1000px{% endif %};
+    }
+  }
+  
+  .photo-item {
+    width: 100%;
+    aspect-ratio: 1/1;
+    position: relative;
+    overflow: hidden;
+    border: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
+    border-radius: {{ section.settings.border_radius }}px;
+    box-sizing: border-box;
+  }
+  
+  .photo-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.image_position }};
+    transition: transform 0.3s ease;
+    display: block;
+  }
+  
+  .photo-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px;
+    font-size: 0.8em;
+  }
+  
+  .photo-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+  }
+</style>
+
+<div class="photo-grid-section">
+  {% if section.settings.title_primary != blank or section.settings.title_accent != blank %}
+    <h2 class="title">
+      <span class="primary">{{ section.settings.title_primary }}</span>
+      <span class="accent">{{ section.settings.title_accent }}</span>
+    </h2>
+  {% elsif section.settings.title != blank %}
+    <h2 class="title">{{ section.settings.title }}</h2>
+  {% endif %}
+  
+  {% if section.settings.social_badge_type != 'none' %}
+    {% if section.settings.social_badge_type == 'tiktok' %}
+      <div class="social-views-badge tiktok-views-badge">
+        <img class="social-icon" src="https://cdn4.iconfinder.com/data/icons/social-media-flat-7/64/Social-media_Tiktok-512.png" width="11.56" height="11.56" alt="TikTok" />
+        <span class="social-text">Over <span id="social-counter" class="social-counter">{{ section.settings.social_views }}</span>M Views On TikTok</span>
+      </div>
+    {% elsif section.settings.social_badge_type == 'facebook' %}
+      <div class="social-views-badge facebook-views-badge">
+        <svg class="social-icon" width="11.56" height="11.56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="#1877F2"/>
+        </svg>
+        <span class="social-text">Over <span id="social-counter" class="social-counter">{{ section.settings.social_views }}</span>M Views On Facebook</span>
+      </div>
+    {% elsif section.settings.social_badge_type == 'instagram' %}
+      <div class="social-views-badge instagram-views-badge">
+        <svg class="social-icon" width="11.56" height="11.56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="instagramGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#833ab4" />
+              <stop offset="50%" stop-color="#fd1d1d" />
+              <stop offset="100%" stop-color="#fcb045" />
+            </linearGradient>
+          </defs>
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="url(#instagramGradient)"/>
+        </svg>
+        <span class="social-text">Over <span id="social-counter" class="social-counter">{{ section.settings.social_views }}</span>M Views On Instagram</span>
+      </div>
+    {% endif %}
+  {% elsif section.settings.subtitle != blank %}
+    <h3 class="subtitle">{{ section.settings.subtitle }}</h3>
+  {% endif %}
+  
+  <div class="photo-grid">
+    {% for block in section.blocks %}
+      {% if block.type == 'image_item' %}
+        <div class="photo-item" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            {% assign img_url = block.settings.image | image_url: width: 800 %}
+            <img src="{{ img_url }}" 
+                 alt="{{ block.settings.image.alt | escape }}"
+                 loading="lazy"
+                 class="photo-image"
+                 style="object-position: {{ block.settings.custom_position }};">
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+          
+          {% if block.settings.link != blank %}
+            <a href="{{ block.settings.link }}" class="photo-link"></a>
+          {% endif %}
+          
+          {% if block.settings.caption != blank and section.settings.show_image_caption %}
+            <div class="photo-caption">{{ block.settings.caption }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    
+    {% if section.blocks.size == 0 %}
+      {% for i in (1..9) %}
+        <div class="photo-item placeholder">
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const counters = document.querySelectorAll('.social-counter');
+    
+    counters.forEach(counter => {
+      if (counter) {
+        const finalValue = parseFloat(counter.textContent);
+        let currentValue = 0;
+        const duration = 2000;
+        const framesPerSecond = 60;
+        const totalFrames = duration / 1000 * framesPerSecond;
+        const increment = finalValue / totalFrames;
+        
+        const animation = setInterval(() => {
+          currentValue += increment;
+          
+          if (currentValue >= finalValue) {
+            currentValue = finalValue;
+            clearInterval(animation);
+          }
+          
+          counter.textContent = currentValue.toFixed(1);
+        }, 1000 / framesPerSecond);
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Photo Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use Theme Colors",
+      "default": true,
+      "info": "Apply the global theme colors to this section - background, title text and accent colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Grid Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (Single Style)",
+      "default": "Photo Collection",
+      "info": "Use this for simple titles. For dual-styled titles, use the Primary and Accent fields below."
+    },
+    {
+      "type": "text",
+      "id": "title_primary",
+      "label": "Title (Primary Part)",
+      "default": "Loved By"
+    },
+    {
+      "type": "text",
+      "id": "title_accent",
+      "label": "Title (Accent Part)",
+      "default": "5,000+"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "A showcase of images"
+    },
+    {
+      "type": "color",
+      "id": "title_primary_color",
+      "label": "Primary Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "title_accent_color",
+      "label": "Accent Title Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Social Media Badge"
+    },
+    {
+      "type": "select",
+      "id": "social_badge_type",
+      "label": "Social media badge",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        },
+        {
+          "value": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        }
+      ],
+      "default": "instagram",
+      "info": "When a badge is selected, it will replace the subtitle"
+    },
+    {
+      "type": "text",
+      "id": "social_views",
+      "label": "Social media view count (in millions)",
+      "default": "5.6"
+    },
+    {
+      "type": "header",
+      "content": "Grid Layout"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap between images",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Number of columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        },
+        {
+          "value": "3",
+          "label": "3 columns"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Number of columns on desktop",
+      "options": [
+        {
+          "value": "3",
+          "label": "3 columns"
+        },
+        {
+          "value": "4",
+          "label": "4 columns"
+        },
+        {
+          "value": "5",
+          "label": "5 columns"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Default image position",
+      "options": [
+        {
+          "value": "center center",
+          "label": "Center"
+        },
+        {
+          "value": "top center",
+          "label": "Top"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom"
+        },
+        {
+          "value": "left center",
+          "label": "Left"
+        },
+        {
+          "value": "right center",
+          "label": "Right"
+        }
+      ],
+      "default": "center center",
+      "info": "Sets the default focal point when using 'cover' fit"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_caption",
+      "label": "Show image captions",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Border Settings"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Border width",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#dddddd"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal Padding",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "section_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Section Border Radius",
+      "default": 0,
+      "info": "Adds rounded corners to the entire section"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_item",
+      "name": "Image",
+      "limit": 30,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "custom_position",
+          "label": "Image position",
+          "options": [
+            {
+              "value": "center center",
+              "label": "Center"
+            },
+            {
+              "value": "top center",
+              "label": "Top"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom"
+            },
+            {
+              "value": "left center",
+              "label": "Left"
+            },
+            {
+              "value": "right center",
+              "label": "Right"
+            },
+            {
+              "value": "top left",
+              "label": "Top left"
+            },
+            {
+              "value": "top right",
+              "label": "Top right"
+            },
+            {
+              "value": "bottom left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom right",
+              "label": "Bottom right"
+            }
+          ],
+          "default": "center center",
+          "info": "Controls which part of the image is visible in the grid"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Photo Grid",
+      "blocks": [
+        {
+          "type": "image_item"
+        },
+        {
+          "type": "image_item"
+        },
+        {
+          "type": "image_item"
+        },
+        {
+          "type": "image_item"
+        },
+        {
+          "type": "image_item"
+        },
+        {
+          "type": "image_item"
+        },
+        {
+          "type": "image_item"
+        },
+        {
+          "type": "image_item"
+        },
+        {
+          "type": "image_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

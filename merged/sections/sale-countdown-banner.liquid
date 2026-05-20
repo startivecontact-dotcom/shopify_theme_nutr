@@ -1,0 +1,506 @@
+<div id="sale-countdown-banner" class="sale-countdown-banner{% if section.settings.sticky %} sticky{% endif %}">
+  <div class="sale-countdown-content">
+    <div class="sale-countdown-text">
+      <p>{% if section.settings.show_icon %}{{ section.settings.icon_text }}{% endif %} <span class="sale-countdown-bold">{{ section.settings.heading_text }}</span> <span class="sale-countdown-highlight">{{ section.settings.highlight_text }}</span>{% if section.settings.show_colon %}:{% endif %}</p>
+    </div>
+    <div class="sale-countdown-timer">
+      {% if section.settings.show_days %}
+      <div class="sale-countdown-item">
+        <div id="sale-countdown-days" class="sale-countdown-value">00</div>
+        <div id="days-label" class="sale-countdown-label">{{ section.settings.days_label | default: 'DAYS' }}</div>
+      </div>
+      {% endif %}
+      <div class="sale-countdown-item">
+        <div id="sale-countdown-hours" class="sale-countdown-value">00</div>
+        <div id="hours-label" class="sale-countdown-label">{{ section.settings.hours_label | default: 'HRS' }}</div>
+      </div>
+      <div class="sale-countdown-item">
+        <div id="sale-countdown-minutes" class="sale-countdown-value">00</div>
+        <div id="minutes-label" class="sale-countdown-label">{{ section.settings.minutes_label | default: 'MIN' }}</div>
+      </div>
+      <div class="sale-countdown-item">
+        <div id="sale-countdown-seconds" class="sale-countdown-value">00</div>
+        <div id="seconds-label" class="sale-countdown-label">{{ section.settings.seconds_label | default: 'SEC' }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sale-countdown-banner {
+    background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.background_color }}{% endif %};
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.text_color }}{% endif %};
+    padding: 8px 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    letter-spacing: var(--letter-spacing-heading);
+    border-top: 1px solid {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color | color_darken: 10 }}{% else %}{{ section.settings.border_color }}{% endif %};
+    border-bottom: 1px solid {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color | color_darken: 10 }}{% else %}{{ section.settings.border_color }}{% endif %};
+  }
+  
+  .sale-countdown-banner.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .sale-countdown-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    letter-spacing: var(--letter-spacing-body);
+  }
+  
+  .sale-countdown-text {
+    margin-right: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+    font-weight: var(--font-weight-regular);
+    display: flex;
+    align-items: center;
+  }
+  
+  .sale-countdown-highlight {
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.highlight_color }}{% endif %};
+    text-decoration: {% if section.settings.highlight_underline %}underline{% else %}none{% endif %};
+    font-weight: var(--font-weight-bold);
+    margin: 0 2px;
+  }
+  
+  .sale-countdown-timer {
+    display: flex;
+    align-items: center;
+    margin-top: 3px;
+  }
+  
+  .sale-countdown-item {
+    display: flex;
+    font-weight: var(--font-weight-semibold) !important;
+    flex-direction: column;
+    align-items: center;
+    min-width: 26px;
+  }
+  
+  .sale-countdown-value {
+    font-weight: var(--font-weight-semibold) !important;
+    font-size: 14px;
+    line-height: 1;
+    margin-bottom: -2px;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.countdown_color }}{% endif %};
+  }
+  
+  .sale-countdown-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    margin-top: 2px;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.countdown_label_color }}{% endif %};
+  }
+  
+  .sale-countdown-bold {
+    font-weight: var(--font-weight-bold);
+    font-size: 14px;
+  }
+  
+  .sale-countdown-item {
+    margin: 0 0px;
+  }
+  
+  @media (min-width: 640px) {
+    .sale-countdown-banner {
+      padding: 6px 40px;
+    }
+    
+    .sale-countdown-bold {
+    font-weight: var(--font-weight-bold);
+    font-size: 16px;
+    }
+    
+    .sale-countdown-highlight {
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.highlight_color }}{% endif %};
+    text-decoration: {% if section.settings.highlight_underline %}underline{% else %}none{% endif %};
+    font-weight: var(--font-weight-bold);
+    margin: 0 2px;
+    font-size: 16px;
+    }
+    
+    .sale-countdown-text {
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    
+    .sale-countdown-value {
+      font-size: 16px;
+    }
+    
+    .sale-countdown-label {
+      font-size: 10px;
+    }
+    
+    .sale-countdown-item {
+      min-width: 30px;
+      margin: 0 2px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const daysElement = document.getElementById('sale-countdown-days');
+    const hoursElement = document.getElementById('sale-countdown-hours');
+    const minutesElement = document.getElementById('sale-countdown-minutes');
+    const secondsElement = document.getElementById('sale-countdown-seconds');
+    
+    // Store the labels from Liquid and use them
+    const daysLabel = "{{ section.settings.days_label | default: 'DAYS' }}";
+    const hoursLabel = "{{ section.settings.hours_label | default: 'HRS' }}";
+    const minutesLabel = "{{ section.settings.minutes_label | default: 'MIN' }}";
+    const secondsLabel = "{{ section.settings.seconds_label | default: 'SEC' }}";
+    
+    // Check if we're in the Shopify Theme Editor
+    const isInThemeEditor = Shopify.designMode || window.Shopify && window.Shopify.theme && window.Shopify.theme.role === 'unpublished';
+    
+    // Set the labels - always use section settings in the theme editor, otherwise use localStorage if available
+    {% if section.settings.show_days %}
+    if (isInThemeEditor) {
+      document.getElementById('days-label').textContent = daysLabel;
+      localStorage.setItem('countdown_days_label', daysLabel);
+    } else {
+      document.getElementById('days-label').textContent = localStorage.getItem('countdown_days_label') || daysLabel;
+      if (!localStorage.getItem('countdown_days_label')) {
+        localStorage.setItem('countdown_days_label', daysLabel);
+      }
+    }
+    {% endif %}
+    
+    if (isInThemeEditor) {
+      document.getElementById('hours-label').textContent = hoursLabel;
+      document.getElementById('minutes-label').textContent = minutesLabel;
+      document.getElementById('seconds-label').textContent = secondsLabel;
+      
+      localStorage.setItem('countdown_hours_label', hoursLabel);
+      localStorage.setItem('countdown_minutes_label', minutesLabel);
+      localStorage.setItem('countdown_seconds_label', secondsLabel);
+    } else {
+      document.getElementById('hours-label').textContent = localStorage.getItem('countdown_hours_label') || hoursLabel;
+      document.getElementById('minutes-label').textContent = localStorage.getItem('countdown_minutes_label') || minutesLabel;
+      document.getElementById('seconds-label').textContent = localStorage.getItem('countdown_seconds_label') || secondsLabel;
+      
+      // Save the initial values to localStorage if not already set
+      if (!localStorage.getItem('countdown_hours_label')) localStorage.setItem('countdown_hours_label', hoursLabel);
+      if (!localStorage.getItem('countdown_minutes_label')) localStorage.setItem('countdown_minutes_label', minutesLabel);
+      if (!localStorage.getItem('countdown_seconds_label')) localStorage.setItem('countdown_seconds_label', secondsLabel);
+    }
+    
+    // Skip adding DOMSubtreeModified listeners in theme editor - they're not needed
+    if (!isInThemeEditor) {
+      // Add listeners to update localStorage if labels are changed
+      {% if section.settings.show_days %}
+      const daysLabelElement = document.getElementById('days-label');
+      daysLabelElement.addEventListener('DOMSubtreeModified', function() {
+        localStorage.setItem('countdown_days_label', this.textContent);
+      });
+      {% endif %}
+      
+      const hoursLabelElement = document.getElementById('hours-label');
+      const minutesLabelElement = document.getElementById('minutes-label');
+      const secondsLabelElement = document.getElementById('seconds-label');
+      
+      hoursLabelElement.addEventListener('DOMSubtreeModified', function() {
+        localStorage.setItem('countdown_hours_label', this.textContent);
+      });
+      
+      minutesLabelElement.addEventListener('DOMSubtreeModified', function() {
+        localStorage.setItem('countdown_minutes_label', this.textContent);
+      });
+      
+      secondsLabelElement.addEventListener('DOMSubtreeModified', function() {
+        localStorage.setItem('countdown_seconds_label', this.textContent);
+      });
+    }
+    
+    function updateCountdown() {
+      {% if section.settings.custom_end_time %}
+        // Create date components from individual settings
+        const endYear = {{ section.settings.end_year }};
+        const endMonth = {{ section.settings.end_month }} - 1; // JS months are 0-indexed
+        const endDay = {{ section.settings.end_day }};
+        const endHour = {{ section.settings.end_hour }};
+        const endMinute = {{ section.settings.end_minute }};
+        
+        const endDate = new Date(endYear, endMonth, endDay, endHour, endMinute, 0);
+        const now = new Date();
+        let timeDifference = endDate - now;
+        
+        if (timeDifference <= 0) {
+          {% if section.settings.show_days %}daysElement.textContent = '{{ section.settings.zero_value | default: "00" }}';{% endif %}
+          hoursElement.textContent = '{{ section.settings.zero_value | default: "00" }}';
+          minutesElement.textContent = '{{ section.settings.zero_value | default: "00" }}';
+          secondsElement.textContent = '{{ section.settings.zero_value | default: "00" }}';
+          return;
+        }
+      {% else %}
+        const now = new Date();
+        const estMidnight = new Date();
+        
+        const isDST = function() {
+          const jan = new Date(now.getFullYear(), 0, 1).getTimezoneOffset();
+          const jul = new Date(now.getFullYear(), 6, 1).getTimezoneOffset();
+          return Math.max(jan, jul) !== now.getTimezoneOffset();
+        };
+        
+        estMidnight.setUTCHours(isDST() ? 4 : 5, 0, 0, 0);
+        estMidnight.setUTCDate(estMidnight.getUTCDate() + 1);
+        
+        let timeDifference = estMidnight - now;
+        
+        if (timeDifference <= 0) {
+          estMidnight.setUTCDate(estMidnight.getUTCDate() + 1);
+          timeDifference = estMidnight - now;
+        }
+      {% endif %}
+      
+      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+      
+      const formatDigits = (num) => {
+        return num < 10 ? '{{ section.settings.time_format_single_digit | default: "0" }}' + num : num.toString();
+      };
+      
+      {% if section.settings.show_days %}
+      daysElement.textContent = formatDigits(days);
+      {% endif %}
+      hoursElement.textContent = formatDigits(hours);
+      minutesElement.textContent = formatDigits(minutes);
+      secondsElement.textContent = formatDigits(seconds);
+    }
+    
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Sale Countdown Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use Theme Colors",
+      "default": true,
+      "info": "Apply the global theme colors to this section"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "SPRING SALE"
+    },
+    {
+      "type": "text",
+      "id": "highlight_text",
+      "label": "Highlight Text",
+      "default": "30% OFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_colon",
+      "label": "Show colon after highlight text",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "icon_text",
+      "label": "Icon Text (emoji)",
+      "default": "🌼"
+    },
+    {
+      "type": "header",
+      "content": "Countdown Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_days",
+      "label": "Show days counter",
+      "default": true,
+      "info": "Display days remaining in the countdown"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_end_time",
+      "label": "Use custom end date",
+      "default": true,
+      "info": "If unchecked, countdown will reset at midnight EST"
+    },
+    {
+      "type": "header",
+      "content": "End Date & Time"
+    },
+    {
+      "type": "range",
+      "id": "end_year",
+      "min": 2023,
+      "max": 2030,
+      "step": 1,
+      "label": "Year",
+      "default": 2024
+    },
+    {
+      "type": "range",
+      "id": "end_month",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "label": "Month",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "end_day",
+      "min": 1,
+      "max": 31,
+      "step": 1,
+      "label": "Day",
+      "default": 31
+    },
+    {
+      "type": "range",
+      "id": "end_hour",
+      "min": 0,
+      "max": 23,
+      "step": 1,
+      "label": "Hour (24-hour format)",
+      "default": 23
+    },
+    {
+      "type": "range",
+      "id": "end_minute",
+      "min": 0,
+      "max": 59,
+      "step": 1,
+      "label": "Minute",
+      "default": 59
+    },
+    {
+      "type": "header",
+      "content": "Display Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffeaee"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ef4a65"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Highlight Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "highlight_underline",
+      "label": "Underline highlighted text",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "countdown_color",
+      "label": "Countdown Numbers Color",
+      "default": "#ef4a65"
+    },
+    {
+      "type": "color",
+      "id": "countdown_label_color",
+      "label": "Countdown Labels Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#ef4a65"
+    },
+    {
+      "type": "header",
+      "content": "Countdown Label Customization"
+    },
+    {
+      "type": "text",
+      "id": "days_label",
+      "label": "Days label",
+      "default": "DAYS",
+      "info": "Customize the label for days (for different languages)"
+    },
+    {
+      "type": "text",
+      "id": "hours_label",
+      "label": "Hours label",
+      "default": "HRS",
+      "info": "Customize the label for hours (for different languages)"
+    },
+    {
+      "type": "text",
+      "id": "minutes_label",
+      "label": "Minutes label",
+      "default": "MIN",
+      "info": "Customize the label for minutes (for different languages)"
+    },
+    {
+      "type": "text",
+      "id": "seconds_label",
+      "label": "Seconds label",
+      "default": "SEC",
+      "info": "Customize the label for seconds (for different languages)"
+    },
+    {
+      "type": "header",
+      "content": "Time Format Settings"
+    },
+    {
+      "type": "text",
+      "id": "time_format_single_digit",
+      "label": "Single-digit prefix",
+      "default": "0",
+      "info": "Character to prefix single-digit numbers (e.g., '0' turns 1 into 01)"
+    },
+    {
+      "type": "text",
+      "id": "zero_value",
+      "label": "Zero time display",
+      "default": "00",
+      "info": "How to display zero values when countdown is complete"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sale Countdown Banner",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %} 

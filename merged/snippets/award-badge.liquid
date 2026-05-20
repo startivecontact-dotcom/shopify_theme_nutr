@@ -1,0 +1,124 @@
+{% comment %}
+  #1 Award Badge Snippet
+  
+  Customization parameters:
+  - badge_number: Number displayed in the badge (default: "#1")
+  - title_text: Title text for the badge (default: "BESTSELLER OF 2024")
+  - subtitle_text: Subtitle text for the badge (default: "The best against the cold")
+  - gradient_start_color: Start color for gradient (default: "#6366f1")
+  - gradient_end_color: End color for gradient (default: "#ec4899")
+  - background_color: Background color for badge content (default: "#F6F6F6")
+  - text_color: Color of the badge text (default: "#171E2C")
+  - badge_width: Width of the badge container (default: 400)
+  - badge_height: Height of the badge container (default: 25)
+  - border_radius: Border radius for the badge (default: 5)
+  - margin_top: Top margin in pixels (default: 8)
+  - margin_bottom: Bottom margin in pixels (default: 8)
+  
+  Number Badge Customization:
+  - number_badge_bg_color: Background color for the number badge, overrides gradient if set (default: uses gradient)
+  - number_badge_text_color: Text color for the number badge (default: "#FFFFFF")
+  - number_badge_font_size: Font size for the number badge in pixels (default: 11)
+  - number_badge_font_weight: Font weight for the number badge (default: 700)
+  - number_badge_width: Width of the number badge in pixels, use for fixed width (default: auto)
+  - number_badge_padding: Padding for the number badge (default: "0 10px")
+{% endcomment %}
+
+<style>
+  .award-badge-container {
+    position: relative;
+    margin-top: {{ margin_top | default: 8 }}px;
+    margin-bottom: {{ margin_bottom | default: 8 }}px;
+    width: {{ badge_width | default: 270 }}px;
+    height: {{ badge_height | default: 40 }}px;
+    max-width: 100%;
+  }
+  
+  .award-gradient-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    {% if section.settings.use_theme_colors %}
+      background: {{ settings.global_section_accent_1_color }};
+    {% else %}
+      background: linear-gradient(to right, {{ gradient_start_color | default: "#6366f1" }}, {{ gradient_end_color | default: "#ec4899" }});
+    {% endif %}
+    border-radius: {{ border_radius | default: 5 }}px;
+    padding: 1px;
+  }
+  
+  .award-badge-content {
+    position: relative;
+    background-color: {{ background_color | default: "#F6F6F6" }};
+    border-radius: {{ border_radius | minus: 1 | default: 4 }}px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .award-number-badge {
+    {% if section.settings.use_theme_colors %}
+      background: {{ settings.global_section_accent_1_color }};
+    {% else %}
+      {% if number_badge_bg_color %}
+        background: {{ number_badge_bg_color }};
+      {% else %}
+        background: linear-gradient(to right, {{ gradient_start_color | default: "#6366f1" }}, {{ gradient_end_color | default: "#ec4899" }});
+      {% endif %}
+    {% endif %}
+    padding: {{ number_badge_padding | default: "0 10px" }};
+    border-radius: {{ border_radius | minus: 1 | default: 4 }}px 0 0 {{ border_radius | minus: 1 | default: 4 }}px;
+    font-size: {{ number_badge_font_size | default: 11 }}px;
+    font-weight: {{ number_badge_font_weight | default: 700 }} !important;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ number_badge_text_color | default: "#FFFFFF" }}{% endif %} !important;
+    margin-right: 9px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    {% if number_badge_width %}width: {{ number_badge_width }}px;{% endif %}
+    min-width: fit-content;
+  }
+  
+  .award-text-container {
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ text_color | default: "#171E2C" }}{% endif %};
+  }
+  
+  .award-title {
+    font-size: 13px;
+    font-weight: var(--font-weight-bold) !important;
+    line-height: 1.2;
+    letter-spacing: var(--letter-spacing-body);
+  }
+  
+  .award-subtitle {
+    font-size: 9px;
+    line-height: 1.1;
+    letter-spacing: var(--letter-spacing-body);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  @media (max-width: 480px) {
+    .award-badge-container {
+      width: {{ badge_width | default: 270 }}px;
+      max-width: 100%;
+    }
+  }
+</style>
+
+<div class="award-badge-container" {{ block.shopify_attributes }}>
+  <div class="award-gradient-border">
+    <div class="award-badge-content">
+      <div class="award-number-badge">{{ badge_number | default: "#1" }}</div>
+      <div class="award-text-container">
+        <div class="award-title">{{ title_text | default: "BESTSELLER OF 2024" }}</div>
+        <div class="award-subtitle">{{ subtitle_text | default: "The best against the cold" }}</div>
+      </div>
+    </div>
+  </div>
+</div> 

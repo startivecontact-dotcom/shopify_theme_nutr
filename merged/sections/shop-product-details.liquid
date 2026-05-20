@@ -1,0 +1,4121 @@
+{{ 'shop-product-details.css' | asset_url | stylesheet_tag }}
+
+
+{% style %}
+  .shop-product-section {
+      letter-spacing: var(--letter-spacing-body);
+      background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.section_bg_color }}{% endif %};
+      color: {{ section.settings.text_color }};
+      --accent-color: {{ section.settings.accent_color }};
+  }
+  /* Added container class to handle the margin without affecting other sections */
+  .shop-product-info {
+      gap: {{ section.settings.blocks_spacing }}px;
+      color: {{ section.settings.text_color }};
+  }
+  .shop-main-image-wrapper {
+      background-color: {{ section.settings.main_image_bg_color }};
+  }
+  .shop-thumbnail {
+      border: 1px solid {{ section.settings.thumbnail_border_color }};
+  }
+  .shop-thumbnail.active {
+      border-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.thumbnail_active_border_color }}{% endif %};
+  }
+  .shop-indicator-dot {
+      background-color: {{ section.settings.indicator_color }};
+  }
+  .shop-indicator-dot.active {
+      background-color: {{ section.settings.indicator_active_color }};
+  }
+  .shop-nav-arrow {
+      background-color: {{ section.settings.arrow_bg_color }};
+      border: 1px solid {{ section.settings.arrow_border_color }};
+  }
+  .shop-product-title {
+      color: {{ section.settings.title_color }};
+  }
+  .shop-product-price {
+      color: {{ section.settings.price_color }} !important;
+  }
+  .shop-compare-price {
+      color: {{ section.settings.compare_price_color }} !important;
+  }
+  .shop-save-price {
+      background-color: {{ section.settings.sale_badge_bg_color }} !important;
+      color: {{ section.settings.sale_badge_text_color }} !important;
+  }
+  .shop-product-description {
+      color: {{ section.settings.description_color }};
+  }
+  .shop-read-more, .shop-read-less {
+      color: {{ section.settings.accent_color }};
+  }
+  .shop-custom-content {
+      color: {{ section.settings.custom_content_color }};
+  }
+  
+  /* Style for the add to cart button */
+  .shop-add-to-cart-button {
+      background-color: {% if section.settings.use_theme_colors %}
+                           {% if settings.use_dedicated_button_colors %}
+                             {% if settings.global_section_button_color != blank %}
+                               {{ settings.global_section_button_color }}
+                             {% else %}
+                               {{ settings.global_section_accent_1_color }}
+                             {% endif %}
+                           {% else %}
+                             {{ settings.global_section_accent_1_color }}
+                           {% endif %}
+                         {% else %}
+                           {{ section.settings.button_color }}
+                         {% endif %} !important;
+      color: {% if section.settings.use_theme_colors %}
+               {% if settings.use_dedicated_button_colors %}
+                 {% if settings.global_section_button_text_color != blank %}
+                   {{ settings.global_section_button_text_color }}
+                 {% else %}
+                   {{ settings.global_section_background_color }}
+                 {% endif %}
+               {% else %}
+                 {{ settings.global_section_background_color }}
+               {% endif %}
+             {% else %}
+               {{ section.settings.button_text_color }}
+             {% endif %} !important;
+  }
+  
+  /* Add to cart button from blocks */
+  {% for block in section.blocks %}
+    {% if block.type == 'add_to_cart' %}
+      .shop-add-to-cart-button {
+        background-color: {% if section.settings.use_theme_colors %}
+                             {% if settings.use_dedicated_button_colors %}
+                               {% if settings.global_section_button_color != blank %}
+                                 {{ settings.global_section_button_color }}
+                               {% else %}
+                                 {{ settings.global_section_accent_1_color }}
+                               {% endif %}
+                             {% else %}
+                               {{ settings.global_section_accent_1_color }}
+                             {% endif %}
+                           {% else %}
+                             {{ block.settings.buy_box_button_bg_color }}
+                           {% endif %} !important;
+        color: {% if section.settings.use_theme_colors %}
+                 {% if settings.use_dedicated_button_colors %}
+                   {% if settings.global_section_button_text_color != blank %}
+                     {{ settings.global_section_button_text_color }}
+                   {% else %}
+                     {{ settings.global_section_background_color }}
+                   {% endif %}
+                 {% else %}
+                   {{ settings.global_section_background_color }}
+                 {% endif %}
+               {% else %}
+                 {{ block.settings.buy_box_button_text_color }}
+               {% endif %} !important;
+      }
+      .shop-add-to-cart-button:hover {
+        background-color: {% if section.settings.use_theme_colors %}
+                             {% if settings.use_dedicated_button_colors %}
+                               {% if settings.global_section_button_color != blank %}
+                                 {{ settings.global_section_button_color | color_darken: 5 }}
+                               {% else %}
+                                 {{ settings.global_section_accent_1_color | color_darken: 5 }}
+                               {% endif %}
+                             {% else %}
+                               {{ settings.global_section_accent_1_color | color_darken: 5 }}
+                             {% endif %}
+                           {% else %}
+                             {{ block.settings.buy_box_button_hover_color }}
+                           {% endif %} !important;
+      }
+    {% endif %}
+  {% endfor %}
+  @media (min-width: 768px) {
+      .shop-carousel-container {
+          max-width: {{ section.settings.max_width }}%;
+      }
+  }
+
+  /* Tablet and mobile specific styles */
+  @media (max-width: 799px) {
+      .shop-product-info {
+          gap: {{ section.settings.blocks_spacing | plus: 2 }}px;
+      }
+  }
+  @media (max-width: 767px) {
+      .shop-product-info {
+          gap: {{ section.settings.blocks_spacing | plus: 2 }}px;
+      }
+  }
+{% endstyle %}
+
+<div class="shop-product-section" {{ block.shopify_attributes }}>
+  <div class="shop-product-inner-container">
+    <div class="shop-product-layout">
+      {% render 'product-gallary', product: product %}
+
+      <!-- Product Information Column -->
+      {% if section.settings.show_product_info %}
+        <div class="shop-product-info">
+          {% render 'product-info', product: product %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{{ 'product-details.js' | asset_url | script_tag }}
+ {{ 'product-info.js' | asset_url | script_tag }}
+ {{ 'product-form.js' | asset_url | script_tag }}
+{{ 'shop-product-details.js' | asset_url | script_tag }}
+{% schema %}
+{
+  "name": "Product Details",
+  "class": "shop-product-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use Theme Colors",
+      "default": true,
+      "info": "When enabled, the section will use your global theme colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "blocks_spacing",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 4,
+      "label": "Spacing between blocks (px)"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#EEEEEE"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_info",
+      "label": "Show product information",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Image Gallery Settings"
+    },
+    {
+      "type": "color",
+      "id": "main_image_bg_color",
+      "label": "Main image background",
+      "default": "#F8F8F8"
+    },
+    {
+      "type": "color",
+      "id": "thumbnail_border_color",
+      "label": "Thumbnail border color",
+      "default": "#EEEEEE"
+    },
+    {
+      "type": "color",
+      "id": "thumbnail_active_border_color",
+      "label": "Thumbnail active border",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "arrow_bg_color",
+      "label": "Navigation arrow background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "arrow_border_color",
+      "label": "Navigation arrow border",
+      "default": "#EEEEEE"
+    },
+    {
+      "type": "color",
+      "id": "arrow_icon_color",
+      "label": "Navigation arrow icon",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "dots_color",
+      "label": "Navigation dots color",
+      "default": "#CCCCCC"
+    }
+  ],
+  "blocks": [
+
+    {
+      "name": "Title",
+      "type": "title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "use_custom_title",
+          "label": "Use custom title",
+          "default": false,
+          "info": "When enabled, displays custom text instead of product title"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom title text",
+          "default": "Custom Product Title",
+          "info": "Override the product title with custom text"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 16,
+          "max": 48,
+          "step": 1,
+          "default": 24,
+          "label": "Font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 0,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 0,
+          "label": "Bottom margin (px)"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "line_height",
+          "min": 0.8,
+          "max": 2,
+          "step": 0.1,
+          "default": 1.2,
+          "label": "Line height"
+        }
+      ]
+    },
+    {
+      "name": "Price",
+      "type": "price",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Color Settings"
+        },
+        {
+          "type": "color",
+          "id": "price_color",
+          "label": "Price color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "compare_price_color",
+          "label": "Compare price color",
+          "default": "#999999"
+        },
+        {
+          "type": "color",
+          "id": "sale_badge_bg_color",
+          "label": "Sale badge background",
+          "default": "#FF424E"
+        },
+        {
+          "type": "color",
+          "id": "sale_badge_text_color",
+          "label": "Sale badge text",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "header",
+          "content": "Size Settings"
+        },
+        {
+          "type": "range",
+          "id": "price_font_size",
+          "min": 14,
+          "max": 36,
+          "step": 1,
+          "default": 24,
+          "label": "Price font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "compare_price_font_size",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "default": 16,
+          "label": "Compare price font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "save_badge_font_size",
+          "min": 8,
+          "max": 16,
+          "step": 1,
+          "default": 12,
+          "label": "Save badge font size (px)"
+        },
+        {
+          "type": "select",
+          "id": "price_font_weight",
+          "label": "Price font weight",
+          "options": [
+            {
+              "value": "400",
+              "label": "Regular"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semibold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "header",
+          "content": "Spacing Settings"
+        },
+        {
+          "type": "range",
+          "id": "price_margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 5,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "price_margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": -10,
+          "label": "Bottom margin (px)"
+        },
+        {
+          "type": "header",
+          "content": "Save Badge Icon"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_save_icon",
+          "label": "Show save tag icon",
+          "default": true,
+          "info": "Shows a tag icon next to the save text (customizable in theme settings or below)"
+        },
+        {
+          "type": "range",
+          "id": "save_icon_size_ratio",
+          "min": 0.5,
+          "max": 1.0,
+          "step": 0.1,
+          "default": 0.9,
+          "label": "Icon size ratio"
+        },
+        {
+          "type": "range",
+          "id": "save_icon_position_y",
+          "min": -10,
+          "max": 10,
+          "step": 1,
+          "default": 0,
+          "label": "Icon vertical position (px)",
+          "info": "Move the icon up (-) or down (+)"
+        },
+        {
+          "type": "header",
+          "content": "Save Badge Padding"
+        },
+        {
+          "type": "range",
+          "id": "save_badge_padding_v",
+          "min": 0,
+          "max": 15,
+          "step": 1,
+          "default": 3,
+          "label": "Vertical padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "save_badge_padding_h",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 6,
+          "label": "Horizontal padding (px)"
+        },
+        {
+          "type": "header",
+          "content": "Save Badge Text"
+        },
+        {
+          "type": "text",
+          "id": "custom_save_text",
+          "label": "Custom save text",
+          "info": "Override the global 'SAVE' text for this product only. Leave blank to use the global setting."
+        }
+      ]
+    },
+    {
+      "name": "Stock Indicator",
+      "type": "stock_indicator",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content Settings"
+        },
+        {
+          "type": "text",
+          "id": "indicator_text",
+          "label": "Stock indicator text",
+          "default": "In Stock ready to ship!",
+          "info": "First word will be bold by default"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "indicator_color",
+          "label": "Indicator color",
+          "default": "#00BE20"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 10,
+          "max": 18,
+          "step": 1,
+          "default": 13,
+          "label": "Font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "dot_size",
+          "min": 6,
+          "max": 12,
+          "step": 1,
+          "default": 8,
+          "label": "Dot size (px)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_dot",
+          "label": "Show animated dot",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Layout Settings"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 5,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 5,
+          "label": "Bottom margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "container_padding_y",
+          "min": 0,
+          "max": 15,
+          "step": 1,
+          "default": 1,
+          "label": "Vertical padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "container_padding_x",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 10,
+          "label": "Horizontal padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "animation_duration",
+          "min": 1,
+          "max": 5,
+          "step": 0.5,
+          "default": 2,
+          "label": "Animation duration (seconds)",
+          "info": "For the pulsing dot animation"
+        },
+        {
+          "type": "select",
+          "id": "animation_style",
+          "label": "Animation style",
+          "options": [
+            {
+              "value": "ease",
+              "label": "Ease"
+            },
+            {
+              "value": "linear",
+              "label": "Linear"
+            },
+            {
+              "value": "ease-in",
+              "label": "Ease In"
+            },
+            {
+              "value": "ease-out",
+              "label": "Ease Out"
+            },
+            {
+              "value": "ease-in-out",
+              "label": "Ease In Out"
+            }
+          ],
+          "default": "ease-in-out"
+        }
+      ]
+    },
+    {
+      "name": "Simple Variant Picker",
+      "type": "simple_variant_picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Color Swatch Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_color_swatches",
+          "label": "Enable color swatches",
+          "default": true,
+          "info": "Displays color options as swatches instead of buttons. Options with 'color' or 'colour' in their name will be shown as swatches."
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_size_preset",
+          "label": "Enable size presets",
+          "default": true,
+          "info": "Displays size options in a special format. Options with 'size' in their name will use this format."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_variant_images",
+          "label": "Show variant images",
+          "default": true,
+          "info": "When enabled, selecting a variant will update the product images to match the variant."
+        },
+        {
+          "type": "header",
+          "content": "Label Settings"
+        },
+        {
+          "type": "text",
+          "id": "color_option_label",
+          "label": "Color option label",
+          "default": "Color",
+          "info": "Customizes the label for color options (if present)"
+        },
+        {
+          "type": "text",
+          "id": "size_option_label",
+          "label": "Size option label",
+          "default": "Size",
+          "info": "Customizes the label for size options (if present)"
+        },
+        {
+          "type": "text",
+          "id": "custom_option_label_1",
+          "label": "Custom option 1 label",
+          "info": "Customizes the label for the first custom option (if not color or size)"
+        },
+        {
+          "type": "text",
+          "id": "custom_option_label_2",
+          "label": "Custom option 2 label",
+          "info": "Customizes the label for the second custom option (if not color or size)"
+        },
+        {
+          "type": "text",
+          "id": "custom_option_label_3",
+          "label": "Custom option 3 label",
+          "info": "Customizes the label for the third custom option (if not color or size)"
+        },
+        {
+          "type": "color",
+          "id": "label_color",
+          "label": "Label text color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "label_size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "default": 14,
+          "label": "Label font size (px)"
+        },
+        {
+          "type": "header",
+          "content": "Option Button Settings"
+        },
+        {
+          "type": "color",
+          "id": "option_bg_color",
+          "label": "Background color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "option_border_color",
+          "label": "Border color",
+          "default": "#DDDDDD"
+        },
+        {
+          "type": "color",
+          "id": "option_text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "option_size",
+          "min": 8,
+          "max": 20,
+          "step": 1,
+          "default": 14,
+          "label": "Font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "option_border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 4,
+          "label": "Corner radius (px)"
+        },
+        {
+          "type": "header",
+          "content": "Selected Option Settings"
+        },
+        {
+          "type": "color",
+          "id": "selected_bg_color",
+          "label": "Background color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "selected_text_color",
+          "label": "Text color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "selected_border_color",
+          "label": "Border color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "selected_variant_color",
+          "label": "Selected variant text color",
+          "default": "#000000"
+        },
+        {
+          "type": "header",
+          "content": "Color Swatch Styles"
+        },
+        {
+          "type": "range",
+          "id": "swatch_size",
+          "min": 20,
+          "max": 50,
+          "step": 2,
+          "default": 30,
+          "label": "Swatch size (px)"
+        },
+        {
+          "type": "color",
+          "id": "swatch_bg_color",
+          "label": "Default swatch color",
+          "default": "#CCCCCC",
+          "info": "Used for color options that don't have a defined custom color."
+        },
+        {
+          "type": "color",
+          "id": "outline_color",
+          "label": "Swatch outline color",
+          "default": "#e5e5e5",
+          "info": "Color for the larger circle outline around color swatches."
+        },
+        {
+          "type": "textarea",
+          "id": "custom_color_mappings",
+          "label": "Custom color mappings",
+          "default": "red=#FF0000\nblue=#0000FF\ngreen=#00FF00\nyellow=#FFFF00\nblack=#000000\nwhite=#FFFFFF",
+          "info": "Map color names to hex codes. Format: color_name=#HEXCODE, one per line."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_selected_variant",
+          "label": "Show selected variant text",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Variant text color",
+          "default": "#000000"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Top margin",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Bottom margin",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "t:sections.custom-liquid.name",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "t:sections.custom-liquid.settings.custom_liquid.label",
+          "info": "t:sections.custom-liquid.settings.custom_liquid.info"
+        }
+      ]
+    },
+    {
+      "name": "Facebook Review",
+      "type": "facebook_review",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Review Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Reviewer avatar"
+        },
+        {
+          "type": "text",
+          "id": "username",
+          "label": "Reviewer name",
+          "default": "Jane Smith"
+        },
+        {
+          "type": "textarea",
+          "id": "review_content",
+          "label": "Review text",
+          "default": "I absolutely love this product! It's been a game changer for me. The quality is exceptional and it works exactly as described. Shipping was fast and the customer service was outstanding. Highly recommend to anyone looking for this type of solution."
+        },
+        {
+          "type": "header",
+          "content": "Star Rating Settings"
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "label": "Star color",
+          "default": "#1877F2"
+        },
+        {
+          "type": "color",
+          "id": "empty_star_color",
+          "label": "Empty star color",
+          "default": "#CCD0D5"
+        },
+        {
+          "type": "header",
+          "content": "Layout Settings"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Top margin",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Bottom margin",
+          "default": 8
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "type": "reviews",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Star Rating Settings"
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "label": "Star color",
+          "default": "#EF4A65"
+        },
+        {
+          "type": "color",
+          "id": "empty_star_color",
+          "label": "Empty star color",
+          "default": "#E0E0E0"
+        },
+        {
+          "type": "header",
+          "content": "Rating Text Settings"
+        },
+        {
+          "type": "text",
+          "id": "rating_label",
+          "label": "Rating label text",
+          "default": "Rated",
+          "info": "Text displayed before the rating (e.g., 'Rated')"
+        },
+        {
+          "type": "text",
+          "id": "custom_rating",
+          "label": "Custom rating value",
+          "default": "4.7",
+          "info": "Override the product rating value. Leave blank to use the product's actual rating."
+        },
+        {
+          "type": "text",
+          "id": "custom_rating_count",
+          "label": "Custom rating count",
+          "default": "137",
+          "info": "Override the number of reviews. Leave blank to use the product's actual review count."
+        },
+        {
+          "type": "color",
+          "id": "rating_text_color",
+          "label": "Rating text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "rating_count_color",
+          "label": "Review count color",
+          "default": "#777777"
+        },
+        {
+          "type": "header",
+          "content": "Satisfaction Badge Settings"
+        },
+        {
+          "type": "text",
+          "id": "satisfaction_text",
+          "label": "Satisfaction text",
+          "default": "Happy Customers"
+        },
+        {
+          "type": "color",
+          "id": "satisfaction_text_color",
+          "label": "Satisfaction text color",
+          "default": "#EF4A65"
+        },
+        {
+          "type": "color",
+          "id": "satisfaction_bg_color",
+          "label": "Satisfaction background",
+          "default": "#FFEAEE"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 50,
+          "step": 5,
+          "default": 0,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 50,
+          "step": 5,
+          "default": 15,
+          "label": "Bottom margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Award Badge",
+      "type": "award_badge",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "award_badge_text",
+          "label": "Badge text",
+          "default": "🏆 Award-Winning Product"
+        },
+        {
+          "type": "color",
+          "id": "award_badge_text_color",
+          "label": "Badge text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "award_badge_bg_color",
+          "label": "Badge background",
+          "default": "#FFF7E2"
+        },
+        {
+          "type": "color",
+          "id": "award_badge_border_color",
+          "label": "Badge border",
+          "default": "#FFE9B3"
+        },
+        {
+          "type": "range",
+          "id": "award_badge_border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 20,
+          "label": "Badge border radius"
+        },
+        {
+          "type": "range",
+          "id": "award_badge_font_size",
+          "min": 8,
+          "max": 18,
+          "step": 1,
+          "default": 12,
+          "label": "Badge font size"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "award_badge_margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 0,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "award_badge_margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 0,
+          "label": "Bottom margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Benefits Grid",
+      "type": "benefits_grid",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Benefit Texts"
+        },
+        {
+          "type": "text",
+          "id": "benefit_1_text",
+          "label": "Benefit 1 text",
+          "default": "Painless Hair Removal"
+        },
+        {
+          "type": "checkbox",
+          "id": "benefit_1_use_image",
+          "label": "Use image for Benefit 1 icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "benefit_1_image",
+          "label": "Image for Benefit 1"
+        },
+        {
+          "type": "checkbox",
+          "id": "benefit_1_use_custom_icon",
+          "label": "Use custom SVG for Benefit 1 icon",
+          "default": false,
+          "info": "Image takes priority if both are enabled"
+        },
+        {
+          "type": "textarea",
+          "id": "benefit_1_custom_icon",
+          "label": "Custom SVG icon for Benefit 1",
+          "info": "Paste SVG code here. For dynamic color set by 'Icon stroke color', use `fill=\"currentColor\"` or `stroke=\"currentColor\"` in your SVG elements. Will use default icon if empty."
+        },
+        {
+          "type": "text",
+          "id": "benefit_2_text",
+          "label": "Benefit 2 text",
+          "default": "Long-Lasting Results"
+        },
+        {
+          "type": "checkbox",
+          "id": "benefit_2_use_image",
+          "label": "Use image for Benefit 2 icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "benefit_2_image",
+          "label": "Image for Benefit 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "benefit_2_use_custom_icon",
+          "label": "Use custom SVG for Benefit 2 icon",
+          "default": false,
+          "info": "Image takes priority if both are enabled"
+        },
+        {
+          "type": "textarea",
+          "id": "benefit_2_custom_icon",
+          "label": "Custom SVG icon for Benefit 2",
+          "info": "Paste SVG code here. For dynamic color set by 'Icon stroke color', use `fill=\"currentColor\"` or `stroke=\"currentColor\"` in your SVG elements. Will use default icon if empty."
+        },
+        {
+          "type": "text",
+          "id": "benefit_3_text",
+          "label": "Benefit 3 text",
+          "default": "Gentle on Sensitive Skin"
+        },
+        {
+          "type": "checkbox",
+          "id": "benefit_3_use_image",
+          "label": "Use image for Benefit 3 icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "benefit_3_image",
+          "label": "Image for Benefit 3"
+        },
+        {
+          "type": "checkbox",
+          "id": "benefit_3_use_custom_icon",
+          "label": "Use custom SVG for Benefit 3 icon",
+          "default": false,
+          "info": "Image takes priority if both are enabled"
+        },
+        {
+          "type": "textarea",
+          "id": "benefit_3_custom_icon",
+          "label": "Custom SVG icon for Benefit 3",
+          "info": "Paste SVG code here. For dynamic color set by 'Icon stroke color', use `fill=\"currentColor\"` or `stroke=\"currentColor\"` in your SVG elements. Will use default icon if empty."
+        },
+        {
+          "type": "text",
+          "id": "benefit_4_text",
+          "label": "Benefit 4 text",
+          "default": "Clinically Proven Results"
+        },
+        {
+          "type": "checkbox",
+          "id": "benefit_4_use_image",
+          "label": "Use image for Benefit 4 icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "benefit_4_image",
+          "label": "Image for Benefit 4"
+        },
+        {
+          "type": "checkbox",
+          "id": "benefit_4_use_custom_icon",
+          "label": "Use custom SVG for Benefit 4 icon",
+          "default": false,
+          "info": "Image takes priority if both are enabled"
+        },
+        {
+          "type": "textarea",
+          "id": "benefit_4_custom_icon",
+          "label": "Custom SVG icon for Benefit 4",
+          "info": "Paste SVG code here. For dynamic color set by 'Icon stroke color', use `fill=\"currentColor\"` or `stroke=\"currentColor\"` in your SVG elements. Will use default icon if empty."
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "icon_bg_color",
+          "label": "Icon background color",
+          "default": "#FFEAEE"
+        },
+        {
+          "type": "color",
+          "id": "icon_stroke_color",
+          "label": "Icon stroke color",
+          "default": "#EF4A65"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#EF4A65"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 10,
+          "max": 18,
+          "step": 1,
+          "default": 12,
+          "label": "Font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 16,
+          "max": 36,
+          "step": 2,
+          "default": 24,
+          "label": "Icon size (px)"
+        },
+        {
+          "type": "range",
+          "id": "icon_container_size",
+          "min": 24,
+          "max": 60,
+          "step": 4,
+          "default": 36,
+          "label": "Icon background size (px)"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap",
+          "min": 5,
+          "max": 30,
+          "step": 1,
+          "default": 15,
+          "label": "Grid gap (px)"
+        },
+        {
+          "type": "header",
+          "content": "Layout Settings"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_top",
+          "min": -50,
+          "max": 50,
+          "step": 1,
+          "default": 15,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_bottom",
+          "min": -50,
+          "max": 50,
+          "step": 1,
+          "default": 15,
+          "label": "Bottom margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Add to Cart",
+      "type": "add_to_cart",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Button Settings"
+        },
+        {
+          "type": "text",
+          "id": "button_text_override",
+          "label": "Override Button Text",
+          "default": "Buy Now",
+          "info": "Completely overrides the default 'Add to Cart' text with your custom text. This text will remain even after adding to cart."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_price_in_button",
+          "label": "Show price in button",
+          "default": true,
+          "info": "When enabled, displays the product price alongside the button text"
+        },
+        {
+          "type": "select",
+          "id": "button_icon",
+          "label": "Button icon",
+          "options": [
+            {
+              "value": "none",
+              "label": "No icon"
+            },
+            {
+              "value": "cart",
+              "label": "Cart"
+            },
+            {
+              "value": "bag",
+              "label": "Shopping bag"
+            },
+            {
+              "value": "arrow",
+              "label": "Arrow"
+            },
+            {
+              "value": "custom",
+              "label": "Custom"
+            }
+          ],
+          "default": "cart"
+        },
+        {
+          "type": "html",
+          "id": "custom_icon",
+          "label": "Custom icon SVG",
+          "info": "Paste your SVG code here. SVGs should be simple, single-color designs that work with the button's text color. For best results, use SVGs with viewBox attribute and no hard-coded colors (the icon will inherit the button text color)."
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 12,
+          "max": 32,
+          "step": 1,
+          "default": 20,
+          "label": "Icon size (px)"
+        },
+        {
+          "type": "color",
+          "id": "buy_box_button_bg_color",
+          "label": "Button background",
+          "default": "#EF4A65"
+        },
+        {
+          "type": "color",
+          "id": "buy_box_button_text_color",
+          "label": "Button text color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "buy_box_button_hover_color",
+          "label": "Button hover background",
+          "default": "#EF4A65"
+        }
+      ]
+    },
+    {
+      "name": "Guarantee Badges",
+      "type": "guarantee_badges",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "First Badge"
+        },
+        {
+          "type": "checkbox",
+          "id": "badge_1_show",
+          "label": "Show first badge",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "badge_1_text",
+          "label": "Badge text",
+          "default": "30-Day Money-Back Guarantee"
+        },
+        {
+          "type": "select",
+          "id": "badge_1_icon",
+          "label": "Badge icon",
+          "options": [
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "checkmark",
+              "label": "Checkmark"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "custom",
+              "label": "Custom"
+            }
+          ],
+          "default": "shield"
+        },
+        {
+          "type": "html",
+          "id": "badge_1_custom_icon",
+          "label": "Custom icon SVG",
+          "info": "Only used if Custom is selected above"
+        },
+        {
+          "type": "header",
+          "content": "Second Badge"
+        },
+        {
+          "type": "checkbox",
+          "id": "badge_2_show",
+          "label": "Show second badge",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "badge_2_text",
+          "label": "Badge text",
+          "default": "Free Shipping Included"
+        },
+        {
+          "type": "select",
+          "id": "badge_2_icon",
+          "label": "Badge icon",
+          "options": [
+            {
+              "value": "checkmark",
+              "label": "Checkmark"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "custom",
+              "label": "Custom"
+            }
+          ],
+          "default": "checkmark"
+        },
+        {
+          "type": "html",
+          "id": "badge_2_custom_icon",
+          "label": "Custom icon SVG",
+          "info": "Only used if Custom is selected above"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon color",
+          "default": "#EF4A65"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_top",
+          "min": -20,
+          "max": 30,
+          "step": 5,
+          "default": 10,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_right",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "default": 0,
+          "unit": "px",
+          "label": "Right margin"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_bottom",
+          "min": -20,
+          "max": 30,
+          "step": 5,
+          "default": 15,
+          "unit": "px",
+          "label": "Bottom margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_left",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "default": 0,
+          "unit": "px",
+          "label": "Left margin"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 9,
+          "max": 18,
+          "step": 1,
+          "default": 11,
+          "label": "Font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 8,
+          "max": 24,
+          "step": 1,
+          "default": 12,
+          "label": "Icon size (px)"
+        },
+        {
+          "type": "range",
+          "id": "gap",
+          "min": 2,
+          "max": 24,
+          "step": 1,
+          "default": 6,
+          "label": "Gap between badges (px)"
+        },
+        {
+          "type": "checkbox",
+          "id": "align_center",
+          "label": "Center badges",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_stack",
+          "label": "Stack badges on mobile",
+          "default": false
+        }
+      ]
+    },
+    {
+      "name": "Custom Content",
+      "type": "custom_content",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "custom_content",
+          "label": "Custom content"
+        }
+      ]
+    },
+    {
+      "name": "Free Shipping Notice",
+      "type": "shipping_notice",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content Settings"
+        },
+        {
+          "type": "text",
+          "id": "notice_text_before",
+          "label": "Text before date",
+          "info": "Use HTML tag <span class=\"free-shipping-highlight\">FREE</span> to highlight text"
+        },
+        {
+          "type": "text",
+          "id": "notice_text_after",
+          "label": "Text after date",
+          "info": "Any additional text to show after the date"
+        },
+        {
+          "type": "range",
+          "id": "days_ahead",
+          "min": 1,
+          "max": 14,
+          "step": 1,
+          "default": 2,
+          "label": "Days ahead for delivery"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_suffix",
+          "label": "Show date suffix (st, nd, rd, th)",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "highlight_color",
+          "label": "Highlight color",
+          "default": "#4CAF50"
+        },
+        {
+          "type": "color",
+          "id": "dot_color",
+          "label": "Dot color",
+          "default": "#4CAF50"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background color",
+          "default": "#f5f5f5"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 9,
+          "max": 18,
+          "step": 1,
+          "default": 12,
+          "label": "Font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_top",
+          "min": -50,
+          "max": 20,
+          "step": 1,
+          "default": -20,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_bottom",
+          "min": 0,
+          "max": 50,
+          "step": 5,
+          "default": 15,
+          "label": "Bottom margin (px)"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_animation",
+          "label": "Enable dot animation",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "suffix_text",
+          "label": "Suffix text",
+          "default": "."
+        }
+      ]
+    },
+    {
+      "type": "video_carousel_standalone",
+      "name": "Video Carousel",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "See it in action"
+        },
+        {
+          "type": "range",
+          "id": "heading_size",
+          "min": 12,
+          "max": 36,
+          "step": 2,
+          "unit": "px",
+          "label": "Heading font size",
+          "default": 24
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading text color",
+          "default": "#333333"
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Play button color",
+          "default": "#04C7FF"
+        },
+        {
+          "type": "color",
+          "id": "scrollbar_color",
+          "label": "Scrollbar color",
+          "default": "#04C7FF"
+        }
+      ]
+    },
+    {
+      "type": "carousel_default_video",
+      "name": "Shopify Video",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Shopify hosted video"
+        }
+      ]
+    },
+    {
+      "name": "Product FAQ",
+      "type": "product_faq",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "FAQ Display Options"
+        },
+        {
+          "type": "range",
+          "id": "items_limit",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Maximum FAQ items to show"
+        },
+        {
+          "type": "range",
+          "id": "image_size",
+          "min": 20,
+          "max": 60,
+          "step": 5,
+          "default": 30,
+          "label": "Question image size (px)"
+        },
+        {
+          "type": "range",
+          "id": "image_border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 4,
+          "label": "Image border radius (px)"
+        },
+        {
+          "type": "select",
+          "id": "image_fit",
+          "options": [
+            {
+              "value": "cover",
+              "label": "Cover (crop to fill)"
+            },
+            {
+              "value": "contain",
+              "label": "Contain (show entire image)"
+            }
+          ],
+          "default": "cover",
+          "label": "Image fit style"
+        },
+        {
+          "type": "header",
+          "content": "Text & Spacing"
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 12,
+          "max": 18,
+          "step": 1,
+          "default": 14,
+          "label": "Question text size (px)"
+        },
+        {
+          "type": "range",
+          "id": "answer_text_size",
+          "min": 11,
+          "max": 16,
+          "step": 1,
+          "default": 13,
+          "label": "Answer text size (px)"
+        },
+        {
+          "type": "range",
+          "id": "item_padding",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "default": 5,
+          "label": "Item padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "question_padding",
+          "min": 4,
+          "max": 16,
+          "step": 2,
+          "default": 8,
+          "label": "Question padding (px)"
+        },
+        {
+          "type": "header",
+          "content": "FAQ Appearance"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 30,
+          "step": 5,
+          "default": 10,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 30,
+          "step": 5,
+          "default": 10,
+          "label": "Bottom margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 10,
+          "label": "Border radius (px)"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border color",
+          "default": "#e5e5e5"
+        },
+        {
+          "type": "header",
+          "content": "Questions"
+        },
+        {
+          "type": "color",
+          "id": "question_color",
+          "label": "Question text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "question_bg_color",
+          "label": "Question background color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "header",
+          "content": "Answers"
+        },
+        {
+          "type": "color",
+          "id": "answer_color",
+          "label": "Answer text color",
+          "default": "#666666"
+        },
+        {
+          "type": "color",
+          "id": "answer_bg_color",
+          "label": "Answer background color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "checkbox",
+          "id": "accordion_mode",
+          "label": "Accordion mode (only one answer open at a time)",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "FAQ Items"
+        },
+        {
+          "type": "text",
+          "id": "question_1",
+          "label": "Question 1",
+          "default": "Description"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_1",
+          "label": "Answer 1",
+          "default": "<p>Product description goes here.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "question_1_image",
+          "label": "Question 1 image icon (optional)"
+        },
+        {
+          "type": "text",
+          "id": "question_2",
+          "label": "Question 2",
+          "default": "How to apply"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_2",
+          "label": "Answer 2",
+          "default": "<p>Application instructions go here.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "question_2_image",
+          "label": "Question 2 image icon (optional)"
+        },
+        {
+          "type": "text",
+          "id": "question_3",
+          "label": "Question 3",
+          "default": "Ingredients"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_3",
+          "label": "Answer 3",
+          "default": "<p>List of ingredients goes here.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "question_3_image",
+          "label": "Question 3 image icon (optional)"
+        },
+        {
+          "type": "text",
+          "id": "question_4",
+          "label": "Question 4",
+          "default": "Does it really work?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_4",
+          "label": "Answer 4",
+          "default": "<p>Information about efficacy goes here.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "question_4_image",
+          "label": "Question 4 image icon (optional)"
+        },
+        {
+          "type": "text",
+          "id": "question_5",
+          "label": "Question 5",
+          "default": "What is the 100% results guarantee?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer_5",
+          "label": "Answer 5",
+          "default": "<p>Details about the guarantee go here.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "question_5_image",
+          "label": "Question 5 image icon (optional)"
+        }
+      ]
+    },
+    {
+      "name": "Customer Review",
+      "type": "customer_review",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Review Content"
+        },
+        {
+          "type": "text",
+          "id": "reviewer_name",
+          "label": "Reviewer name",
+          "default": "Lauren J."
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review text",
+          "default": "This product exceeded my expectations. The quality is outstanding and I would highly recommend it to anyone."
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5,
+          "label": "Rating"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_url",
+          "label": "Avatar image"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "background_color_start",
+          "label": "Background color start",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "background_color_end",
+          "label": "Background color end",
+          "default": "#f8f8f8"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border color",
+          "default": "#dcdcdc"
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "label": "Star color",
+          "default": "#FFB800"
+        },
+        {
+          "type": "header",
+          "content": "Margin Settings"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": 0,
+          "max": 30,
+          "step": 5,
+          "default": 15,
+          "unit": "px",
+          "label": "Top margin"
+        },
+        {
+          "type": "range",
+          "id": "margin_right",
+          "min": 0,
+          "max": 30,
+          "step": 5,
+          "default": 0,
+          "unit": "px",
+          "label": "Right margin"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": 0,
+          "max": 30,
+          "step": 5,
+          "default": 15,
+          "unit": "px",
+          "label": "Bottom margin"
+        },
+        {
+          "type": "range",
+          "id": "margin_left",
+          "min": 0,
+          "max": 30,
+          "step": 5,
+          "default": 0,
+          "unit": "px",
+          "label": "Left margin"
+        },
+        {
+          "type": "color",
+          "id": "verified_icon_color",
+          "label": "Verified Icon Color",
+          "default": "#4CAF50"
+        },
+        {
+          "type": "color",
+          "id": "review_text_color",
+          "label": "Review Text Color",
+          "default": "#666666"
+        }
+      ]
+    },
+    {
+      "name": "Emoji Benefits List",
+      "type": "emoji_benefits",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Benefits"
+        },
+        {
+          "type": "text",
+          "id": "benefit_1",
+          "label": "Benefit 1",
+          "default": "Premium quality materials for durability"
+        },
+        {
+          "type": "text",
+          "id": "emoji_1",
+          "label": "Emoji 1",
+          "default": "✨",
+          "info": "Enter an emoji character"
+        },
+        {
+          "type": "text",
+          "id": "benefit_2",
+          "label": "Benefit 2",
+          "default": "Easy to use with simple instructions"
+        },
+        {
+          "type": "text",
+          "id": "emoji_2",
+          "label": "Emoji 2",
+          "default": "👍",
+          "info": "Enter an emoji character"
+        },
+        {
+          "type": "text",
+          "id": "benefit_3",
+          "label": "Benefit 3",
+          "default": "Perfect for everyday use"
+        },
+        {
+          "type": "text",
+          "id": "emoji_3",
+          "label": "Emoji 3",
+          "default": "🔄",
+          "info": "Enter an emoji character"
+        },
+        {
+          "type": "header",
+          "content": "Additional Benefits (optional)"
+        },
+        {
+          "type": "text",
+          "id": "benefit_4",
+          "label": "Benefit 4 (optional)"
+        },
+        {
+          "type": "text",
+          "id": "emoji_4",
+          "label": "Emoji 4",
+          "default": "💯",
+          "info": "Enter an emoji character"
+        },
+        {
+          "type": "text",
+          "id": "benefit_5",
+          "label": "Benefit 5 (optional)"
+        },
+        {
+          "type": "text",
+          "id": "emoji_5",
+          "label": "Emoji 5",
+          "default": "⭐",
+          "info": "Enter an emoji character"
+        },
+        {
+          "type": "text",
+          "id": "benefit_6",
+          "label": "Benefit 6 (optional)"
+        },
+        {
+          "type": "text",
+          "id": "emoji_6",
+          "label": "Emoji 6",
+          "default": "🎁",
+          "info": "Enter an emoji character"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 12,
+          "max": 20,
+          "step": 1,
+          "default": 14,
+          "label": "Text font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "spacing",
+          "min": 5,
+          "max": 20,
+          "step": 1,
+          "default": 10,
+          "label": "Spacing between items (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 0,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 15,
+          "label": "Bottom margin (px)"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background color",
+          "default": "#F7F7F7"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 4,
+          "label": "Border radius (px)"
+        },
+        {
+          "type": "checkbox",
+          "id": "text_bold",
+          "label": "Bold text",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Text font weight",
+          "options": [
+            {
+              "value": "400",
+              "label": "Regular (400)"
+            },
+            {
+              "value": "500",
+              "label": "Medium (500)"
+            },
+            {
+              "value": "600",
+              "label": "Semi-Bold (600)"
+            },
+            {
+              "value": "700",
+              "label": "Bold (700)"
+            }
+          ],
+          "default": "400"
+        }
+      ]
+    },
+    {
+      "name": "Delivery Date",
+      "type": "delivery_date",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Heading Settings"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading text",
+          "default": "Delivery Information"
+        },
+        {
+          "type": "color",
+          "id": "heading_color",
+          "label": "Heading color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "heading_size",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "default": 16,
+          "label": "Heading size (px)"
+        },
+        {
+          "type": "header",
+          "content": "Delivery Date Settings"
+        },
+        {
+          "type": "range",
+          "id": "shipping_days",
+          "min": 1,
+          "max": 14,
+          "step": 1,
+          "default": 5,
+          "label": "Shipping days"
+        },
+        {
+          "type": "text",
+          "id": "text_before",
+          "label": "Text before date",
+          "default": "Arrives by"
+        },
+        {
+          "type": "text",
+          "id": "text_after",
+          "label": "Text after date",
+          "default": "."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show delivery icon",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Accent color",
+          "default": "#EF4A65"
+        },
+        {
+          "type": "header",
+          "content": "Subtext Settings"
+        },
+        {
+          "type": "textarea",
+          "id": "subtext",
+          "label": "Subtext",
+          "default": "Free shipping on all orders"
+        },
+        {
+          "type": "color",
+          "id": "subtext_color",
+          "label": "Subtext color",
+          "default": "#666666"
+        },
+        {
+          "type": "range",
+          "id": "subtext_size",
+          "min": 10,
+          "max": 18,
+          "step": 1,
+          "default": 13,
+          "label": "Subtext size (px)"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 4,
+          "label": "Border radius (px)"
+        },
+        {
+          "type": "range",
+          "id": "padding",
+          "min": 5,
+          "max": 30,
+          "step": 1,
+          "default": 15,
+          "label": "Padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 0,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 15,
+          "label": "Bottom margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Number One Award",
+      "type": "number_one_award",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Badge Content"
+        },
+        {
+          "type": "text",
+          "id": "badge_number",
+          "label": "Badge number",
+          "default": "#1"
+        },
+        {
+          "type": "text",
+          "id": "title_text",
+          "label": "Title text",
+          "default": "BESTSELLER OF 2024"
+        },
+        {
+          "type": "text",
+          "id": "subtitle_text",
+          "label": "Subtitle text",
+          "default": "The best against the cold"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "gradient_start_color",
+          "label": "Gradient start color",
+          "default": "#EF4A65"
+        },
+        {
+          "type": "color",
+          "id": "gradient_end_color",
+          "label": "Gradient end color",
+          "default": "#EF4A65"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "badge_width",
+          "min": 200,
+          "max": 600,
+          "step": 10,
+          "default": 200,
+          "label": "Badge width (px)"
+        },
+        {
+          "type": "range",
+          "id": "badge_height",
+          "min": 15,
+          "max": 50,
+          "step": 1,
+          "default": 35,
+          "label": "Badge height (px)"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 5,
+          "label": "Border radius (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 8,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 8,
+          "label": "Bottom margin (px)"
+        },
+        {
+          "type": "color",
+          "id": "number_badge_text_color",
+          "label": "Number Badge Text Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "number_badge_font_size",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "default": 24,
+          "label": "Number Badge Font Size (px)"
+        },
+        {
+          "type": "select",
+          "id": "number_badge_font_weight",
+          "label": "Number Badge Font Weight",
+          "options": [
+            {
+              "value": "400",
+              "label": "Regular"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semibold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
+          ],
+          "default": "700"
+        }
+      ]
+    },
+    {
+      "name": "Custom Money Back",
+      "type": "custom_money_back",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content Settings"
+        },
+        {
+          "type": "text",
+          "id": "title_text",
+          "label": "Title text",
+          "default": "30-Day Money Back Guarantee"
+        },
+        {
+          "type": "textarea",
+          "id": "description_text",
+          "label": "Description text",
+          "default": "That's how confident we are in your results. But if you're not thrilled, send it back and we'll refund your purchase."
+        },
+        {
+          "type": "image_picker",
+          "id": "badge_image",
+          "label": "Badge image"
+        },
+        {
+          "type": "html",
+          "id": "badge_svg",
+          "label": "Badge SVG Code",
+          "info": "Paste SVG code here. Will override image if provided."
+        },
+        {
+          "type": "checkbox",
+          "id": "use_svg_badge",
+          "label": "Use SVG badge",
+          "default": false,
+          "info": "When enabled, uses the SVG code instead of the image. When disabled, uses the image even if SVG is provided."
+        },
+        {
+          "type": "range",
+          "id": "badge_size",
+          "min": 30,
+          "max": 100,
+          "step": 5,
+          "default": 50,
+          "label": "Badge size (px)"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "gradient_start_color",
+          "label": "Gradient start color",
+          "default": "#ffff00"
+        },
+        {
+          "type": "color",
+          "id": "gradient_end_color",
+          "label": "Gradient end color",
+          "default": "#ffa500"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "select",
+          "id": "border_style",
+          "label": "Border style",
+          "options": [
+            {
+              "value": "solid",
+              "label": "Solid"
+            },
+            {
+              "value": "dashed",
+              "label": "Dashed"
+            },
+            {
+              "value": "dotted",
+              "label": "Dotted"
+            },
+            {
+              "value": "double",
+              "label": "Double"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ],
+          "default": "dotted"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 6,
+          "label": "Border radius (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 0,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 0,
+          "label": "Bottom margin (px)"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_shine",
+          "label": "Enable shine effect",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Padding Settings"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "default": 3,
+          "label": "Top padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "padding_right",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "default": 10,
+          "label": "Right padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "default": 3,
+          "label": "Bottom padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "padding_left",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "default": 10,
+          "label": "Left padding (px)"
+        }
+      ]
+    },
+    {
+      "name": "Quantity Selector",
+      "type": "quantity_selector",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Quantity Selector Settings"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#f2f2f2"
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Button color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "default": 0,
+          "label": "Margin top (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "default": 12,
+          "label": "Margin bottom (px)"
+        }
+      ]
+    },
+    {
+      "name": "Divider",
+      "type": "divider",
+      "settings": [
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Divider color",
+          "default": "#e0e0e0"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Line style",
+          "options": [
+            {
+              "value": "solid",
+              "label": "Solid"
+            },
+            {
+              "value": "dashed",
+              "label": "Dashed"
+            },
+            {
+              "value": "dotted",
+              "label": "Dotted"
+            }
+          ],
+          "default": "solid"
+        },
+        {
+          "type": "range",
+          "id": "thickness",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 1,
+          "label": "Thickness (px)"
+        },
+        {
+          "type": "text",
+          "id": "width",
+          "label": "Width (% or px)",
+          "default": "100%",
+          "info": "Enter a value like '100%', '80%' or '200px'"
+        },
+        {
+          "type": "text",
+          "id": "max_width",
+          "label": "Maximum width",
+          "default": "100%",
+          "info": "Enter a value like '500px' or '100%'"
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 5,
+          "default": 10,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 5,
+          "default": 10,
+          "label": "Bottom margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Product Bullet List",
+      "type": "bullet_list",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Bullet Points"
+        },
+        {
+          "type": "text",
+          "id": "bullet_1",
+          "label": "Bullet point 1",
+          "default": "First feature or benefit"
+        },
+        {
+          "type": "text",
+          "id": "bullet_2",
+          "label": "Bullet point 2",
+          "default": "Second feature or benefit"
+        },
+        {
+          "type": "text",
+          "id": "bullet_3",
+          "label": "Bullet point 3",
+          "default": "Third feature or benefit"
+        },
+        {
+          "type": "header",
+          "content": "Custom Icons (Optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_icon_1",
+          "label": "Use custom icon for bullet 1",
+          "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_1",
+          "label": "Custom SVG for bullet 1",
+          "info": "Paste SVG code here"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_icon_2",
+          "label": "Use custom icon for bullet 2",
+          "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_2",
+          "label": "Custom SVG for bullet 2",
+          "info": "Paste SVG code here"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_icon_3",
+          "label": "Use custom icon for bullet 3",
+          "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "custom_icon_3",
+          "label": "Custom SVG for bullet 3",
+          "info": "Paste SVG code here"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon color",
+          "default": "#1C274C"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#333333"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "default": 20,
+          "label": "Icon size (px)"
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "default": 17,
+          "label": "Text size (px)"
+        },
+        {
+          "type": "range",
+          "id": "spacing",
+          "min": 5,
+          "max": 30,
+          "step": 1,
+          "default": 12,
+          "label": "Spacing between bullets (px)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_bg",
+          "label": "Enable background color",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background color",
+          "default": "#f5f5f5"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 4,
+          "label": "Border radius (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 5,
+          "default": 10,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 5,
+          "default": 10,
+          "label": "Bottom margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Limited Inventory Alert",
+      "type": "limited_inventory",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content Settings"
+        },
+        {
+          "type": "text",
+          "id": "inventory_text",
+          "label": "Alert text",
+          "default": "Limited inventory available"
+        },
+        {
+          "type": "checkbox",
+          "id": "bold_first_word",
+          "label": "Bold first word",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "dot_color",
+          "label": "Dot color",
+          "default": "#e74c3c"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#e74c3c"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_dot",
+          "label": "Show animated dot",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 10,
+          "max": 18,
+          "step": 1,
+          "default": 13,
+          "label": "Font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -25,
+          "max": 25,
+          "step": 1,
+          "default": -10,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -25,
+          "max": 25,
+          "step": 1,
+          "default": -15,
+          "label": "Bottom margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Limited Stock Indicator",
+      "type": "limited_stock",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content Settings"
+        },
+        {
+          "type": "text",
+          "id": "primary_text",
+          "label": "Primary text",
+          "default": "Limited stock:"
+        },
+        {
+          "type": "text",
+          "id": "secondary_text",
+          "label": "Secondary text",
+          "default": "Only a few left!"
+        },
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon type",
+          "options": [
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "warning",
+              "label": "Warning"
+            },
+            {
+              "value": "hourglass",
+              "label": "Hourglass"
+            }
+          ],
+          "default": "clock"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "primary_text_color",
+          "label": "Primary text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "secondary_text_color",
+          "label": "Secondary text color",
+          "default": "#e74c3c"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon color",
+          "default": "#e74c3c"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_background",
+          "label": "Show background",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#f8f8f8"
+        },
+        {
+          "type": "range",
+          "id": "vertical_padding",
+          "min": 2,
+          "max": 20,
+          "step": 1,
+          "default": 5,
+          "label": "Vertical padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "horizontal_padding",
+          "min": 5,
+          "max": 30,
+          "step": 1,
+          "default": 10,
+          "label": "Horizontal padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 4,
+          "label": "Border radius (px)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_border",
+          "label": "Show border",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border color",
+          "default": "#e0e0e0"
+        },
+        {
+          "type": "range",
+          "id": "border_width",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 1,
+          "label": "Border width (px)"
+        },
+        {
+          "type": "select",
+          "id": "border_style",
+          "label": "Border style",
+          "options": [
+            {
+              "value": "solid",
+              "label": "Solid"
+            },
+            {
+              "value": "dashed",
+              "label": "Dashed"
+            },
+            {
+              "value": "dotted",
+              "label": "Dotted"
+            }
+          ],
+          "default": "solid"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "min": 10,
+          "max": 18,
+          "step": 1,
+          "default": 13,
+          "label": "Font size (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 10,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 0,
+          "label": "Bottom margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Replica Warning",
+      "type": "replica_warning",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "warning_title",
+          "label": "Warning Title",
+          "default": "Watch Out For Cheap Replicas."
+        },
+        {
+          "type": "textarea",
+          "id": "warning_text",
+          "label": "Warning Text",
+          "default": "Only our brand guarantees the high quality product used by thousands for pain relief."
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#a40101"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "icon_background_color",
+          "label": "Icon Background Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon Color",
+          "default": "#a40101"
+        },
+        {
+          "type": "header",
+          "content": "Layout Settings"
+        },
+        {
+          "type": "range",
+          "id": "title_font_size",
+          "min": 14,
+          "max": 28,
+          "step": 1,
+          "default": 20,
+          "label": "Title Font Size (px)"
+        },
+        {
+          "type": "range",
+          "id": "text_font_size",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "default": 14,
+          "label": "Text Font Size (px)"
+        },
+        {
+          "type": "range",
+          "id": "border_width",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 1,
+          "label": "Border Width (px)"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 20,
+          "step": 1,
+          "default": 8,
+          "label": "Border Radius (px)"
+        },
+        {
+          "type": "range",
+          "id": "padding",
+          "min": 10,
+          "max": 40,
+          "step": 5,
+          "default": 10,
+          "label": "Padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 15,
+          "label": "Top Margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 15,
+          "label": "Bottom Margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Image Rating",
+      "type": "image_rating",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Avatars"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_1",
+          "label": "Avatar 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_2",
+          "label": "Avatar 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_3",
+          "label": "Avatar 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_4",
+          "label": "Avatar 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar_5",
+          "label": "Avatar 5"
+        },
+        {
+          "type": "header",
+          "content": "Rating Display"
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "label": "Star Color",
+          "default": "#FFD700"
+        },
+        {
+          "type": "text",
+          "id": "rating_text",
+          "label": "Rating Text (e.g., Excellent)",
+          "default": "Excellent"
+        },
+        {
+          "type": "text",
+          "id": "rating_value",
+          "label": "Rating Value (e.g., 4.8)",
+          "default": "4.8"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#333333"
+        },
+        {
+          "type": "color",
+          "id": "value_color",
+          "label": "Rating Value Color",
+          "default": "#777777"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 10,
+          "label": "Top Margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 10,
+          "label": "Bottom Margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Unique Rating",
+      "type": "unique_rating",
+      "settings": [
+        {
+          "type": "color",
+          "id": "star_color",
+          "label": "Star Color",
+          "default": "#FFE24D"
+        },
+        {
+          "type": "color",
+          "id": "empty_star_color",
+          "label": "Empty Star Color",
+          "default": "#D3D3D3"
+        },
+        {
+          "type": "color",
+          "id": "background_start_color",
+          "label": "Background Start Color",
+          "default": "#DFF8FF"
+        },
+        {
+          "type": "color",
+          "id": "background_end_color",
+          "label": "Background End Color",
+          "default": "#BFF1FF"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border Color",
+          "default": "#00C7FF"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#555555"
+        },
+        {
+          "type": "text",
+          "id": "rating_value",
+          "label": "Rating Value",
+          "default": "4.8"
+        },
+        {
+          "type": "text",
+          "id": "rating_count",
+          "label": "Number of Reviews",
+          "default": "198"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_top",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": 15,
+          "label": "Top Margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "container_margin_bottom",
+          "min": -20,
+          "max": 40,
+          "step": 5,
+          "default": -15,
+          "label": "Bottom Margin (px)"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_responsive",
+          "label": "Enable Mobile Responsive Styles",
+          "default": true
+        }
+      ]
+    },
+    {
+      "name": "Money Back Guarantee",
+      "type": "money_back_guarantee",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Badge Content"
+        },
+        {
+          "type": "text",
+          "id": "text_small",
+          "label": "Bold text",
+          "default": "Less than 1%"
+        },
+        {
+          "type": "text",
+          "id": "text_large",
+          "label": "Regular text",
+          "default": "of customers claim our Money Back Guarantee"
+        },
+        {
+          "type": "image_picker",
+          "id": "badge_icon",
+          "label": "Badge icon"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "container_bg_color",
+          "label": "Container background",
+          "default": "#CDF4FF",
+          "info": "Will use global accent color 2 when theme colors are enabled"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Badge border color",
+          "default": "#555555"
+        },
+        {
+          "type": "color",
+          "id": "text_small_color",
+          "label": "Bold text color",
+          "default": "#333333",
+          "info": "Will use global section text color when theme colors are enabled"
+        },
+        {
+          "type": "color",
+          "id": "text_large_color",
+          "label": "Regular text color",
+          "default": "#555555",
+          "info": "Will use global section text color when theme colors are enabled"
+        },
+        {
+          "type": "range",
+          "id": "padding",
+          "min": 5,
+          "max": 30,
+          "step": 1,
+          "default": 15,
+          "label": "Container padding (px)"
+        },
+        {
+          "type": "range",
+          "id": "badge_size",
+          "min": 30,
+          "max": 80,
+          "step": 5,
+          "default": 45,
+          "label": "Badge size (px)"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 20,
+          "max": 60,
+          "step": 5,
+          "default": 30,
+          "label": "Icon size (px)"
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "range",
+          "id": "text_small_size",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "default": 13,
+          "label": "Bold text size (px)"
+        },
+        {
+          "type": "range",
+          "id": "text_large_size",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "default": 13,
+          "label": "Regular text size (px)"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 5,
+          "default": 10,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 5,
+          "default": 10,
+          "label": "Bottom margin (px)"
+        }
+      ]
+    },
+    {
+      "name": "Viewer Count Notice",
+      "type": "viewer_notice",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content Settings"
+        },
+        {
+          "type": "text",
+          "id": "notice_text",
+          "label": "Notice text",
+          "default": "Selling Fast!"
+        },
+        {
+          "type": "text",
+          "id": "suffix_text",
+          "label": "Suffix text",
+          "default": "people are looking at this"
+        },
+        {
+          "type": "range",
+          "id": "min_viewers",
+          "min": 5,
+          "max": 100,
+          "step": 5,
+          "default": 30,
+          "label": "Minimum viewers"
+        },
+        {
+          "type": "range",
+          "id": "max_viewers",
+          "min": 10,
+          "max": 200,
+          "step": 5,
+          "default": 60,
+          "label": "Maximum viewers"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#EAF4FB"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#00AACF"
+        },
+        {
+          "type": "color",
+          "id": "dot_color",
+          "label": "Pulsing dot color",
+          "default": "#00AACF"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "default": 16,
+          "label": "Border radius (px)"
+        },
+        {
+          "type": "checkbox",
+          "id": "box_shadow",
+          "label": "Show box shadow",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 10,
+          "label": "Top margin (px)"
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "default": 0,
+          "label": "Bottom margin (px)"
+        },
+        {
+          "type": "header",
+          "content": "Border Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_border",
+          "label": "Show border",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "border_style",
+          "label": "Border style",
+          "options": [
+            {
+              "value": "solid",
+              "label": "Solid"
+            },
+            {
+              "value": "dashed",
+              "label": "Dashed"
+            },
+            {
+              "value": "dotted",
+              "label": "Dotted"
+            }
+          ],
+          "default": "dashed"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border color",
+          "default": "#B4F2FF"
+        },
+        {
+          "type": "range",
+          "id": "border_width",
+          "min": 1,
+          "max": 3,
+          "step": 1,
+          "default": 1,
+          "label": "Border width (px)"
+        },
+        {
+          "type": "header",
+          "content": "Icon Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_icon",
+          "label": "Use custom icon instead of dot",
+          "default": false
+        },
+        {
+          "type": "html",
+          "id": "custom_icon",
+          "label": "Custom SVG icon",
+          "info": "Paste SVG code here. SVG should have attributes like width, height, fill, etc."
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 12,
+          "max": 24,
+          "step": 2,
+          "default": 16,
+          "label": "Icon size (px)"
+        }
+      ]
+    },
+      {
+    "type": "@app"
+  }
+  ],
+  "presets": [
+    {
+      "name": "Enhanced Product",
+      "blocks": [
+        {
+          "type": "reviews",
+          "settings": {
+            "star_color": "#FFB800",
+            "empty_star_color": "#E0E0E0",
+            "rating_label": "Rated",
+            "custom_rating": "4.9",
+            "custom_rating_count": "357",
+            "rating_text_color": "#000000",
+            "rating_count_color": "#777777",
+            "satisfaction_text": "Happy Customers",
+            "satisfaction_text_color": "#FFFFFF",
+            "satisfaction_bg_color": "#EF4A65",
+            "margin_top": 0,
+            "margin_bottom": 10
+          }
+        },
+        {
+          "type": "title"
+        },
+        {
+          "type": "number_one_award",
+          "settings": {
+            "badge_number": "#1",
+            "title_text": "BESTSELLER OF 2024",
+            "subtitle_text": "The best choice for you",
+            "gradient_start_color": "#6366f1",
+            "gradient_end_color": "#ec4899",
+            "background_color": "#F6F6F6",
+            "text_color": "#171E2C",
+            "badge_width": 400,
+            "badge_height": 25,
+            "border_radius": 5,
+            "margin_top": 8,
+            "margin_bottom": 15
+          }
+        },
+        {
+          "type": "price"
+        },
+        {
+          "type": "benefits_grid",
+          "settings": {
+            "benefit_1_text": "Premium Quality Materials",
+            "benefit_2_text": "Easy to Use Design",
+            "benefit_3_text": "100% Satisfaction Guarantee",
+            "benefit_4_text": "Clinically Proven Results",
+            "icon_bg_color": "#FFE6F2",
+            "icon_stroke_color": "#2D001F",
+            "text_color": "#2D001F",
+            "font_size": 12,
+            "grid_gap": 15,
+            "container_margin_top": 15,
+            "container_margin_bottom": 15
+          }
+        },
+        {
+          "type": "shipping_notice",
+          "settings": {
+            "notice_text_before": "<span class=\"free-shipping-highlight\">FREE</span> SHIPPING",
+            "notice_text_after": "on All Orders",
+            "days_ahead": 2,
+            "show_suffix": true,
+            "text_color": "#000000",
+            "highlight_color": "#EF4A65",
+            "dot_color": "#EF4A65",
+            "bg_color": "#F7F7F7",
+            "font_size": 12,
+            "container_margin_top": 0,
+            "container_margin_bottom": 15,
+            "enable_animation": true,
+            "suffix_text": "."
+          }
+        },
+        {
+          "type": "quantity_selector"
+        },
+        {
+          "type": "add_to_cart"
+        },
+        {
+          "type": "guarantee_badges",
+          "settings": {
+            "badge_1_show": true,
+            "badge_1_text": "30-Day Money-Back Guarantee",
+            "badge_1_icon": "shield",
+            "badge_2_show": true,
+            "badge_2_text": "Free Shipping Included",
+            "badge_2_icon": "truck",
+            "icon_color": "#EF4A65",
+            "text_color": "#000000",
+            "font_size": 11,
+            "icon_size": 12,
+            "gap": 10
+          }
+        },
+        {
+          "type": "video_carousel_standalone",
+          "settings": {
+            "heading": "As Seen In"
+          }
+        },
+        {
+          "type": "carousel_default_video",
+          "settings": {
+            "video": ""
+          }
+        },
+        {
+          "type": "carousel_default_video",
+          "settings": {
+            "video": ""
+          }
+        },
+        {
+          "type": "carousel_default_video",
+          "settings": {
+            "video": ""
+          }
+        },
+        {
+          "type": "product_faq",
+          "settings": {
+            "margin_top": 10,
+            "margin_bottom": 10,
+            "border_radius": 10,
+            "border_color": "#e5e5e5",
+            "question_color": "#000000",
+            "question_bg_color": "#FFFFFF",
+            "answer_color": "#666666",
+            "answer_bg_color": "#FFFFFF",
+            "accordion_mode": true,
+            "text_size": 14,
+            "answer_text_size": 13,
+            "item_padding": 5,
+            "question_padding": 8,
+            "image_size": 30,
+            "image_border_radius": 4,
+            "image_fit": "cover",
+            "items_limit": 5,
+            "question_1": "What makes this product unique?",
+            "answer_1": "<p>Our product stands out with its premium quality materials, innovative design, and exceptional performance.</p>",
+            "question_2": "How do I use this product?",
+            "answer_2": "<p>Using our product is simple. Just follow the included instructions for best results.</p>",
+            "question_3": "What are the ingredients?",
+            "answer_3": "<p>We use only the highest quality ingredients. For a complete list, please refer to the product packaging.</p>",
+            "question_4": "How long does shipping take?",
+            "answer_4": "<p>Most orders ship within 1-2 business days and typically arrive within 3-5 business days.</p>",
+            "question_5": "What is your return policy?",
+            "answer_5": "<p>We offer a 30-day money-back guarantee. If you're not completely satisfied, return the product for a full refund.</p>"
+          }
+        },
+        {
+          "type": "customer_review",
+          "settings": {
+            "reviewer_name": "Sarah T.",
+            "review_text": "I absolutely love this product! It exceeded all my expectations and I've already recommended it to all my friends.",
+            "rating": 5,
+            "background_color_start": "#ffffff",
+            "background_color_end": "#f8f8f8",
+            "text_color": "#000000",
+            "border_color": "#dcdcdc",
+            "star_color": "#FFB800",
+            "margin_top": 15,
+            "margin_bottom": 15
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

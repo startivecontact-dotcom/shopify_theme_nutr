@@ -1,0 +1,1494 @@
+
+<div class="reviews-transformation-section" 
+     style="background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.section_background }}{% endif %};">
+  <div class="rating-summary-wrapper">
+    <div class="reviews-rating-summary" style="background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_2_color }}{% else %}{{ section.settings.rating_summary_bg_color }}{% endif %};">
+      <span class="rating-stars">
+        <div class="stars">
+          {% for i in (1..5) %}
+            <svg class="star summary-star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.5245 3.46353C11.6741 3.00287 12.3259 3.00287 12.4755 3.46353L14.1329 8.56434C14.1998 8.77035 14.3918 8.90983 14.6084 8.90983H19.9717C20.4561 8.90983 20.6575 9.52964 20.2656 9.81434L15.9266 12.9668C15.7514 13.0941 15.678 13.3198 15.745 13.5258L17.4023 18.6266C17.552 19.0873 17.0248 19.4704 16.6329 19.1857L12.2939 16.0332C12.1186 15.9059 11.8814 15.9059 11.7061 16.0332L7.3671 19.1857C6.97524 19.4704 6.448 19.0873 6.59768 18.6266L8.25503 13.5258C8.32197 13.3198 8.24864 13.0941 8.07339 12.9668L3.73438 9.81434C3.34253 9.52964 3.54392 8.90983 4.02828 8.90983H9.39159C9.6082 8.90983 9.80018 8.77035 9.86712 8.56434L11.5245 3.46353Z" fill="{% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.summary_star_color }}{% endif %}"/>
+            </svg>
+          {% endfor %}
+        </div>
+      </span>
+      <span class="rating-text">
+        <span class="rating-value" style="font-weight: bold; color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.rating_value_color }}{% endif %};">{{ section.settings.rating_prefix | default: 'Rated' | escape }} {{ section.settings.rating_number }}/5</span> <span style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color | color_lighten: 20 }}{% else %}{{ section.settings.based_on_text_color | default: section.settings.summary_text_color }}{% endif %};">{{ section.settings.based_on_text | default: 'based on' | escape }}</span> 
+        <span class="rating-count" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.rating_count_color }}{% endif %};">+{{ section.settings.review_count }} {{ section.settings.reviews_text | default: 'reviews' | escape }}</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="reviews-section-header">
+    <h2 class="reviews-subtitle" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.title_color }}{% endif %};
+      {% if section.settings.custom_heading_styling %}
+        font-size: {{ section.settings.heading_font_size }}px;
+        line-height: {{ section.settings.heading_line_height }};
+      {% endif %}">
+      {{ section.settings.title_text }} <span class="global-accent-text" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.accent_color | default: settings.accent_text_color }}{% endif %};">{{ section.settings.accent_text }}</span>
+    </h2>
+    {% if section.settings.show_description %}
+      <p class="reviews-description" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.description_color }}{% endif %};">
+        {{ section.settings.description_text }}
+      </p>
+    {% endif %}
+  </div>
+
+  <div class="reviews-container">
+    {% for block in section.blocks %}
+      {% if block.type == 'review' %}
+        <div class="review-card" {{ block.shopify_attributes }}>
+          <div class="review-image-container">
+            {% if block.settings.review_image != blank %}
+              <div class="carousel-review-image">
+                <img src="{{ block.settings.review_image | img_url: 'master' }}" alt="Review by {{ block.settings.reviewer_name }}" style="object-position: {{ block.settings.image_position }};">
+              </div>
+            {% else %}
+              <div class="carousel-review-image empty-image"></div>
+            {% endif %}
+          </div>
+          
+          <div class="review-content">
+            <div class="review-header">
+              <div class="review-stars">
+                <div class="stars">
+                  {% for i in (1..5) %}
+                    <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11.5245 3.46353C11.6741 3.00287 12.3259 3.00287 12.4755 3.46353L14.1329 8.56434C14.1998 8.77035 14.3918 8.90983 14.6084 8.90983H19.9717C20.4561 8.90983 20.6575 9.52964 20.2656 9.81434L15.9266 12.9668C15.7514 13.0941 15.678 13.3198 15.745 13.5258L17.4023 18.6266C17.552 19.0873 17.0248 19.4704 16.6329 19.1857L12.2939 16.0332C12.1186 15.9059 11.8814 15.9059 11.7061 16.0332L7.3671 19.1857C6.97524 19.4704 6.448 19.0873 6.59768 18.6266L8.25503 13.5258C8.32197 13.3198 8.24864 13.0941 8.07339 12.9668L3.73438 9.81434C3.34253 9.52964 3.54392 8.90983 4.02828 8.90983H9.39159C9.6082 8.90983 9.80018 8.77035 9.86712 8.56434L11.5245 3.46353Z" fill="{% if i <= block.settings.rating %}{% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.star_filled_color }}{% endif %}{% else %}{% if section.settings.use_theme_colors %}{{ settings.global_section_text_color | color_lighten: 40 }}{% else %}{{ section.settings.star_empty_color }}{% endif %}{% endif %}"/>
+                    </svg>
+                  {% endfor %}
+                </div>
+              </div>
+              
+              <div class="reviewer-info-container">
+                <div class="reviewer-info" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.reviewer_info_color }}{% endif %};">
+                  <span class="reviewer-name">{{ block.settings.reviewer_name }}</span>, 
+                  <span class="reviewer-age">{{ block.settings.reviewer_age }}</span>
+                  {% if block.settings.show_verified_badge %}
+                    <span class="verified-badge" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.verified_badge_color }}{% endif %};">
+                      <svg class="verified-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.5924 3.20027C9.34888 3.4078 9.22711 3.51158 9.09706 3.59874C8.79896 3.79854 8.46417 3.93721 8.1121 4.00672C7.95851 4.03705 7.79903 4.04977 7.48008 4.07522C6.6787 4.13918 6.278 4.17115 5.94371 4.28923C5.17051 4.56233 4.56233 5.17051 4.28923 5.94371C4.17115 6.278 4.13918 6.6787 4.07522 7.48008C4.04977 7.79903 4.03705 7.95851 4.00672 8.1121C3.93721 8.46417 3.79854 8.79896 3.59874 9.09706C3.51158 9.22711 3.40781 9.34887 3.20027 9.5924C2.67883 10.2043 2.4181 10.5102 2.26522 10.8301C1.91159 11.57 1.91159 12.43 2.26522 13.1699C2.41811 13.4898 2.67883 13.7957 3.20027 14.4076C3.40778 14.6511 3.51158 14.7729 3.59874 14.9029C3.79854 15.201 3.93721 15.5358 4.00672 15.8879C4.03705 16.0415 4.04977 16.201 4.07522 16.5199C4.13918 17.3213 4.17115 17.722 4.28923 18.0563C4.56233 18.8295 5.17051 19.4377 5.94371 19.7108C6.278 19.8288 6.6787 19.8608 7.48008 19.9248C7.79903 19.9502 7.95851 19.963 8.1121 19.9933C8.46417 20.0628 8.79896 20.2015 9.09706 20.4013C9.22711 20.4884 9.34887 20.5922 9.5924 20.7997C10.2043 21.3212 10.5102 21.5819 10.8301 21.7348C11.57 22.0884 12.43 22.0884 13.1699 21.7348C13.4898 21.5819 13.7957 21.3212 14.4076 20.7997C14.6511 20.5922 14.7729 20.4884 14.9029 20.4013C15.201 20.2015 15.5358 20.0628 15.8879 19.9933C16.0415 19.963 16.201 19.9502 16.5199 19.9248C17.3213 19.8608 17.722 19.8288 18.0563 19.7108C18.8295 19.4377 19.4377 18.8295 19.7108 18.0563C19.8288 17.722 19.8608 17.3213 19.9248 16.5199C19.9502 16.201 19.963 16.0415 19.9933 15.8879C20.0628 15.5358 20.2015 15.201 20.4013 14.9029C20.4884 14.7729 20.5922 14.6511 20.7997 14.4076C21.3212 13.7957 21.5819 13.4898 21.7348 13.1699C22.0884 12.43 22.0884 11.57 21.7348 10.8301C21.5819 10.5102 21.3212 10.2043 20.7997 9.5924C20.5922 9.34887 20.4884 9.22711 20.4013 9.09706C20.2015 8.79896 20.0628 8.46417 19.9933 8.1121C19.963 7.95851 19.9502 7.79903 19.9248 7.48008C19.8608 6.6787 19.8288 6.278 19.7108 5.94371C19.4377 5.17051 18.8295 4.56233 18.0563 4.28923C17.722 4.17115 17.3213 4.13918 16.5199 4.07522C16.201 4.04977 16.0415 4.03705 15.8879 4.00672C15.5358 3.93721 15.201 3.79854 14.9029 3.59874C14.7729 3.51158 14.6511 3.40781 14.4076 3.20027C13.7957 2.67883 13.4898 2.41811 13.1699 2.26522C12.43 1.91159 11.57 1.91159 10.8301 2.26522C10.5102 2.4181 10.2043 2.67883 9.5924 3.20027ZM16.3735 9.86314C16.6913 9.5453 16.6913 9.03 16.3735 8.71216C16.0557 8.39433 15.5403 8.39433 15.2225 8.71216L10.3723 13.5624L8.77746 11.9676C8.45963 11.6498 7.94432 11.6498 7.62649 11.9676C7.30866 12.2854 7.30866 12.8007 7.62649 13.1186L9.79678 15.2889C10.1146 15.6067 10.6299 15.6067 10.9478 15.2889L16.3735 9.86314Z" fill="{% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.verified_icon_color }}{% endif %}"/>
+                      </svg>
+                      {{ section.settings.verified_badge_text | escape }}
+                    </span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            
+            <div class="review-text" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.review_text_color }}{% endif %};">
+              {{ block.settings.review_text }}
+            </div>
+            
+            {% if block.settings.show_purchased_product %}
+            <div class="product-purchased-container">
+              <div class="product-purchased" style="border-color: {% if section.settings.use_theme_colors %}#ffffff{% else %}{{ section.settings.product_border_color }}{% endif %}; background-color: {% if section.settings.use_theme_colors %}#fbfbfb{% else %}{{ section.settings.product_bg_color }}{% endif %};">
+                <div class="product-details">
+                  {% if block.settings.product_reference != blank %}
+                    {% assign product = all_products[block.settings.product_reference] %}
+                    <div class="review-product-image">
+                      {% if product.featured_image != blank %}
+                        <img src="{{ product.featured_image | img_url: '100x' }}" alt="{{ product.title }}">
+                      {% elsif block.settings.product_image %}
+                        <img src="{{ block.settings.product_image | img_url: '100x' }}" alt="{{ block.settings.product_title }}">
+                      {% endif %}
+                    </div>
+                    <div class="product-info">
+                      <p class="review-product-title" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.product_title_color }}{% endif %};">{{ product.title }}</p>
+                      <p class="product-price" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.product_price_color }}{% endif %};">
+                        {{ product.price | money }}
+                        {% if product.compare_at_price > product.price %}
+                          <span class="product-compare-price">{{ product.compare_at_price | money }}</span>
+                        {% endif %}
+                      </p>
+                      {% if block.settings.show_purchase_date %}
+                        <p class="product-purchase-date" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color | color_lighten: 20 }}{% else %}{{ section.settings.purchase_date_color }}{% endif %};">
+                          <svg class="purchase-date-icon" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="{% if section.settings.use_theme_colors %}{{ settings.global_section_text_color | color_lighten: 20 }}{% else %}{{ section.settings.purchase_date_icon_color }}{% endif %}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                          </svg>
+                          {{ section.settings.purchase_date_prefix | default: 'Purchased on' | escape }} {{ block.settings.purchase_date | default: 'March 14th, 2025' }}
+                        </p>
+                      {% endif %}
+                    </div>
+                  {% elsif block.settings.product_title != blank %}
+                    {% if block.settings.product_image %}
+                      <div class="review-product-image">
+                        <img src="{{ block.settings.product_image | img_url: '100x' }}" alt="{{ block.settings.product_title }}">
+                      </div>
+                    {% endif %}
+                    <div class="product-info">
+                      <p class="review-product-title" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.product_title_color }}{% endif %};">{{ block.settings.product_title }}</p>
+                      {% if block.settings.product_price != blank %}
+                        <p class="product-price" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.product_price_color }}{% endif %};">
+                          {{ block.settings.product_price }}
+                          {% if block.settings.product_compare_price != blank %}
+                            <span class="product-compare-price">{{ block.settings.product_compare_price }}</span>
+                          {% endif %}
+                        </p>
+                      {% endif %}
+                      {% if block.settings.show_purchase_date %}
+                        <p class="product-purchase-date" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color | color_lighten: 20 }}{% else %}{{ section.settings.purchase_date_color }}{% endif %};">
+                          <svg class="purchase-date-icon" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="{% if section.settings.use_theme_colors %}{{ settings.global_section_text_color | color_lighten: 20 }}{% else %}{{ section.settings.purchase_date_icon_color }}{% endif %}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block;">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                          </svg>
+                          {{ section.settings.purchase_date_prefix | default: 'Purchased on' | escape }} {{ block.settings.purchase_date | default: 'March 14th, 2025' }}
+                        </p>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="reviews-navigation-container">
+    <div class="reviews-navigation">
+      <button class="nav-button prev" aria-label="Previous reviews"
+              style="background: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.prev_button_bg }}{% endif %}; 
+                     color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.prev_button_color }}{% endif %}; 
+                     border-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color | color_lighten: 70 }}{% else %}{{ section.settings.prev_button_border }}{% endif %};">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="nav-button next" aria-label="Next reviews"
+              style="background: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.next_button_bg }}{% endif %}; 
+                     color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.next_button_color }}{% endif %}; 
+                     border-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.next_button_border }}{% endif %};">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+.reviews-transformation-section {
+  max-width: {{ section.settings.section_width }}px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: var(--font-body-family-override);
+}
+
+.reviews-transformation-section * {
+  letter-spacing: var(--letter-spacing-body);
+}
+
+/* Header Styles */
+.reviews-section-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.reviews-subtitle {
+  {% unless section.settings.custom_heading_styling %}
+    font-size: 3.5rem;
+    margin: 0;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-heading);
+  {% else %}
+    margin: 0;
+  {% endunless %}
+}
+
+.reviews-description {
+  margin-top: 10px;
+  font-size: 1.3rem;
+    font-weight: var(--font-weight-regular);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Navigation Container */
+.reviews-navigation-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Navigation Buttons */
+.reviews-navigation {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid;
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Reviews Container */
+.reviews-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none;  /* Hide scrollbar for Firefox */
+  align-items: flex-start;
+}
+
+.reviews-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+}
+
+/* Review Card */
+.review-card {
+  flex: 0 0 auto;
+  width: {{ section.settings.card_width }}px;
+  border-radius: {{ section.settings.card_border_radius }}px;
+  overflow: hidden;
+  box-shadow: none;
+  border: 1px solid {% if section.settings.use_theme_colors %}#e0e0e0{% else %}{{ section.settings.card_border_color }}{% endif %};
+  background: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.card_background }}{% endif %};
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  margin: {{ section.settings.card_margin_top }}px {{ section.settings.card_margin_right }}px {{ section.settings.card_margin_bottom }}px {{ section.settings.card_margin_left }}px;
+}
+
+/* Review Image Container */
+.review-image-container {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-top-left-radius: {{ section.settings.card_border_radius }}px;
+  border-top-right-radius: {{ section.settings.card_border_radius }}px;
+  background-color: #f5f5f5;
+}
+
+/* Review Image */
+.carousel-review-image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.carousel-review-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: {{ block.settings.image_position }};
+  display: block;
+}
+
+.empty-image {
+  width: 100%;
+  height: 100%;
+  background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color | color_lighten: 10 }}{% else %}#f0f0f0{% endif %};
+}
+
+/* Review Content */
+.review-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.review-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.review-stars {
+  display: flex;
+  align-items: center;
+  color: {{ section.settings.star_filled_color }};
+  font-size: 16px;
+  line-height: 1;
+}
+
+.stars {
+  display: flex;
+  gap: 0px;
+  font-size: 0; /* Eliminates whitespace between inline elements */
+  align-items: center;
+}
+
+.star {
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin: 0;
+  align-content: center;
+  margin-right: -2px !important;
+}
+
+.review-text {
+  line-height: 1.6;
+  margin-bottom: 15px;
+  font-size: {{ section.settings.review_text_size }}px;
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-body);
+}
+
+.reviewer-info-container {
+  display: flex;
+}
+
+.reviewer-info {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_2_color }}{% else %}{{ section.settings.reviewer_info_bg_color }}{% endif %};
+  border-radius: 50px;
+  padding: 3px 8px;
+  width: auto;
+  max-width: fit-content;
+}
+
+.reviewer-name {
+  font-weight: var(--font-weight-bold);
+  margin-right: 0px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.reviewer-age {
+  margin-right: 4px;
+  margin-left: 1px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.verified-badge {
+  font-weight: var(--font-weight-bold);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+}
+
+.verified-icon {
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Product Purchased */
+.product-purchased-container {
+  margin-top: 6px;
+  width: 100%;
+}
+
+.product-purchased {
+  border: 1px solid {% if section.settings.use_theme_colors %}#ffffff{% else %}{{ section.settings.product_border_color }}{% endif %};
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
+  background-color: {% if section.settings.use_theme_colors %}#fbfbfb{% else %}{{ section.settings.product_bg_color }}{% endif %};
+}
+
+.product-label {
+  font-size: 12px;
+  margin: 0 0 5px 0;
+  font-weight: var(--font-weight-semibold);
+}
+
+.product-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-product-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.review-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-info {
+  flex-grow: 1;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.review-product-title {
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold) !important;
+  margin: 0;
+  letter-spacing: var(--letter-spacing-body);
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-price {
+  font-size: 16px;
+  margin: 3px 0 0 0;
+  font-weight: var(--font-weight-semibold) !important;
+  line-height: 1.2;
+}
+
+.product-compare-price {
+  text-decoration: line-through;
+  opacity: 0.85;
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  margin-left: 2px;
+  color: #888888;
+}
+
+.product-purchase-date {
+  font-size: 11px;
+  color: #000000;
+  margin: 3px 0 0 0;
+  font-weight: var(--font-weight-regular);
+  display: inline-flex;
+  align-items: center;
+  max-width: fit-content;
+}
+
+.purchase-date-icon {
+  margin-right: 5px;
+  position: relative;
+  top: 0px;
+  color: #000000;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .reviews-navigation {
+    position: static;
+    margin-top: 15px;
+  }
+  
+  .review-card {
+    width: calc({{ section.settings.card_width }}px * 0.9);
+  }
+  
+  .review-image-container {
+    height: 200px;
+  }
+  
+  .reviews-container {
+    align-items: flex-start;
+  }
+  
+  /* Product purchased mobile styles - maintain proportions */
+  .product-purchased-container {
+    margin-top: 6px;
+  }
+  
+  .product-purchased {
+    padding: 8px;
+  }
+  
+  .review-product-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .product-info {
+    height: 50px;
+  }
+  
+  .review-product-title {
+    font-size: 12px;
+  }
+  
+  .product-price {
+    font-size: 14px;
+    margin: 2px 0 0 0;
+  }
+  
+  .product-compare-price {
+    font-size: 12px;
+  }
+  
+  .product-purchase-date {
+    font-size: 10px;
+    margin: 2px 0 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .reviews-section-header {
+    margin-bottom: 20px;
+  }
+  
+  .reviews-subtitle {
+    {% unless section.settings.custom_heading_styling %}
+      font-size: 3.4rem;
+      padding: 0 10px;
+    {% else %}
+      font-size: {{ section.settings.heading_font_size_mobile }}px;
+      padding: 0 10px;
+    {% endunless %}
+  }
+  
+  .nav-button {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .reviews-container {
+    gap: 10px;
+  }
+  
+  .review-card {
+    width: calc(({{ section.settings.card_width }}px * 0.6) + 50px);
+  }
+  
+  .review-image-container {
+    height: 200px;
+  }
+  
+  .review-content {
+    padding: 12px;
+  }
+  
+  .review-header {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .review-stars {
+    margin-bottom: 0;
+  }
+  
+  .reviewer-info-container {
+    justify-content: flex-start;
+    margin-bottom: 2px;
+  }
+  
+  .review-text {
+    font-size: {{ section.settings.review_text_size_mobile | default: section.settings.review_text_size | minus: 2 }}px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  
+  .reviewer-info {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+  
+  .verified-icon {
+    width: 10px;
+    height: 10px;
+    margin-bottom: 1px;
+  }
+  
+  .verified-badge {
+    font-size: 9px;
+    gap: 2px;
+  }
+  
+  /* Product purchased mobile styles - maintain proportions */
+  .product-purchased-container {
+    margin-top: 10px;
+  }
+  
+  .product-purchased {
+    padding: 7px;
+    border-radius: 6px;
+  }
+  
+  .product-details {
+    gap: 8px;
+  }
+  
+  .review-product-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
+  }
+  
+  .product-info {
+    height: 40px;
+  }
+  
+  .review-product-title {
+    font-size: 10px;
+    -webkit-line-clamp: 1;
+  }
+  
+  .product-price {
+    font-size: 12px;
+    margin: 1px 0 0 0;
+  }
+  
+  .product-compare-price {
+    font-size: 9px;
+    margin-left: 3px;
+  }
+  
+  .product-purchase-date {
+    font-size: 8px;
+    margin: 1px 0 0 0;
+  }
+  
+  .purchase-date-icon {
+    width: 9px;
+    height: 9px;
+    margin-right: 3px;
+  }
+  
+  .star {
+    width: 17px;
+    height: 17px;
+    margin-right: -3px !important;
+  }
+}
+
+/* Rating Summary */
+.rating-summary-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+.reviews-rating-summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: {{ section.settings.rating_summary_bg_color }};
+  border-radius: 50px;
+  padding: 5px 16px;
+  margin: 0 auto 5px;
+  gap: 0px;
+  max-width: fit-content;
+  font-size: 13px;
+}
+
+.rating-stars {
+  display: flex;
+  align-items: center;
+  color: {{ section.settings.summary_star_color }};
+  line-height: 1;
+  margin-right: 5px;
+  letter-spacing: 1px;
+}
+
+.rating-text {
+  font-weight: var(--font-weight-regular);
+  line-height: 1.2;
+  color: #333333;
+  white-space: nowrap;
+  display: inline-block;
+  letter-spacing: var(--letter-spacing-body);
+}
+
+.rating-value {
+  font-weight: var(--font-weight-semibold);
+  color: inherit;
+  margin-right: 2px;
+}
+
+.rating-count {
+  color: inherit;
+  opacity: 0.9;
+}
+
+.summary-star {
+  width: 13px;
+  height: 13px;
+  margin-right: -1px !important;
+}
+
+@media (max-width: 768px) {
+  .reviews-rating-summary {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reviews-rating-summary {
+    padding: 5px 10px;
+    font-size: 9px;
+  }
+  
+  .summary-star {
+    width: 14px;
+    height: 14px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.querySelector('.reviews-container');
+  const prevButton = document.querySelector('.nav-button.prev');
+  const nextButton = document.querySelector('.nav-button.next');
+
+  function updateReviewAlignment() {
+    if (!container) return;
+
+    const reviewCards = container.querySelectorAll('.review-card');
+    if (reviewCards.length === 0) {
+      container.style.justifyContent = 'center'; // Center if no cards
+      return;
+    }
+
+    // Calculate total width of cards + gaps
+    let totalWidth = 0;
+    const gapStyle = window.getComputedStyle(container).getPropertyValue('gap');
+    const gap = parseFloat(gapStyle) || 20; // Use computed gap or fallback
+
+    reviewCards.forEach((card, index) => {
+      totalWidth += card.offsetWidth;
+      if (index < reviewCards.length - 1) {
+        totalWidth += gap;
+      }
+    });
+
+    // Use clientWidth which excludes padding/border/scrollbar width
+    const containerWidth = container.clientWidth; 
+
+    // Add a small tolerance to prevent slight overflows causing left alignment
+    if (totalWidth < containerWidth - 1) { 
+      container.style.justifyContent = 'center';
+    } else {
+      // Default or explicit flex-start for overflow/scrolling
+      container.style.justifyContent = 'flex-start'; 
+    }
+  }
+
+  // Navigation functionality
+  if (container && prevButton && nextButton) {
+    prevButton.addEventListener('click', function() {
+      container.scrollBy({ left: -{{ section.settings.scroll_amount }}, behavior: 'smooth' });
+    });
+
+    nextButton.addEventListener('click', function() {
+      const scrollAmount = {{ section.settings.scroll_amount }};
+      // Use scrollWidth for the total scrollable content width
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+
+      // Check if near the end (within a small threshold)
+      if (container.scrollLeft >= maxScrollLeft - 5) {
+        // If at or very near the end, scroll to the beginning
+        container.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        // Otherwise, scroll by the set amount
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    });
+  }
+  
+  // Initial alignment check and setup resize listener
+  updateReviewAlignment();
+  window.addEventListener('resize', updateReviewAlignment);
+
+  // Ensure images are loaded before calculating width for accuracy
+  // Using Promise.all to wait for all images inside cards to load
+  const images = container ? container.querySelectorAll('.review-card img') : [];
+  const imageLoadPromises = [];
+  images.forEach(img => {
+    if (!img.complete) {
+      imageLoadPromises.push(new Promise(resolve => {
+        img.onload = resolve;
+        img.onerror = resolve; // Resolve even if image fails to load
+      }));
+    }
+  });
+
+  if (imageLoadPromises.length > 0) {
+    Promise.all(imageLoadPromises).then(() => {
+      updateReviewAlignment(); // Recalculate after images load
+    });
+  } else {
+      // If no images or all are complete, run alignment check once more just in case
+      // (Might be redundant but safe)
+      updateReviewAlignment();
+  }
+
+});
+</script>
+
+{% schema %}
+{
+  "name": "Customer Reviews",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use Theme Colors",
+      "default": true,
+      "info": "Apply the global theme colors to this section"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "Title Text",
+      "default": "Customer"
+    },
+    {
+      "type": "text",
+      "id": "accent_text",
+      "label": "Accent Text",
+      "default": "Reviews"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_heading_styling",
+      "label": "Override default heading styling",
+      "default": false,
+      "info": "Enable to customize the heading font size and styling"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 24,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 56,
+      "info": "Default is 3.5rem (approximately 56px)"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 20,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 48,
+      "info": "Default is 3.4rem (approximately 48px)"
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "min": 0.8,
+      "max": 2.0,
+      "step": 0.1,
+      "unit": "x",
+      "label": "Heading Line Height",
+      "default": 1.2
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show Description",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "description_text",
+      "label": "Description Text",
+      "default": "See what our customers are saying about our products"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "color",
+      "id": "prev_button_bg",
+      "label": "Previous Button Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "prev_button_color",
+      "label": "Previous Button Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "prev_button_border",
+      "label": "Previous Button Border",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "next_button_bg",
+      "label": "Next Button Background",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "next_button_color",
+      "label": "Next Button Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "next_button_border",
+      "label": "Next Button Border",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "range",
+      "id": "scroll_amount",
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Scroll Amount",
+      "default": 360
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "min": 260,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Card Width",
+      "default": 390
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "card_margin_top",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Card Top Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "card_margin_right",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Card Right Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "card_margin_bottom",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Card Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "card_margin_left",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Card Left Margin",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Review Content"
+    },
+    {
+      "type": "color",
+      "id": "star_filled_color",
+      "label": "Filled Star Color",
+      "default": "#ffc107"
+    },
+    {
+      "type": "color",
+      "id": "star_empty_color",
+      "label": "Empty Star Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "review_text_color",
+      "label": "Review Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "review_text_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Review Text Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "review_text_size_mobile",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Review Text Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Reviewer Info"
+    },
+    {
+      "type": "color",
+      "id": "reviewer_info_color",
+      "label": "Reviewer Info Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "reviewer_info_bg_color",
+      "label": "Reviewer Info Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "text",
+      "id": "verified_badge_text",
+      "label": "Verified Badge Text",
+      "default": "Verified Buyer"
+    },
+    {
+      "type": "color",
+      "id": "verified_badge_color",
+      "label": "Verified Badge Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "verified_icon_color",
+      "label": "Verified Icon Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "header",
+      "content": "Product Purchased"
+    },
+    {
+      "type": "text",
+      "id": "product_label",
+      "label": "Product Label",
+      "default": "Item Purchased"
+    },
+    {
+      "type": "color",
+      "id": "product_label_color",
+      "label": "Product Label Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "product_price_color",
+      "label": "Product Price Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "product_bg_color",
+      "label": "Product Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "product_border_color",
+      "label": "Product Border Color",
+      "default": "#eeeeee"
+    },
+    {
+      "type": "header",
+      "content": "Rating Summary"
+    },
+    {
+      "type": "color",
+      "id": "summary_star_color",
+      "label": "Summary Star Color",
+      "default": "#ffbf00"
+    },
+    {
+      "type": "color",
+      "id": "summary_text_color",
+      "label": "Summary Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "rating_prefix",
+      "label": "Rating Prefix Text",
+      "default": "Rated"
+    },
+    {
+      "type": "text",
+      "id": "rating_number",
+      "label": "Rating Number",
+      "default": "4.8"
+    },
+    {
+      "type": "text",
+      "id": "based_on_text",
+      "label": "Based On Text",
+      "default": "based on"
+    },
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Review Count",
+      "default": "10,839"
+    },
+    {
+      "type": "color",
+      "id": "rating_count_color",
+      "label": "Rating Count Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "rating_value_color",
+      "label": "Rating Value Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "rating_summary_bg_color",
+      "label": "Rating Summary Background",
+      "default": "#FEF6E6"
+    },
+    {
+      "type": "header",
+      "content": "Purchase Date Settings"
+    },
+    {
+      "type": "text",
+      "id": "purchase_date_prefix",
+      "label": "Purchase Date Prefix",
+      "default": "Purchased on"
+    },
+    {
+      "type": "color",
+      "id": "purchase_date_color",
+      "label": "Purchase Date Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "purchase_date_icon_color",
+      "label": "Purchase Date Icon Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "based_on_text_color",
+      "label": "\"Based on\" Text Color",
+      "default": "#333333"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Review Details"
+        },
+        {
+          "type": "image_picker",
+          "id": "review_image",
+          "label": "Review Image"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image Focus Position",
+          "options": [
+            {
+              "value": "center center",
+              "label": "Center"
+            },
+            {
+              "value": "top center",
+              "label": "Top"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom"
+            },
+            {
+              "value": "left center",
+              "label": "Left"
+            },
+            {
+              "value": "right center",
+              "label": "Right"
+            },
+            {
+              "value": "top left",
+              "label": "Top Left"
+            },
+            {
+              "value": "top right",
+              "label": "Top Right"
+            },
+            {
+              "value": "bottom left",
+              "label": "Bottom Left"
+            },
+            {
+              "value": "bottom right",
+              "label": "Bottom Right"
+            }
+          ],
+          "default": "center center"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        },
+        {
+          "type": "header",
+          "content": "Reviewer Info"
+        },
+        {
+          "type": "text",
+          "id": "reviewer_name",
+          "label": "Reviewer Name",
+          "default": "User1"
+        },
+        {
+          "type": "text",
+          "id": "reviewer_age",
+          "label": "Reviewer Age",
+          "default": "30"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_verified_badge",
+          "label": "Show Verified Badge",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Purchased Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_purchased_product",
+          "label": "Show Purchased Product",
+          "default": true
+        },
+        {
+          "type": "product",
+          "id": "product_reference",
+          "label": "Select Product",
+          "info": "Select a product to automatically display its details"
+        },
+        {
+          "type": "header",
+          "content": "Manual Product Details (Fallback)"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product Image (fallback)"
+        },
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "Product Title (fallback)",
+          "default": "Product Name"
+        },
+        {
+          "type": "text",
+          "id": "product_price",
+          "label": "Product Price (fallback)",
+          "default": "$29.99"
+        },
+        {
+          "type": "text",
+          "id": "product_compare_price",
+          "label": "Product Compare Price (fallback)",
+          "default": "$39.99"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_purchase_date",
+          "label": "Show Purchase Date",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "purchase_date",
+          "label": "Purchase Date",
+          "default": "March 14th, 2025"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "The product has completely transformed my routine. I'm seeing amazing results and couldn't be happier with my purchase.",
+            "reviewer_name": "Sarah",
+            "reviewer_age": "28",
+            "show_verified_badge": true,
+            "show_purchased_product": true,
+            "product_title": "Product Name",
+            "product_price": "$29.99",
+            "product_compare_price": "$39.99"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "I was skeptical at first, but after using this for a month, I'm a true believer. The quality is outstanding!",
+            "reviewer_name": "Michael",
+            "reviewer_age": "35",
+            "show_verified_badge": true,
+            "show_purchased_product": true,
+            "product_title": "Product Name",
+            "product_price": "$29.99",
+            "product_compare_price": "$39.99"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 4,
+            "review_text": "Great product that delivers on its promises. Would definitely recommend to friends and family.",
+            "reviewer_name": "Jessica",
+            "reviewer_age": "42",
+            "show_verified_badge": true,
+            "show_purchased_product": true,
+            "product_title": "Product Name",
+            "product_price": "$29.99",
+            "product_compare_price": "$39.99"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

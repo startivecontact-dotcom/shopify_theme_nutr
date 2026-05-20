@@ -1,0 +1,46 @@
+<section class="mb-bundle-banner">
+  {% if section.settings.image %}
+    <div class="mb-bundle-banner__bg">
+      <img src="{{ section.settings.image | image_url: width: 1800 }}"
+           alt="{{ section.settings.title | escape }}"
+           loading="lazy" width="1800" height="700">
+    </div>
+  {% elsif section.settings.image_url != blank %}
+    <div class="mb-bundle-banner__bg">
+      <img src="{{ section.settings.image_url }}"
+           alt="{{ section.settings.title | escape }}"
+           loading="lazy" width="1800" height="700">
+    </div>
+  {% endif %}
+  <div class="mb-bundle-banner__content">
+    {% if section.settings.tag != blank %}
+      <span class="mb-bundle-banner__tag">{{ section.settings.tag }}</span>
+    {% endif %}
+    <h2 class="mb-bundle-banner__title">{{ section.settings.title | default: 'Maintenant à prix imbattable' }}</h2>
+    {% if section.settings.subtitle != blank %}
+      <p class="mb-bundle-banner__subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
+    {% if section.settings.button_text != blank %}
+      <a href="{{ section.settings.button_link | default: '/collections/all' }}" class="mb-bundle-banner__btn">
+        {{ section.settings.button_text }}
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MB — Bannière Bundle",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image de fond (upload)" },
+    { "type": "text", "id": "image_url", "label": "URL image de fond (CDN)", "default": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/pwo-combi.jpg?v=1774451813" },
+    { "type": "text", "id": "tag", "label": "Étiquette", "default": "PACKS & BUNDLES" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Maintenant à prix imbattable" },
+    { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Économisez jusqu'à 20% sur nos packs exclusifs" },
+    { "type": "text", "id": "button_text", "label": "Texte du bouton", "default": "Voir tous les packs" },
+    { "type": "url", "id": "button_link", "label": "Lien du bouton" }
+  ],
+  "presets": [{ "name": "MB — Bannière Bundle" }]
+}
+{% endschema %}

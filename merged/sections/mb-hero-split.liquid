@@ -1,0 +1,91 @@
+<div class="hero-split" style="--hero-height: {{ section.settings.height | default: 70 }}vh;">
+
+  <div class="hero-split__panel hero-split__panel--left">
+    {% if section.settings.image_left %}
+      <img src="{{ section.settings.image_left | image_url: width: 1200 }}"
+           alt="{{ section.settings.image_left_alt | default: 'MB Nutrition' | escape }}"
+           loading="eager" width="1200" height="900">
+    {% elsif section.settings.image_left_url != blank %}
+      <img src="{{ section.settings.image_left_url }}"
+           alt="{{ section.settings.image_left_alt | default: 'MB Nutrition' | escape }}"
+           loading="eager" width="1200" height="900">
+    {% else %}
+      <div class="hero-split__placeholder">MB NUTRITION</div>
+    {% endif %}
+    <div class="hero-split__overlay"></div>
+    {% if section.settings.cta_text_left != blank or section.settings.overlay_text_left != blank %}
+      <div class="hero-split__cta">
+        {% if section.settings.overlay_text_left != blank %}
+          <p class="hero-split__cta-label">{{ section.settings.overlay_text_left }}</p>
+        {% endif %}
+        {% if section.settings.cta_text_left != blank %}
+          <a href="{{ section.settings.cta_link_left | default: '/collections/all' }}" class="hero-split__cta-btn">
+            {{ section.settings.cta_text_left }}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="hero-split__divider"></div>
+
+  <div class="hero-split__panel hero-split__panel--right">
+    {% if section.settings.image_right %}
+      <img src="{{ section.settings.image_right | image_url: width: 1200 }}"
+           alt="{{ section.settings.image_right_alt | default: 'MB Nutrition' | escape }}"
+           loading="eager" width="1200" height="900">
+    {% elsif section.settings.image_right_url != blank %}
+      <img src="{{ section.settings.image_right_url }}"
+           alt="{{ section.settings.image_right_alt | default: 'MB Nutrition' | escape }}"
+           loading="eager" width="1200" height="900">
+    {% else %}
+      <div class="hero-split__placeholder">MB NUTRITION</div>
+    {% endif %}
+    <div class="hero-split__overlay"></div>
+    {% if section.settings.cta_text_right != blank or section.settings.overlay_text_right != blank %}
+      <div class="hero-split__cta">
+        {% if section.settings.overlay_text_right != blank %}
+          <p class="hero-split__cta-label">{{ section.settings.overlay_text_right }}</p>
+        {% endif %}
+        {% if section.settings.cta_text_right != blank %}
+          <a href="{{ section.settings.cta_link_right | default: '/collections/all' }}" class="hero-split__cta-btn">
+            {{ section.settings.cta_text_right }}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+
+<style>
+  @media (min-width: 768px) {
+    #shopify-section-{{ section.id }} .hero-split__panel { height: {{ section.settings.height | default: 70 }}vh; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "MB — Héros Image divisée",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Panneau gauche" },
+    { "type": "image_picker", "id": "image_left", "label": "Image gauche (upload)" },
+    { "type": "text", "id": "image_left_url", "label": "URL image gauche (CDN)", "default": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-mb-whey-protein-pro-bananaTekengebied1.jpg?v=1750095413" },
+    { "type": "text", "id": "image_left_alt", "label": "Texte alternatif (gauche)", "default": "Whey Protein Pro MB Nutrition" },
+    { "type": "text", "id": "overlay_text_left", "label": "Étiquette gauche", "default": "PRISE DE MASSE" },
+    { "type": "text", "id": "cta_text_left", "label": "Bouton gauche", "default": "WHEY PROTEIN PRO →" },
+    { "type": "url", "id": "cta_link_left", "label": "Lien bouton gauche" },
+    { "type": "header", "content": "Panneau droit" },
+    { "type": "image_picker", "id": "image_right", "label": "Image droite (upload)" },
+    { "type": "text", "id": "image_right_url", "label": "URL image droite (CDN)", "default": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-secret-burner-citrus-berriesTekengebied1.jpg?v=1748159891" },
+    { "type": "text", "id": "image_right_alt", "label": "Texte alternatif (droite)", "default": "Secret Burner MB Nutrition" },
+    { "type": "text", "id": "overlay_text_right", "label": "Étiquette droite", "default": "PERTE DE POIDS" },
+    { "type": "text", "id": "cta_text_right", "label": "Bouton droit", "default": "SECRET BURNER →" },
+    { "type": "url", "id": "cta_link_right", "label": "Lien bouton droit" },
+    { "type": "header", "content": "Dimensions" },
+    { "type": "range", "id": "height", "label": "Hauteur desktop (vh)", "min": 40, "max": 100, "step": 5, "default": 70, "unit": "vh" }
+  ],
+  "presets": [{ "name": "MB — Héros Image divisée" }]
+}
+{% endschema %}

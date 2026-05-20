@@ -1,0 +1,575 @@
+{% schema %}
+{
+  "name": "As Seen In Logos",
+  "tag": "section",
+  "class": "as-seen-in-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use Theme Colors",
+      "default": true,
+      "info": "Apply the global theme colors to this section"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "As seen in"
+    },
+    {
+      "type": "header",
+      "content": "Background Settings"
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background Type",
+      "options": [
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        },
+        {
+          "value": "solid",
+          "label": "Solid Color"
+        }
+      ],
+      "default": "gradient"
+    },
+    {
+      "type": "color_background",
+      "id": "background",
+      "label": "Background Gradient (Desktop)",
+      "default": "linear-gradient(to right, #FFF9EC, #FFCFD7)",
+      "info": "Used when Background Type is set to Gradient"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color (Desktop)",
+      "default": "#FFF9EC",
+      "info": "Used when Background Type is set to Solid Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "desktop_layout",
+      "label": "Logo Alignment",
+      "options": [
+        {
+          "value": "space-evenly",
+          "label": "Equal Spacing"
+        },
+        {
+          "value": "space-between",
+          "label": "Edges Aligned"
+        },
+        {
+          "value": "space-around",
+          "label": "Space Around"
+        },
+        {
+          "value": "center",
+          "label": "Centered Group"
+        }
+      ],
+      "default": "space-evenly",
+      "info": "How logos should be distributed across the container"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "min": 80,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Maximum Logo Width (Desktop)",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "desktop_gap",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop Gap Between Logos",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 40,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Container Height (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "logo_padding",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Padding (Desktop)",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Border Width",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile Settings"
+    },
+    {
+      "type": "select",
+      "id": "mobile_background_type",
+      "label": "Mobile Background Type",
+      "options": [
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        },
+        {
+          "value": "solid",
+          "label": "Solid Color"
+        },
+        {
+          "value": "same",
+          "label": "Same as Desktop"
+        }
+      ],
+      "default": "same"
+    },
+    {
+      "type": "color_background",
+      "id": "mobile_background",
+      "label": "Background Gradient (Mobile)",
+      "default": "linear-gradient(to right, #FFF9EC, #FFCFD7)",
+      "info": "Used when Mobile Background Type is set to Gradient"
+    },
+    {
+      "type": "color",
+      "id": "mobile_background_color",
+      "label": "Background Color (Mobile)",
+      "default": "#FFF9EC",
+      "info": "Used when Mobile Background Type is set to Solid Color"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_margin",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Heading Bottom Margin (Mobile)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_max_width",
+      "min": 50,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Maximum Logo Width (Mobile)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_height",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Container Height (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile Gap Between Logos",
+      "default": 15
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Brand Logo",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "logo_alt",
+          "label": "Alt Text",
+          "default": "Brand Logo"
+        },
+        {
+          "type": "range",
+          "id": "size_adjustment",
+          "min": 50,
+          "max": 150,
+          "step": 5,
+          "unit": "%",
+          "label": "Size Adjustment (Desktop)",
+          "default": 100,
+          "info": "Adjust the size of this specific logo relative to others"
+        },
+        {
+          "type": "range",
+          "id": "mobile_size_adjustment",
+          "min": 50,
+          "max": 150,
+          "step": 5,
+          "unit": "%",
+          "label": "Size Adjustment (Mobile)",
+          "default": 100,
+          "info": "Adjust the size of this specific logo on mobile"
+        },
+        {
+          "type": "url",
+          "id": "logo_link",
+          "label": "Logo Link (Optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_in_new_tab",
+          "label": "Open link in new tab",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "As Seen In Logos",
+      "blocks": [
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.as-seen-in-section {
+  {% if section.settings.use_theme_colors %}
+    {% if settings.global_section_use_gradient_background and settings.global_section_gradient_color_1 != blank and settings.global_section_gradient_color_2 != blank %}
+      background: linear-gradient(to right, {{ settings.global_section_gradient_color_1 }}, {{ settings.global_section_gradient_color_2 }});
+    {% elsif settings.global_section_gradient %}
+      background: {{ settings.global_section_gradient }};
+    {% else %}
+      background: linear-gradient(to right, {{ settings.global_section_accent_1_color | color_lighten: 35 }}, {{ settings.global_section_background_color }});
+    {% endif %}
+  {% else %}
+    {% if section.settings.background_type == 'solid' %}
+      background: {{ section.settings.background_color }};
+    {% else %}
+      background: {{ section.settings.background }};
+    {% endif %}
+  {% endif %}
+  padding: 0;
+  min-height: 150px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
+  border-bottom: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
+}
+
+.as-seen-in-title {
+  font-size: 25px;
+  color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.text_color }} !important{% endif %};
+  margin: 25px 0 20px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-heading);
+}
+
+.logo-container {
+  display: flex;
+  justify-content: {{ section.settings.desktop_layout }};
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto 25px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0 20px;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  gap: {{ section.settings.desktop_gap }}px;
+}
+
+.logo-container::-webkit-scrollbar {
+  height: 3px;
+}
+
+.logo-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.brand-logo {
+  padding: {{ section.settings.logo_padding }}px;
+  min-width: auto;
+  max-width: {{ section.settings.logo_max_width }}px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  transition: transform 0.3s ease;
+  height: auto;
+  min-height: {{ section.settings.logo_height }}px;
+  box-sizing: border-box;
+  {% if section.settings.desktop_layout == 'center' %}
+  flex: 0 0 auto;
+  {% else %}
+  flex: 1 1 0;
+  {% endif %}
+}
+
+.brand-logo:hover {
+  transform: translateY(-2px);
+}
+
+.logo-image-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.brand-logo img.logo-image {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: {{ section.settings.logo_height }}px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .as-seen-in-section {
+    {% if section.settings.use_theme_colors %}
+      {% if settings.global_section_use_gradient_background and settings.global_section_gradient_color_1 != blank and settings.global_section_gradient_color_2 != blank %}
+        background: linear-gradient(to right, {{ settings.global_section_gradient_color_1 }}, {{ settings.global_section_gradient_color_2 }});
+      {% elsif settings.global_section_gradient %}
+        background: {{ settings.global_section_gradient }};
+      {% else %}
+        background: linear-gradient(to right, {{ settings.global_section_accent_1_color | color_lighten: 35 }}, {{ settings.global_section_background_color }});
+      {% endif %}
+    {% else %}
+      {% if section.settings.mobile_background_type == 'same' %}
+        {% if section.settings.background_type == 'solid' %}
+          background: {{ section.settings.background_color }};
+        {% else %}
+          background: {{ section.settings.background }};
+        {% endif %}
+      {% elsif section.settings.mobile_background_type == 'solid' %}
+        background: {{ section.settings.mobile_background_color }};
+      {% else %}
+        background: {{ section.settings.mobile_background }};
+      {% endif %}
+    {% endif %}
+    padding: {{ section.settings.mobile_padding_top }}px 0 {{ section.settings.mobile_padding_bottom }}px;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+  }
+  
+  .logo-container {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    justify-content: {{ section.settings.desktop_layout }};
+    padding: 0 15px;
+    margin-bottom: 25px;
+    gap: {{ section.settings.mobile_gap }}px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .as-seen-in-title {
+    margin: 20px 0 {{ section.settings.mobile_heading_margin }}px;
+    font-size: {{ section.settings.mobile_heading_size }}px;
+  }
+  
+  .brand-logo {
+    padding: 5px;
+    min-width: auto;
+    width: auto;
+    max-width: {{ section.settings.mobile_logo_max_width }}px;
+    margin: 0;
+    {% if section.settings.desktop_layout == 'center' %}
+    flex: 0 0 auto;
+    {% else %}
+    flex: 1 1 0;
+    {% endif %}
+    height: auto;
+    min-height: {{ section.settings.mobile_logo_height }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: visible; /* Allow wrapper to control overflow */
+  }
+  
+  .logo-image-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .brand-logo img.logo-image {
+    max-width: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: {{ section.settings.mobile_logo_height }}px !important;
+    object-fit: contain !important;
+    transform: scale(var(--mobile-scale)) !important;
+    display: block;
+    margin: 0 auto;
+    transform-origin: center center;
+  }
+}
+</style>
+
+<section class="as-seen-in-section">
+  {% if section.settings.section_title != blank %}
+    <h2 class="as-seen-in-title" style="{% unless section.settings.use_theme_colors %}color: {{ section.settings.text_color }} !important;{% endunless %}">{{ section.settings.section_title }}</h2>
+  {% endif %}
+  
+  <div class="logo-container">
+    {% for block in section.blocks %}
+      {% if block.settings.logo_image != blank %}
+        <div class="brand-logo" {{ block.shopify_attributes }}>
+          {% if block.settings.logo_link != blank %}
+            <a href="{{ block.settings.logo_link }}" {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}>
+              {% assign desktop_logo_size = section.settings.logo_max_width | times: block.settings.size_adjustment | divided_by: 100 %}
+              {% assign mobile_logo_size = section.settings.mobile_logo_max_width | times: block.settings.mobile_size_adjustment | divided_by: 100 %}
+              <div class="logo-image-wrapper" style="width: 100%; overflow: hidden;">
+                <img
+                  src="{{ block.settings.logo_image | img_url: 'master' }}"
+                  alt="{{ block.settings.logo_alt | escape }}"
+                  loading="lazy"
+                  class="logo-image"
+                  style="
+                    --desktop-scale: {{ block.settings.size_adjustment | divided_by: 100.0 }};
+                    --mobile-scale: {{ block.settings.mobile_size_adjustment | divided_by: 100.0 }};
+                    max-width: {{ desktop_logo_size }}px;
+                    transform: scale(var(--desktop-scale));
+                    transform-origin: center center;
+                  "
+                >
+              </div>
+            </a>
+          {% else %}
+            {% assign desktop_logo_size = section.settings.logo_max_width | times: block.settings.size_adjustment | divided_by: 100 %}
+            {% assign mobile_logo_size = section.settings.mobile_logo_max_width | times: block.settings.mobile_size_adjustment | divided_by: 100 %}
+            <div class="logo-image-wrapper" style="width: 100%; overflow: hidden;">
+              <img
+                src="{{ block.settings.logo_image | img_url: 'master' }}"
+                alt="{{ block.settings.logo_alt | escape }}"
+                loading="lazy"
+                class="logo-image"
+                style="
+                  --desktop-scale: {{ block.settings.size_adjustment | divided_by: 100.0 }};
+                  --mobile-scale: {{ block.settings.mobile_size_adjustment | divided_by: 100.0 }};
+                  max-width: {{ desktop_logo_size }}px;
+                  transform: scale(var(--desktop-scale));
+                  transform-origin: center center;
+                "
+              >
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section> 
