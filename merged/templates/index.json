@@ -56,15 +56,15 @@
       "settings": {
         "image_left_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-mb-whey-protein-pro-bananaTekengebied1.jpg?v=1750095413",
         "image_left_alt": "Whey Protein Pro — Prise de masse",
-        "overlay_text_left": "PRISE DE MASSE",
-        "cta_text_left": "DÉCOUVRIR →",
+        "overlay_text_left": "",
+        "cta_text_left": "",
         "cta_link_left": "/collections/prise-de-masse",
         "image_right_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-secret-burner-citrus-berriesTekengebied1.jpg?v=1748159891",
         "image_right_alt": "Secret Burner — Perte de poids",
-        "overlay_text_right": "PERTE DE POIDS",
-        "cta_text_right": "DÉCOUVRIR →",
+        "overlay_text_right": "",
+        "cta_text_right": "",
         "cta_link_right": "/collections/perte-de-poids",
-        "height": 70
+        "height": 65
       }
     },
     "mb-best": {
@@ -175,10 +175,10 @@
     "mb-bundles": {
       "type": "mb-bundle-banner",
       "settings": {
-        "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/starterpack_44647d83-cead-4228-b6bd-e6c1256b0efe.jpg?v=1755945355",
-        "tag": "PACKS & BUNDLES",
-        "title": "Maintenant à prix imbattable",
-        "subtitle": "Économisez jusqu'à 20% sur nos packs exclusifs",
+        "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/pwo-combi.jpg?v=1774451813",
+        "tag": "",
+        "title": "",
+        "subtitle": "",
         "button_text": "VOIR TOUS LES PACKS",
         "button_link": "/collections/bundels"
       }
@@ -526,8 +526,6 @@
     "mb-best",
     "mb-bundles",
     "mb-goals",
-    "mb-pdp",
-    "mb-pm",
     "customer_reviews_carousel_iXbYKH",
     "satisfaction_guarantee_8heP99"
   ]
