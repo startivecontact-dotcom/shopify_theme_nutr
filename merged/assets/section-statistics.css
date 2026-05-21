@@ -1,0 +1,25 @@
+/* Section Statistics Styles */
+.section-statistics {
+  margin: 0;
+  padding: 0;
+}
+
+.page-width {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.statistics-grid {
+  margin-top: 30px;
+}
+
+@media screen and (max-width: 749px) {
+  .page-width {
+    padding: 0 15px;
+  }
+  
+  .statistics-grid {
+    margin-top: 20px;
+  }
+} 

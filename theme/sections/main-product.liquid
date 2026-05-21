@@ -1,0 +1,543 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<div class="product">
+  <div class="container">
+
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a href="{{ routes.root_url }}">Accueil</a>
+      <span class="breadcrumb__separator">/</span>
+      {% if collection %}
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+        <span class="breadcrumb__separator">/</span>
+      {% endif %}
+      <span>{{ product.title }}</span>
+    </nav>
+
+    <div class="product__layout">
+
+      <!-- Gallery -->
+      <div class="product__gallery">
+        <div class="product__media-main">
+          {% if product.featured_image %}
+            <img id="ProductMainImage" src="{{ product.featured_image | image_url: width: 1000 }}"
+                 alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                 width="1000" height="1000" loading="eager">
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag }}
+          {% endif %}
+        </div>
+        {% if product.images.size > 1 %}
+          <div class="product__media-thumbs">
+            {% for image in product.images %}
+              <button class="product__media-thumb {% if forloop.first %}is-active{% endif %}"
+                      data-thumb data-src="{{ image | image_url: width: 1000 }}"
+                      aria-label="Image {{ forloop.index }}">
+                <img src="{{ image | image_url: width: 200 }}" alt="" loading="lazy" width="200" height="200">
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- Social proof strip under gallery -->
+        <div class="product__proof-strip">
+          <span>🔥 {{ section.settings.buyers_today | default: 23 }} acheteurs aujourd'hui</span>
+          <span>⭐ Note 4.9/5</span>
+          <span>✅ Livraison garantie</span>
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="product__details">
+        {% if section.settings.show_vendor and product.vendor != blank %}
+          <div class="product__vendor">{{ product.vendor }}</div>
+        {% endif %}
+
+        <!-- Urgency badge -->
+        {% if section.settings.show_urgency %}
+          <div class="product__urgency-badge">
+            <span class="product__urgency-dot"></span>
+            VENTE FLASH — offre limitée
+          </div>
+        {% endif %}
+
+        <h1 class="product__title">{{ product.title }}</h1>
+
+        {% if section.settings.show_rating %}
+          <div class="product__rating">
+            <span class="product__rating-stars" aria-hidden="true">★★★★★</span>
+            <span class="product__rating-count">{{ section.settings.review_count | default: 124 }} avis vérifiés</span>
+            <a href="#product-reviews" class="product__rating-link">Voir les avis</a>
+          </div>
+        {% endif %}
+
+        <!-- Price -->
+        <div class="product__price {% if current_variant.compare_at_price > current_variant.price %}product__price--sale{% endif %}" id="ProductPriceWrap">
+          <span id="ProductPrice">{{ current_variant.price | money }}</span>
+          {% if current_variant.compare_at_price > current_variant.price %}
+            <s id="ProductComparePrice">{{ current_variant.compare_at_price | money }}</s>
+            {% assign saving = current_variant.compare_at_price | minus: current_variant.price %}
+            <span class="product__savings">Économisez {{ saving | money }}</span>
+          {% endif %}
+        </div>
+
+        <!-- Countdown timer -->
+        {% if section.settings.show_countdown %}
+          <div class="product__countdown">
+            <span class="product__countdown-label">⏰ Offre expire dans :</span>
+            <span class="product__countdown-timer" data-countdown></span>
+          </div>
+        {% endif %}
+
+        <!-- Stock indicator -->
+        {% if section.settings.show_stock and current_variant.available %}
+          <div class="product__stock" id="ProductStock">
+            <span class="product__stock-dot"></span>
+            <span id="ProductStockText">
+              {% assign stock = section.settings.stock_count | default: 12 %}
+              {% if stock <= 5 %}
+                Plus que {{ stock }} en stock — commandez vite !
+              {% else %}
+                En stock — expédition sous 24h
+              {% endif %}
+            </span>
+          </div>
+        {% endif %}
+
+        <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" id="ProductForm" class="product__form">
+          <input type="hidden" name="id" id="VariantId" value="{{ current_variant.id }}">
+
+          {% unless product.has_only_default_variant %}
+            <div class="product__variants">
+              {% for option in product.options_with_values %}
+                <div class="product__option">
+                  <label class="product__option-label">
+                    {{ option.name }}
+                    {% if option.name == 'Saveur' or option.name == 'Goût' %}
+                      <span class="product__option-selected" data-option-display="{{ forloop.index0 }}">: {{ option.selected_value }}</span>
+                    {% endif %}
+                  </label>
+                  <div class="product__option-values">
+                    {% for value in option.values %}
+                      <button type="button" class="variant-swatch {% if option.selected_value == value %}is-active{% endif %}"
+                              data-variant-option
+                              data-option-index="{{ forloop.parentloop.index0 }}"
+                              data-option-value="{{ value | escape }}">
+                        {{ value }}
+                      </button>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endunless %}
+
+          <div class="product__qty-row">
+            <div class="product__qty">
+              <button type="button" data-qty-change="-1" aria-label="Diminuer">−</button>
+              <input id="Quantity" name="quantity" type="number" min="1" value="1" aria-label="Quantité">
+              <button type="button" data-qty-change="1" aria-label="Augmenter">+</button>
+            </div>
+            <button type="submit" id="ProductATC" class="btn btn--primary product__atc" {% unless current_variant.available %}disabled{% endunless %}>
+              <span class="product__atc-icon">🛒</span>
+              {% if current_variant.available %}Ajouter au panier{% else %}Rupture de stock{% endif %}
+            </button>
+          </div>
+
+          <!-- Buy now -->
+          {% if current_variant.available %}
+            <a href="/checkout?variant={{ current_variant.id }}" class="btn btn--outline btn--full product__buy-now" id="ProductBuyNow">
+              Commander maintenant →
+            </a>
+          {% endif %}
+        </form>
+
+        <!-- Payment methods -->
+        <div class="product__payments">
+          <span class="product__payments-label">Paiement sécurisé :</span>
+          <div class="product__payment-icons">
+            <span class="pay-icon">VISA</span>
+            <span class="pay-icon">MC</span>
+            <span class="pay-icon">PAYPAL</span>
+            <span class="pay-icon">KLARNA</span>
+            <span class="pay-icon">IDEAL</span>
+          </div>
+        </div>
+
+        <!-- Trust badges -->
+        {% if section.settings.show_trust_badges %}
+          <div class="product__trust">
+            <div class="product__trust-item">
+              <div class="product__trust-icon">🚚</div>
+              <strong>Livraison gratuite</strong>
+              <span>Dès 80€ d'achat</span>
+            </div>
+            <div class="product__trust-item">
+              <div class="product__trust-icon">↩️</div>
+              <strong>Retours 14 jours</strong>
+              <span>Satisfait ou remboursé</span>
+            </div>
+            <div class="product__trust-item">
+              <div class="product__trust-icon">🔒</div>
+              <strong>Paiement sécurisé</strong>
+              <span>SSL 3D Secure</span>
+            </div>
+            <div class="product__trust-item">
+              <div class="product__trust-icon">⚡</div>
+              <strong>Livré demain</strong>
+              <span>Commandez avant 23h45</span>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Product tabs -->
+        <div class="product__tabs">
+          <div class="product__tab-buttons" role="tablist">
+            <button class="product__tab-btn is-active" data-tab="description" role="tab">Description</button>
+            <button class="product__tab-btn" data-tab="utilisation" role="tab">Utilisation</button>
+            <button class="product__tab-btn" data-tab="livraison" role="tab">Livraison &amp; Retours</button>
+          </div>
+          <div class="product__tab-panel is-active" data-tab-panel="description">
+            {{ product.description }}
+          </div>
+          <div class="product__tab-panel" data-tab-panel="utilisation">
+            <p>{{ section.settings.usage_text | default: 'Mélangez 1 dose avec 250–300 ml d''eau froide. Agitez énergiquement pendant 30 secondes. Consommez avant ou après l''entraînement pour des résultats optimaux.' }}</p>
+            <p><strong>Conseil pro :</strong> Pour des résultats maximaux, combinez avec une alimentation équilibrée et un entraînement régulier.</p>
+          </div>
+          <div class="product__tab-panel" data-tab-panel="livraison">
+            <ul style="padding-left:1.25rem;list-style:disc;line-height:2">
+              <li>Livraison gratuite dès <strong>80€</strong> d'achat</li>
+              <li>Commande avant <strong>23h45</strong> = expédition le jour même (jours ouvrés)</li>
+              <li>Livraison en <strong>1–3 jours ouvrés</strong></li>
+              <li>Retours acceptés sous <strong>14 jours</strong>, produit non ouvert</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =====================
+     UPSELL: Frequently Bought Together
+     ===================== -->
+{% if section.settings.show_fbt and section.settings.fbt_product_1 != blank %}
+  <div class="fbt-section">
+    <div class="container">
+      <h2 class="fbt-section__title">{{ section.settings.fbt_heading | default: 'Fréquemment achetés ensemble' }}</h2>
+      <div class="fbt-grid">
+
+        <!-- Main product mini card -->
+        <div class="fbt-card fbt-card--main">
+          {% if product.featured_image %}
+            <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title | escape }}" loading="lazy">
+          {% endif %}
+          <p class="fbt-card__title">{{ product.title }}</p>
+          <p class="fbt-card__price">{{ product.price | money }}</p>
+          <label class="fbt-card__check"><input type="checkbox" checked disabled> Produit principal</label>
+        </div>
+
+        <span class="fbt-plus">+</span>
+
+        <!-- Upsell product 1 -->
+        {% assign up1 = all_products[section.settings.fbt_product_1] %}
+        {% if up1 %}
+          <div class="fbt-card">
+            {% if up1.featured_image %}
+              <a href="{{ up1.url }}"><img src="{{ up1.featured_image | image_url: width: 300 }}" alt="{{ up1.title | escape }}" loading="lazy"></a>
+            {% endif %}
+            <p class="fbt-card__title">{{ up1.title }}</p>
+            <p class="fbt-card__price">{{ up1.price | money }}</p>
+            <label class="fbt-card__check"><input type="checkbox" class="fbt-checkbox" data-product-id="{{ up1.variants.first.id }}" checked> Ajouter</label>
+          </div>
+          <span class="fbt-plus">+</span>
+        {% endif %}
+
+        <!-- Upsell product 2 -->
+        {% assign up2 = all_products[section.settings.fbt_product_2] %}
+        {% if up2 %}
+          <div class="fbt-card">
+            {% if up2.featured_image %}
+              <a href="{{ up2.url }}"><img src="{{ up2.featured_image | image_url: width: 300 }}" alt="{{ up2.title | escape }}" loading="lazy"></a>
+            {% endif %}
+            <p class="fbt-card__title">{{ up2.title }}</p>
+            <p class="fbt-card__price">{{ up2.price | money }}</p>
+            <label class="fbt-card__check"><input type="checkbox" class="fbt-checkbox" data-product-id="{{ up2.variants.first.id }}" checked> Ajouter</label>
+          </div>
+        {% endif %}
+
+      </div>
+
+      <div class="fbt-actions">
+        <div class="fbt-total">
+          <span>Total ensemble :</span>
+          <strong id="FbtTotal">—</strong>
+        </div>
+        <button class="btn btn--primary btn--lg" id="FbtAddAll">
+          Ajouter tout au panier
+        </button>
+        <p class="fbt-savings">{{ section.settings.fbt_savings_label | default: '🎁 Économisez 10% en commandant les 3 !' }}</p>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<!-- =====================
+     UPSELL: Recommended Products
+     ===================== -->
+{% if section.settings.show_recommendations %}
+  <div class="upsell-section">
+    <div class="container">
+      <h2 class="upsell-section__title">{{ section.settings.rec_heading | default: 'Complétez votre routine' }}</h2>
+      {% assign rec_collection = collections[section.settings.rec_collection] %}
+      {% if rec_collection %}
+        <div class="upsell-grid">
+          {% for p in rec_collection.products limit: 4 %}
+            {% unless p.id == product.id %}
+              <div class="upsell-card">
+                <a href="{{ p.url }}" class="upsell-card__image-link">
+                  {% if p.featured_image %}
+                    <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.title | escape }}" loading="lazy">
+                  {% endif %}
+                </a>
+                <div class="upsell-card__body">
+                  <p class="upsell-card__title"><a href="{{ p.url }}">{{ p.title }}</a></p>
+                  <p class="upsell-card__price">{{ p.price | money }}</p>
+                  <button class="btn btn--outline btn--sm upsell-card__atc" data-add-to-cart data-product-id="{{ p.variants.first.id }}">
+                    + Ajouter
+                  </button>
+                </div>
+              </div>
+            {% endunless %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+<!-- =====================
+     REVIEWS SECTION
+     ===================== -->
+{% if section.settings.show_reviews %}
+  <div class="reviews-section" id="product-reviews">
+    <div class="container">
+      <div class="reviews-header">
+        <h2 class="reviews-header__title">Avis clients</h2>
+        <div class="reviews-header__summary">
+          <span class="reviews-header__score">4.9</span>
+          <div>
+            <div class="reviews-header__stars">★★★★★</div>
+            <p class="reviews-header__count">{{ section.settings.review_count | default: 124 }} avis vérifiés</p>
+          </div>
+        </div>
+        <div class="reviews-bars">
+          <div class="reviews-bar"><span>5 ★</span><div class="reviews-bar__track"><div class="reviews-bar__fill" style="width:87%"></div></div><span>87%</span></div>
+          <div class="reviews-bar"><span>4 ★</span><div class="reviews-bar__track"><div class="reviews-bar__fill" style="width:9%"></div></div><span>9%</span></div>
+          <div class="reviews-bar"><span>3 ★</span><div class="reviews-bar__track"><div class="reviews-bar__fill" style="width:3%"></div></div><span>3%</span></div>
+          <div class="reviews-bar"><span>2 ★</span><div class="reviews-bar__track"><div class="reviews-bar__fill" style="width:1%"></div></div><span>1%</span></div>
+          <div class="reviews-bar"><span>1 ★</span><div class="reviews-bar__track"><div class="reviews-bar__fill" style="width:0%"></div></div><span>0%</span></div>
+        </div>
+      </div>
+
+      <div class="reviews-grid">
+        <!-- Review 1 -->
+        <div class="review-card">
+          <div class="review-card__header">
+            <div class="review-card__avatar">T</div>
+            <div>
+              <strong class="review-card__name">Thomas R.</strong>
+              <p class="review-card__date">12 mai 2026</p>
+            </div>
+            <span class="review-card__badge">Achat vérifié ✓</span>
+          </div>
+          <div class="review-card__stars">★★★★★</div>
+          <h3 class="review-card__title">{{ section.settings.review_1_title | default: 'Excellent produit !' }}</h3>
+          <p class="review-card__body">{{ section.settings.review_1_body | default: 'J''utilise ce produit depuis 3 mois et les résultats sont incroyables. La qualité est au rendez-vous et le goût est vraiment agréable. Je recommande vivement !' }}</p>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="review-card">
+          <div class="review-card__header">
+            <div class="review-card__avatar">S</div>
+            <div>
+              <strong class="review-card__name">Sophie M.</strong>
+              <p class="review-card__date">3 mai 2026</p>
+            </div>
+            <span class="review-card__badge">Achat vérifié ✓</span>
+          </div>
+          <div class="review-card__stars">★★★★★</div>
+          <h3 class="review-card__title">{{ section.settings.review_2_title | default: 'Super qualité, livraison rapide' }}</h3>
+          <p class="review-card__body">{{ section.settings.review_2_body | default: 'Commande reçue en 24h, emballage soigné. Le produit est top, exactement ce que je cherchais pour ma prise de masse. Je suis cliente régulière chez MB Nutrition.' }}</p>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="review-card">
+          <div class="review-card__header">
+            <div class="review-card__avatar">K</div>
+            <div>
+              <strong class="review-card__name">Kevin B.</strong>
+              <p class="review-card__date">28 avril 2026</p>
+            </div>
+            <span class="review-card__badge">Achat vérifié ✓</span>
+          </div>
+          <div class="review-card__stars">★★★★★</div>
+          <h3 class="review-card__title">{{ section.settings.review_3_title | default: 'Je ne changerais pour rien au monde' }}</h3>
+          <p class="review-card__body">{{ section.settings.review_3_body | default: 'Ça fait 6 mois que je commande ici. Rapport qualité-prix imbattable, produits testés et approuvés. Le service client est aussi très réactif.' }}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+{% endif %}
+
+<!-- Sticky ATC (mobile) -->
+<div class="sticky-atc" id="StickyATC" aria-hidden="true">
+  <div class="sticky-atc__info">
+    <span class="sticky-atc__title">{{ product.title | truncate: 40 }}</span>
+    <span class="sticky-atc__price" id="StickyPrice">{{ current_variant.price | money }}</span>
+  </div>
+  <button class="btn btn--primary sticky-atc__btn" id="StickyATCBtn" {% unless current_variant.available %}disabled{% endunless %}>
+    {% if current_variant.available %}Ajouter au panier{% else %}Rupture de stock{% endif %}
+  </button>
+</div>
+
+<script id="ProductData" type="application/json">
+{
+  "id": {{ product.id }},
+  "options": {{ product.options | json }},
+  "variants": [
+    {% for v in product.variants %}
+    {
+      "id": {{ v.id }},
+      "available": {{ v.available }},
+      "price": {{ v.price }},
+      "compare_at_price": {{ v.compare_at_price | default: 0 }},
+      "options": {{ v.options | json }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+</script>
+
+<script>
+(function() {
+  // Countdown timer
+  var timerEl = document.querySelector('[data-countdown]');
+  if (timerEl) {
+    var end = new Date();
+    end.setHours(23, 45, 0, 0);
+    if (end < new Date()) end.setDate(end.getDate() + 1);
+    function tick() {
+      var diff = end - new Date();
+      if (diff <= 0) { timerEl.textContent = '00:00:00'; return; }
+      var h = Math.floor(diff / 3600000);
+      var m = Math.floor((diff % 3600000) / 60000);
+      var s = Math.floor((diff % 60000) / 1000);
+      timerEl.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  // Sticky ATC
+  var atcBtn = document.getElementById('ProductATC');
+  var stickyAtc = document.getElementById('StickyATC');
+  var stickyBtn = document.getElementById('StickyATCBtn');
+  if (atcBtn && stickyAtc) {
+    var observer = new IntersectionObserver(function(entries) {
+      var visible = entries[0].isIntersecting;
+      stickyAtc.classList.toggle('is-visible', !visible);
+      stickyAtc.setAttribute('aria-hidden', visible ? 'true' : 'false');
+    }, { threshold: 0.1 });
+    observer.observe(atcBtn);
+    if (stickyBtn) {
+      stickyBtn.addEventListener('click', function() {
+        atcBtn.click();
+      });
+    }
+  }
+
+  // FBT total calculator
+  var fbtCheckboxes = document.querySelectorAll('.fbt-checkbox');
+  var fbtTotalEl = document.getElementById('FbtTotal');
+  var fbtAddAll = document.getElementById('FbtAddAll');
+  var mainProductPrice = {{ current_variant.price }};
+
+  function updateFbtTotal() {
+    var total = mainProductPrice;
+    fbtCheckboxes.forEach(function(cb) {
+      if (cb.checked) {
+        var id = cb.getAttribute('data-product-id');
+        // prices are encoded in data attribute for simplicity
+        var priceEl = cb.closest('.fbt-card').querySelector('.fbt-card__price');
+        if (priceEl && priceEl.dataset.cents) total += parseInt(priceEl.dataset.cents);
+      }
+    });
+    if (fbtTotalEl) {
+      fbtTotalEl.textContent = (total / 100).toFixed(2).replace('.', ',') + ' €';
+    }
+  }
+
+  fbtCheckboxes.forEach(function(cb) {
+    cb.addEventListener('change', updateFbtTotal);
+  });
+
+  if (fbtAddAll) {
+    fbtAddAll.addEventListener('click', function() {
+      var items = [{ id: document.getElementById('VariantId').value, quantity: 1 }];
+      fbtCheckboxes.forEach(function(cb) {
+        if (cb.checked) items.push({ id: cb.getAttribute('data-product-id'), quantity: 1 });
+      });
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: items })
+      }).then(function() {
+        if (window.theme && window.theme.openCart) window.theme.openCart();
+        else window.location.href = '/cart';
+      });
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Produit principal",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Affichage" },
+    { "type": "checkbox", "id": "show_vendor", "label": "Afficher le fournisseur", "default": true },
+    { "type": "checkbox", "id": "show_rating", "label": "Afficher la note", "default": true },
+    { "type": "number", "id": "review_count", "label": "Nombre d'avis affiché", "default": 124 },
+    { "type": "checkbox", "id": "show_trust_badges", "label": "Afficher les badges de confiance", "default": true },
+    { "type": "checkbox", "id": "show_urgency", "label": "Afficher le badge urgence", "default": true },
+    { "type": "checkbox", "id": "show_countdown", "label": "Afficher le compte à rebours", "default": true },
+    { "type": "checkbox", "id": "show_stock", "label": "Afficher l'indicateur de stock", "default": true },
+    { "type": "number", "id": "stock_count", "label": "Quantité en stock affichée", "default": 12 },
+    { "type": "number", "id": "buyers_today", "label": "Acheteurs aujourd'hui (social proof)", "default": 23 },
+    { "type": "header", "content": "Onglet Utilisation" },
+    { "type": "textarea", "id": "usage_text", "label": "Texte « Utilisation »", "default": "Mélangez 1 dose avec 250 ml d'eau froide." },
+    { "type": "header", "content": "Produits complémentaires (FBT)" },
+    { "type": "checkbox", "id": "show_fbt", "label": "Afficher «Fréquemment achetés ensemble»", "default": true },
+    { "type": "text", "id": "fbt_heading", "label": "Titre FBT", "default": "Fréquemment achetés ensemble" },
+    { "type": "product", "id": "fbt_product_1", "label": "Produit complémentaire 1" },
+    { "type": "product", "id": "fbt_product_2", "label": "Produit complémentaire 2" },
+    { "type": "text", "id": "fbt_savings_label", "label": "Message économies FBT", "default": "🎁 Économisez 10% en commandant les 3 !" },
+    { "type": "header", "content": "Produits recommandés" },
+    { "type": "checkbox", "id": "show_recommendations", "label": "Afficher les recommandations", "default": true },
+    { "type": "text", "id": "rec_heading", "label": "Titre recommandations", "default": "Complétez votre routine" },
+    { "type": "collection", "id": "rec_collection", "label": "Collection à afficher" },
+    { "type": "header", "content": "Avis clients" },
+    { "type": "checkbox", "id": "show_reviews", "label": "Afficher les avis", "default": true },
+    { "type": "text", "id": "review_1_title", "label": "Titre avis 1", "default": "Excellent produit !" },
+    { "type": "textarea", "id": "review_1_body", "label": "Corps avis 1", "default": "J'utilise ce produit depuis 3 mois et les résultats sont incroyables." },
+    { "type": "text", "id": "review_2_title", "label": "Titre avis 2", "default": "Super qualité, livraison rapide" },
+    { "type": "textarea", "id": "review_2_body", "label": "Corps avis 2", "default": "Commande reçue en 24h, emballage soigné." },
+    { "type": "text", "id": "review_3_title", "label": "Titre avis 3", "default": "Je ne changerais pour rien au monde" },
+    { "type": "textarea", "id": "review_3_body", "label": "Corps avis 3", "default": "Ça fait 6 mois que je commande ici." }
+  ]
+}
+{% endschema %}

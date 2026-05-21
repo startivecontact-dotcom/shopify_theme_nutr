@@ -1,0 +1,712 @@
+<section class="page-width results-steps-section" style="
+  padding-top: {{ section.settings.padding_top }}px;
+  padding-bottom: {{ section.settings.padding_bottom }}px;
+  padding-left: {{ section.settings.padding_horizontal }}px;
+  padding-right: {{ section.settings.padding_horizontal }}px;
+  {% if section.settings.use_theme_colors %}
+    background-color: {{ settings.global_section_background_color }};
+  {% elsif section.settings.use_gradient %}
+    background: linear-gradient(to bottom, {{ section.settings.gradient_start_color }} 0%, {{ section.settings.gradient_end_color }} 100%);
+  {% else %}
+    background-color: {{ section.settings.section_background }};
+  {% endif %}
+">
+  <h2 class="section-title global-heading">{{ section.settings.title }} <span class="global-accent-text">{{ section.settings.title_highlight }}</span></h2>
+  
+  {% if section.settings.subtitle != blank %}
+    <div class="section-subtitle">{{ section.settings.subtitle }}</div>
+  {% endif %}
+  
+  <div class="steps-container">
+    {% for block in section.blocks %}
+      {% if block.type == 'step' %}
+        <div class="step-item" {{ block.shopify_attributes }}>
+          <div class="step-card">
+            <div class="step-image-container" style="background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ block.settings.image_background_color }}{% endif %};">
+              {% if block.settings.step_image != blank %}
+                <img src="{{ block.settings.step_image | img_url: 'master' }}" alt="{{ block.settings.step_title }}" class="step-image">
+              {% else %}
+                <div class="step-image placeholder-image"></div>
+              {% endif %}
+            </div>
+            <div class="step-content" style="background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ block.settings.content_background_color }}{% endif %};">
+              <div class="step-title-container">
+                <div class="number-icon">{{ forloop.index }}</div>
+                <h3 class="step-title">{{ block.settings.step_title }}</h3>
+              </div>
+              <p class="step-description global-text">{{ block.settings.step_description }}</p>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Steps Results Section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use Theme Colors",
+      "default": true,
+      "info": "Apply the global theme colors to this section"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal Padding",
+      "default": 20
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "How"
+    },
+    {
+      "type": "text",
+      "id": "title_highlight",
+      "label": "Highlighted Title Text",
+      "default": "It Works"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Learn how our process works in three simple steps",
+      "info": "Optional subtitle to display below the main title"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Highlight Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#4A4A4A"
+    },
+    {
+      "type": "header",
+      "content": "Text Sizing"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Size (Desktop)",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 20,
+      "max": 46,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Size (Mobile)",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_desktop",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle Size (Desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "step_title_size_desktop",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Step Title Size (Desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "step_title_size_mobile",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Step Title Size (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "step_description_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Step Description Size (Desktop)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "step_description_size_mobile",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Step Description Size (Mobile)",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "number_size_desktop",
+      "min": 16,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Step Number Size (Desktop)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "number_size_mobile",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Step Number Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "number_circle_size_desktop",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "px",
+      "label": "Number Circle Size (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "number_circle_size_mobile",
+      "min": 30,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Number Circle Size (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Number Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "number_border_color",
+      "label": "Number Border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "step_title_color",
+      "label": "Step Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "header",
+      "content": "Background Settings"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "step_image",
+          "label": "Step Image"
+        },
+        {
+          "type": "color",
+          "id": "image_background_color",
+          "label": "Image Background Color",
+          "default": "#000000"
+        },
+        {
+          "type": "text",
+          "id": "step_title",
+          "label": "Step Title",
+          "default": "Enter Step Here"
+        },
+        {
+          "type": "textarea",
+          "id": "step_description",
+          "label": "Step Description",
+          "default": "Add full step description here."
+        },
+        {
+          "type": "color",
+          "id": "content_background_color",
+          "label": "Content Background Color",
+          "default": "#FFFFFF"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Steps Results Section",
+      "blocks": [
+        {
+          "type": "step"
+        },
+        {
+          "type": "step"
+        },
+        {
+          "type": "step"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  /* Section Styles with gradient support */
+  .results-steps-section {
+    margin: 0 auto;
+    {% if section.settings.use_theme_colors %}
+      background-color: {{ settings.global_section_background_color }};
+    {% elsif section.settings.use_gradient %}
+      background: linear-gradient(to bottom, {{ section.settings.gradient_start_color }} 0%, {{ section.settings.gradient_end_color }} 100%);
+    {% else %}
+      background-color: {{ section.settings.section_background }};
+    {% endif %}
+    overflow: hidden;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .section-title {
+    text-align: center;
+    {% if section.settings.subtitle != blank %}
+      margin-bottom: 10px;
+    {% else %}
+      margin-bottom: 20px;
+    {% endif %}
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.title_color }}{% endif %};
+    font-size: {{ section.settings.title_size_desktop }}px;
+    letter-spacing: var(--letter-spacing-heading);
+  }
+  
+  .section-subtitle {
+    text-align: center;
+    margin-bottom: 20px;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.subtitle_color }}{% endif %};
+    font-size: {{ section.settings.subtitle_size_desktop }}px;
+    line-height: 1.4;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    letter-spacing: var(--letter-spacing-body);
+  }
+  
+  .global-accent-text {
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.highlight_color }}{% endif %};
+    font-style: {{ settings.accent_text_style }};
+    font-family: {{ settings.accent_text_font.family }}, {{ settings.accent_text_font.fallback_families }};
+    font-weight: {{ settings.accent_text_weight }};
+  }
+  
+  /* Desktop layout - Cards in a row */
+  .steps-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    margin: 0 auto;
+  }
+  
+  .step-item {
+    flex: 1;
+    max-width: calc(9% - -153px);
+    position: relative;
+  }
+  
+  .step-card {
+    border-radius: {{ section.settings.card_border_radius }}px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px dashed {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.card_border_color }}{% endif %};
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .step-image-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+  }
+  
+  .step-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .placeholder-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+  }
+  
+  .step-content {
+    width: 100%;
+    padding: 20px 12px;
+    padding-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: left;
+    height: 100%;
+  }
+  
+  .step-title-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  /* Number icon with customizable border color */
+  .number-icon {
+    width: {{ section.settings.number_circle_size_desktop }}px;
+    height: {{ section.settings.number_circle_size_desktop }}px;
+    margin-right: 12px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.number_border_color }}{% endif %};
+    font-weight: var(--font-weight-semibold);
+    font-size: {{ section.settings.number_size_desktop }}px;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.label_color }}{% endif %};
+    flex-shrink: 0;
+  }
+  
+  .step-title {
+    font-size: {{ section.settings.step_title_size_desktop }}px;
+    font-weight: var(--font-weight-bold);
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.step_title_color }}{% endif %};
+    margin-bottom: 0px;
+    letter-spacing: var(--letter-spacing-body);
+    line-height: 1.2;
+    margin-top: 0px;
+  }
+  
+  .step-description {
+    font-size: {{ section.settings.step_description_size_desktop }}px;
+    line-height: 1.4;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.description_color }}{% endif %};
+    margin-bottom: 0;
+    margin-top: 2px;
+  }
+  
+  /* Tablet layout - Switch to vertical stack with horizontal cards */
+  @media (max-width: 768px) {
+    .section-title {
+      {% if section.settings.subtitle != blank %}
+        margin-bottom: 12px;
+      {% else %}
+        margin-bottom: 25px;
+      {% endif %}
+      font-size: {{ section.settings.title_size_mobile }}px;
+    }
+    
+    .section-subtitle {
+      font-size: {{ section.settings.subtitle_size_mobile }}px;
+      margin-bottom: 25px;
+      padding: 0 15px;
+    }
+    
+    .steps-container {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .step-item {
+      max-width: 100%;
+      margin-bottom: 10px;
+    }
+    
+    .step-card {
+      flex-direction: row;
+    }
+    
+    .step-image-container {
+      width: 33%;
+      min-width: 30%;
+      aspect-ratio: 1/1;
+    }
+    
+    .step-content {
+      width: 100%;
+      padding: 8px 8px;
+      padding-left: 20px;
+      padding-bottom: 15px;
+      justify-content: center;
+      align-items: flex-start;
+      text-align: left;
+      height: auto;
+    }
+    
+    .step-title-container {
+      align-items: center;
+    }
+    
+    .number-icon {
+      width: {{ section.settings.number_circle_size_mobile }}px;
+      height: {{ section.settings.number_circle_size_mobile }}px;
+      margin-right: 10px;
+      font-size: {{ section.settings.number_size_mobile }}px;
+    }
+    
+    .step-title {
+      font-size: {{ section.settings.step_title_size_mobile }}px;
+      margin-bottom: 3px;
+      line-height: 1.2;
+      margin-top: 0px;
+    }
+    
+    .step-description {
+      font-size: {{ section.settings.step_description_size_mobile }}px;
+      line-height: 1.4;
+      margin-top: 2px;
+    }
+  }
+  
+  /* Mobile layout - Smaller text and tighter spacing */
+  @media (max-width: 480px) {
+    .section-title {
+      {% if section.settings.subtitle != blank %}
+        margin-bottom: 8px;
+      {% else %}
+        margin-bottom: 20px;
+      {% endif %}
+      font-size: {{ section.settings.title_size_mobile }}px;
+    }
+    
+    .section-subtitle {
+      font-size: {{ section.settings.subtitle_size_mobile }}px;
+      margin-bottom: 20px;
+      padding: 0 10px;
+    }
+    
+    .steps-container {
+      gap: 10px;
+    }
+    
+    .step-item {
+      margin-bottom: 10px;
+    }
+    
+    .step-card {
+      flex-direction: row;
+    }
+    
+    .step-image-container {
+      width: 33%;
+      min-width: 30%;
+    }
+    
+    .step-content {
+      width: 100%;
+      padding: 15px 12px;
+      height: auto;
+      text-align: left;
+      align-items: flex-start;
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .step-title-container {
+      justify-content: flex-start;
+    }
+    
+    .number-icon {
+      width: {{ section.settings.number_circle_size_mobile }}px;
+      height: {{ section.settings.number_circle_size_mobile }}px;
+      margin-right: 8px;
+      font-size: {{ section.settings.number_size_mobile }}px;
+    }
+    
+    .step-title {
+      font-size: {{ section.settings.step_title_size_mobile }}px;
+      margin-bottom: 3px;
+      line-height: 1.2;
+      margin-top: 0px;
+      margin-left: 5px;
+    }
+    
+    .step-description {
+      font-size: {{ section.settings.step_description_size_mobile }}px;
+      line-height: 1.4;
+      margin-top: 2px;
+      text-align: left;
+    }
+  }
+  
+  @media (max-width: 410px) {
+    .section-title {
+      margin-bottom: 20px;
+      font-size: {{ section.settings.title_size_mobile }}px;
+    }
+    
+    .steps-container {
+      gap: 10px;
+    }
+    
+    .step-item {
+      margin-bottom: 10px;
+    }
+    
+    .step-card {
+      flex-direction: row;
+    }
+    
+    .step-image-container {
+      width: 37%;
+      min-width: 30%;
+    }
+    
+    .step-content {
+      width: 100%;
+      padding: 12px 12px;
+      height: auto;
+      text-align: left;
+      align-items: flex-start;
+    }
+    
+    .number-icon {
+      width: {{ section.settings.number_circle_size_mobile }}px;
+      height: {{ section.settings.number_circle_size_mobile }}px;
+      margin-right: 6px;
+      font-size: {{ section.settings.number_size_mobile }}px;
+    }
+    
+    .step-title {
+      font-size: {{ section.settings.step_title_size_mobile }}px;
+      margin-bottom: 3px;
+      line-height: 1.2;
+      margin-top: 0px;
+      margin-left: 5px;
+    }
+    
+    .step-description {
+      font-size: {{ section.settings.step_description_size_mobile }}px;
+      line-height: 1.4;
+      margin-top: 2px;
+      text-align: left;
+    }
+  }
+  
+  @media screen and (max-width: 749px) {
+    .results-steps-section {
+      /* Removed: padding: 30px 20px; */
+    }
+  }
+  
+  @media screen and (min-width: 750px) {
+    .results-steps-section {
+      /* Removed: padding: 60px 20px; */
+    }
+  }
+</style>

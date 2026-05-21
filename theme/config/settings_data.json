@@ -1,0 +1,24 @@
+{
+  "current": {
+    "favicon": "",
+    "color_bg": "#ffffff",
+    "color_text": "#1a1a1a",
+    "color_accent": "#C8A84B",
+    "color_header_bg": "#1a1a1a",
+    "font_base_size": 16,
+    "free_shipping_threshold": 80,
+    "social_instagram": "",
+    "social_facebook": "",
+    "social_tiktok": ""
+  },
+  "presets": {
+    "MB Nutrition": {
+      "color_bg": "#ffffff",
+      "color_text": "#1a1a1a",
+      "color_accent": "#C8A84B",
+      "color_header_bg": "#1a1a1a",
+      "font_base_size": 16,
+      "free_shipping_threshold": 80
+    }
+  }
+}

@@ -1,0 +1,139 @@
+<section class="bestsellers" id="Bestsellers-{{ section.id }}">
+  <div class="container">
+
+    <div class="bestsellers__header">
+      <div>
+        <p class="bestsellers__label">{{ section.settings.label | default: 'DÉCOUVREZ NOS MEILLEURES VENTES' }}</p>
+        <h2 class="bestsellers__title">{{ section.settings.title | default: 'MB NUTRITION' }}</h2>
+      </div>
+      <div class="bestsellers__nav">
+        <a href="{{ section.settings.view_all_link | default: '/collections/all' }}" class="bestsellers__link">
+          Voir tous les produits &rarr;
+        </a>
+        <button class="carousel-btn" id="CarouselPrev-{{ section.id }}" aria-label="Précédent">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <button class="carousel-btn" id="CarouselNext-{{ section.id }}" aria-label="Suivant">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="bestsellers__track-wrap">
+      <div class="bestsellers__track" id="CarouselTrack-{{ section.id }}" role="list">
+
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks %}
+            {% assign p = all_products[block.settings.product_handle] %}
+            {% if p and p != empty %}
+              {% render 'product-card', product: p %}
+            {% else %}
+              {% assign card_url = block.settings.product_url | default: '/collections/all' %}
+              <div class="product-card" role="listitem" {{ block.shopify_attributes }}>
+                <a href="{{ card_url }}" class="product-card__full-link" aria-label="{{ block.settings.product_title | escape }}"></a>
+                <a href="{{ card_url }}" class="product-card__image-wrap" tabindex="-1" aria-hidden="true">
+                  {% if block.settings.product_image_url != blank %}
+                    <img src="{{ block.settings.product_image_url }}"
+                         alt="{{ block.settings.product_title | escape }}"
+                         loading="lazy" width="600" height="600">
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                  {% if block.settings.product_badge != blank %}
+                    <span class="product-card__badge {% if block.settings.product_badge == 'NOUVEAU' %}product-card__badge--new{% endif %}">{{ block.settings.product_badge }}</span>
+                  {% endif %}
+                </a>
+                <div class="product-card__body">
+                  <h3 class="product-card__title">
+                    <a href="{{ card_url }}">{{ block.settings.product_title | upcase }}</a>
+                  </h3>
+                  <div class="product-card__price {% if block.settings.product_compare_price != blank %}product-card__price--sale{% endif %}">
+                    {{ block.settings.product_price }}
+                    {% if block.settings.product_compare_price != blank %}
+                      <s>{{ block.settings.product_compare_price }}</s>
+                    {% endif %}
+                  </div>
+                  <a href="{{ card_url }}" class="product-card__atc" style="position:relative;z-index:2;">
+                    Voir le produit →
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+        {% elsif section.settings.collection != blank and section.settings.collection.products_count > 0 %}
+          {% for product in section.settings.collection.products limit: section.settings.items_to_show %}
+            {% render 'product-card', product: product %}
+          {% endfor %}
+
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function() {
+  var section = document.getElementById('Bestsellers-{{ section.id }}');
+  if (!section) return;
+  var track = section.querySelector('#CarouselTrack-{{ section.id }}');
+  var prevBtn = section.querySelector('#CarouselPrev-{{ section.id }}');
+  var nextBtn = section.querySelector('#CarouselNext-{{ section.id }}');
+  var current = 0;
+  function getVisible() {
+    if (window.innerWidth < 600) return 1;
+    if (window.innerWidth < 1024) return 2;
+    return 4;
+  }
+  function getTotal() { return track.children.length; }
+  function update() {
+    var visible = getVisible();
+    var maxIndex = Math.max(0, getTotal() - visible);
+    current = Math.min(Math.max(current, 0), maxIndex);
+    var first = track.children[0];
+    var gap = 20;
+    var cardWidth = first ? first.offsetWidth + gap : 0;
+    track.style.transform = 'translateX(-' + (current * cardWidth) + 'px)';
+  }
+  if (prevBtn) prevBtn.addEventListener('click', function() { current--; update(); });
+  if (nextBtn) nextBtn.addEventListener('click', function() { current++; update(); });
+  window.addEventListener('resize', update);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Meilleures ventes",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Étiquette", "default": "DÉCOUVREZ NOS MEILLEURES VENTES" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "MB NUTRITION" },
+    { "type": "url", "id": "view_all_link", "label": "Lien « Voir tous »" },
+    { "type": "header", "content": "Fallback (si blocs vides)" },
+    { "type": "collection", "id": "collection", "label": "Collection à afficher" },
+    { "type": "range", "id": "items_to_show", "label": "Nombre max (collection)", "min": 4, "max": 12, "step": 1, "default": 8 }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Produit",
+      "settings": [
+        { "type": "text", "id": "product_handle", "label": "Handle produit Shopify", "info": "Ex: whey-protein-pro-450g (après import)" },
+        { "type": "text", "id": "product_title", "label": "Nom du produit" },
+        { "type": "text", "id": "product_price", "label": "Prix", "default": "29,95 €" },
+        { "type": "text", "id": "product_compare_price", "label": "Prix barré (optionnel)" },
+        { "type": "text", "id": "product_badge", "label": "Badge (ex: SOLDES, NOUVEAU)" },
+        { "type": "text", "id": "product_image_url", "label": "URL image (Shopify CDN)" },
+        { "type": "url", "id": "product_url", "label": "Lien vers le produit" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "Meilleures ventes" }]
+}
+{% endschema %}

@@ -1,0 +1,1060 @@
+{% schema %}
+{
+  "name": "Satisfaction Guarantee",
+  "tag": "section",
+  "class": "guarantee-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use Theme Colors",
+      "default": true,
+      "info": "Apply the global theme colors to this section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_photos",
+      "label": "Show Photos",
+      "default": true,
+      "info": "When disabled, photos will be hidden from the section"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_overflow",
+      "label": "Allow Content Overflow",
+      "default": false,
+      "info": "When enabled, polaroid images can extend beyond section boundaries (prevents cutoff)"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Margin (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Margin (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Margin (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Margin (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_no_photos",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding When Photos Hidden",
+      "default": 15,
+      "info": "Internal top padding when 'Show Photos' is disabled"
+    },
+    {
+      "type": "header",
+      "content": "Content Spacing"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Content Left Padding",
+      "default": 70,
+      "info": "Horizontal space between content and left images"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Content Right Padding",
+      "default": 70,
+      "info": "Horizontal space between content and right images"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Content Padding (Mobile)",
+      "default": 15,
+      "info": "Horizontal padding on mobile devices"
+    },
+    {
+      "type": "header",
+      "content": "Image Positioning"
+    },
+    {
+      "type": "range",
+      "id": "image_extension",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Image Extension Into Margin",
+      "default": 80,
+      "info": "Controls how far images extend into the margin space (100% = aligned with section edge)"
+    },
+    {
+      "type": "range",
+      "id": "image_vertical_offset",
+      "min": -50,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Additional Vertical Offset",
+      "default": 0,
+      "info": "Adjust images up or down from their calculated position"
+    },
+    {
+      "type": "header",
+      "content": "Photo Sizing"
+    },
+    {
+      "type": "range",
+      "id": "polaroid_size_desktop",
+      "min": 120,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Polaroid Size (Desktop)",
+      "default": 180,
+      "info": "Width of the polaroid photos (height scales proportionally)"
+    },
+    {
+      "type": "range",
+      "id": "polaroid_size_mobile",
+      "min": 80,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Polaroid Size (Mobile)",
+      "default": 100,
+      "info": "Width of the polaroid photos (height scales proportionally)"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "select",
+      "id": "icon_style",
+      "label": "Shield Icon Style",
+      "options": [
+        {
+          "value": "original",
+          "label": "Original Shield"
+        },
+        {
+          "value": "filled",
+          "label": "Filled Shield"
+        },
+        {
+          "value": "outline",
+          "label": "Outline Shield"
+        },
+        {
+          "value": "detailed",
+          "label": "Detailed Shield"
+        },
+        {
+          "value": "custom",
+          "label": "Custom SVG"
+        }
+      ],
+      "default": "original"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_svg_code",
+      "label": "Custom SVG Code",
+      "info": "Paste your SVG code here. Will only be used when 'Custom SVG' is selected as Icon Style."
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Shield Icon Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "heading_risk_free",
+      "label": "Heading Part 1",
+      "default": "Money-Back"
+    },
+    {
+      "type": "text",
+      "id": "heading_beauty_revolution",
+      "label": "Heading Part 2",
+      "default": "Guarantee"
+    },
+    {
+      "type": "color",
+      "id": "risk_free_color",
+      "label": "Accent Text Color",
+      "info": "Leave blank to use the theme's accent text color"
+    },
+    {
+      "type": "color",
+      "id": "beauty_revolution_color",
+      "label": "Heading Part 2 Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "textarea",
+      "id": "description_text",
+      "label": "Description Text",
+      "default": "We're so confident in the quality of our product that we offer a satisfaction guarantee. If you're not completely satisfied with your purchase, simply return the item within 30 days for a full refund."
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Text Color",
+      "default": "#4A4A4A"
+    },
+    {
+      "type": "color",
+      "id": "benefit_text_color",
+      "label": "Benefit Text Color",
+      "default": "#4A4A4A"
+    },
+    {
+      "type": "text",
+      "id": "product_name",
+      "label": "Product Name",
+      "default": "Premium Product"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "description_line_height",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "unit": "x",
+      "label": "Description Line Height",
+      "default": 1.5,
+      "info": "Controls the spacing between lines in the description text"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 18,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 16,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "description_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Text Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "description_size_mobile",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Text Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "benefit_size_desktop",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Benefit Text Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "benefit_size_mobile",
+      "min": 9,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Benefit Text Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "ADD TO CART"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Background Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Border Width",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_global_button_style",
+      "label": "Use Global Button Style",
+      "default": true,
+      "info": "When enabled, uses theme's global button styling"
+    },
+    {
+      "type": "header",
+      "content": "Benefits"
+    },
+    {
+      "type": "text",
+      "id": "benefit_1",
+      "label": "Benefit 1",
+      "default": "100% Satisfaction"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2",
+      "label": "Benefit 2",
+      "default": "Fast Shipping"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3",
+      "label": "Benefit 3",
+      "default": "Easy Returns"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Image 5"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color_background",
+      "id": "background",
+      "label": "Background",
+      "default": "linear-gradient(to right, #FFE8EC, #FFF9F0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Satisfaction Guarantee",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="guarantee-section">
+  
+  <!-- Mobile View -->
+  <div class="guarantee-section__mobile {% if section.settings.show_photos == false %}no-photos{% endif %}">
+    <!-- Polaroid Photos moved above content -->
+    {% if section.settings.show_photos %}
+    <div class="guarantee-section__photos-mobile">
+      {% if section.settings.image_1 != blank %}
+        <div class="polaroid-photo polaroid-photo-1">
+          <img src="{{ section.settings.image_1 | img_url: '300x300', crop: 'center' }}" alt="{{ section.settings.product_name }}" loading="lazy">
+        </div>
+      {% endif %}
+      
+      {% if section.settings.image_2 != blank %}
+        <div class="polaroid-photo polaroid-photo-2">
+          <img src="{{ section.settings.image_2 | img_url: '300x300', crop: 'center' }}" alt="{{ section.settings.product_name }}" loading="lazy">
+        </div>
+      {% endif %}
+      
+      {% if section.settings.image_3 != blank %}
+        <div class="polaroid-photo polaroid-photo-3">
+          <img src="{{ section.settings.image_3 | img_url: '300x300', crop: 'center' }}" alt="{{ section.settings.product_name }}" loading="lazy">
+        </div>
+      {% endif %}
+      
+      {% if section.settings.image_4 != blank %}
+        <div class="polaroid-photo polaroid-photo-4">
+          <img src="{{ section.settings.image_4 | img_url: '300x300', crop: 'center' }}" alt="{{ section.settings.product_name }}" loading="lazy">
+        </div>
+      {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class="guarantee-section__content">
+      <div class="shield-icon">
+        {% case section.settings.icon_style %}
+          {% when 'filled' %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="none">
+              <path d="M12 22c-1.148 0-3.418-1.362-5.13-3.34C4.44 15.854 3 11.967 3 7a1 1 0 0 1 .629-.929c3.274-1.31 5.88-2.613 7.816-3.903a1 1 0 0 1 1.11 0c1.935 1.29 4.543 2.594 7.816 3.903A1 1 0 0 1 21 7c0 4.968-1.44 8.855-3.87 11.66C15.419 20.637 13.149 22 12 22z" fill="currentColor"/>
+            </svg>
+          {% when 'outline' %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="none">
+              <path d="M20 6C20 6 19.1843 6 19.0001 6C16.2681 6 13.8871 4.93485 11.9999 3C10.1128 4.93478 7.73199 6 5.00009 6C4.81589 6 4.00009 6 4.00009 6C4.00009 6 4 8 4 9.16611C4 14.8596 7.3994 19.6436 12 21C16.6006 19.6436 20 14.8596 20 9.16611C20 8 20 6 20 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          {% when 'detailed' %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M10.1548 3.74068C9.13306 4.24326 7.70274 4.75901 5.07021 4.93689C4.43314 4.97993 4.01738 5.47217 4.03533 5.965C4.13502 8.70059 4.45127 11.4217 5.0553 13.6538C5.67349 15.9383 6.53465 17.4879 7.55469 18.1679C9.1615 19.2392 10.4837 20.1681 11.3705 20.8038C11.7447 21.072 12.2553 21.072 12.6294 20.8038C13.5162 20.1681 14.8385 19.2392 16.4453 18.1679C17.4653 17.4879 18.3265 15.9383 18.9447 13.6539C19.5487 11.4218 19.865 8.70066 19.9646 5.965C19.9826 5.47217 19.5668 4.97993 18.9298 4.93689C16.2972 4.75901 14.8669 4.24326 13.8452 3.74068C13.5533 3.5971 13.3276 3.47746 13.1423 3.37923C12.6352 3.11045 12.4305 3.00195 12 3.00195C11.5694 3.00195 11.3647 3.11045 10.8577 3.37923C10.6724 3.47746 10.4467 3.5971 10.1548 3.74068ZM9.68627 1.72824C10.3021 1.39456 11.0268 1.00195 12 1.00195C12.9732 1.00195 13.6978 1.39456 14.3137 1.72825C14.4571 1.80594 14.5946 1.88044 14.728 1.94605C15.503 2.32729 16.6774 2.78014 19.0646 2.94144C20.6316 3.04732 22.0258 4.32298 21.9633 6.03782C21.8605 8.8586 21.5333 11.7445 20.8752 14.1763C20.2313 16.5559 19.2117 18.7274 17.5547 19.8321C15.97 20.8885 14.6667 21.8042 13.7947 22.4293C12.724 23.1969 11.276 23.1969 10.2053 22.4293C9.33329 21.8042 8.02992 20.8885 6.44528 19.8321C4.78826 18.7274 3.76867 16.5559 3.12474 14.1763C2.46666 11.7444 2.13944 8.85853 2.03666 6.03783C1.97417 4.32298 3.36833 3.04732 4.93538 2.94144C7.32256 2.78014 8.49696 2.32729 9.27198 1.94605C9.40536 1.88044 9.54287 1.80594 9.68627 1.72824Z" fill="currentColor"/>
+            </svg>
+          {% when 'custom' %}
+            {% if section.settings.custom_svg_code != blank %}
+              {{ section.settings.custom_svg_code }}
+            {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="80" height="80">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 16L4.35009 13.3929C2.24773 11.8912 1 9.46667 1 6.88306V3L8 0L15 3V6.88306C15 9.46667 13.7523 11.8912 11.6499 13.3929L8 16ZM12.2071 5.70711L10.7929 4.29289L7 8.08579L5.20711 6.29289L3.79289 7.70711L7 10.9142L12.2071 5.70711Z" fill="currentColor"/>
+              </svg>
+            {% endif %}
+          {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="80" height="80">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 16L4.35009 13.3929C2.24773 11.8912 1 9.46667 1 6.88306V3L8 0L15 3V6.88306C15 9.46667 13.7523 11.8912 11.6499 13.3929L8 16ZM12.2071 5.70711L10.7929 4.29289L7 8.08579L5.20711 6.29289L3.79289 7.70711L7 10.9142L12.2071 5.70711Z" fill="currentColor"/>
+            </svg>
+        {% endcase %}
+      </div>
+      
+      <h2 class="guarantee-section__heading">
+        <span class="risk-free-text">{{ section.settings.heading_risk_free }}</span> 
+        <span class="beauty-revolution-text" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.beauty_revolution_color }}{% endif %}">{{ section.settings.heading_beauty_revolution }}</span>
+      </h2>
+      
+      <p class="guarantee-section__description">
+        {{ section.settings.description_text | replace: 'Premium Product', section.settings.product_name }}
+      </p>
+      
+      <a href="#" class="theme-button guarantee-section__cta" onclick="scrollToProduct(event)">
+        {{ section.settings.button_text }}
+      </a>
+      
+      <div class="guarantee-section__benefits">
+        <div class="benefit">
+          <svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
+          </svg>
+          {{ section.settings.benefit_1 }}
+        </div>
+        <div class="benefit">
+          <svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
+          </svg>
+          {{ section.settings.benefit_2 }}
+        </div>
+        <div class="benefit">
+          <svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
+          </svg>
+          {{ section.settings.benefit_3 }}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Desktop View -->
+  <div class="guarantee-section__desktop {% if section.settings.show_photos == false %}no-photos{% endif %}">
+    {% if section.settings.show_photos %}
+    <div class="guarantee-section__photos-left">
+      {% if section.settings.image_1 != blank %}
+        <div class="polaroid-photo polaroid-photo-1">
+          <img src="{{ section.settings.image_1 | img_url: '300x300', crop: 'center' }}" alt="{{ section.settings.product_name }}" loading="lazy">
+        </div>
+      {% endif %}
+      
+      {% if section.settings.image_2 != blank %}
+        <div class="polaroid-photo polaroid-photo-2">
+          <img src="{{ section.settings.image_2 | img_url: '300x300', crop: 'center' }}" alt="{{ section.settings.product_name }}" loading="lazy">
+        </div>
+      {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class="guarantee-section__content">
+      <div class="shield-icon">
+        {% case section.settings.icon_style %}
+          {% when 'filled' %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="none">
+              <path d="M12 22c-1.148 0-3.418-1.362-5.13-3.34C4.44 15.854 3 11.967 3 7a1 1 0 0 1 .629-.929c3.274-1.31 5.88-2.613 7.816-3.903a1 1 0 0 1 1.11 0c1.935 1.29 4.543 2.594 7.816 3.903A1 1 0 0 1 21 7c0 4.968-1.44 8.855-3.87 11.66C15.419 20.637 13.149 22 12 22z" fill="currentColor"/>
+            </svg>
+          {% when 'outline' %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="none">
+              <path d="M20 6C20 6 19.1843 6 19.0001 6C16.2681 6 13.8871 4.93485 11.9999 3C10.1128 4.93478 7.73199 6 5.00009 6C4.81589 6 4.00009 6 4.00009 6C4.00009 6 4 8 4 9.16611C4 14.8596 7.3994 19.6436 12 21C16.6006 19.6436 20 14.8596 20 9.16611C20 8 20 6 20 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          {% when 'detailed' %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M10.1548 3.74068C9.13306 4.24326 7.70274 4.75901 5.07021 4.93689C4.43314 4.97993 4.01738 5.47217 4.03533 5.965C4.13502 8.70059 4.45127 11.4217 5.0553 13.6538C5.67349 15.9383 6.53465 17.4879 7.55469 18.1679C9.1615 19.2392 10.4837 20.1681 11.3705 20.8038C11.7447 21.072 12.2553 21.072 12.6294 20.8038C13.5162 20.1681 14.8385 19.2392 16.4453 18.1679C17.4653 17.4879 18.3265 15.9383 18.9447 13.6539C19.5487 11.4218 19.865 8.70066 19.9646 5.965C19.9826 5.47217 19.5668 4.97993 18.9298 4.93689C16.2972 4.75901 14.8669 4.24326 13.8452 3.74068C13.5533 3.5971 13.3276 3.47746 13.1423 3.37923C12.6352 3.11045 12.4305 3.00195 12 3.00195C11.5694 3.00195 11.3647 3.11045 10.8577 3.37923C10.6724 3.47746 10.4467 3.5971 10.1548 3.74068ZM9.68627 1.72824C10.3021 1.39456 11.0268 1.00195 12 1.00195C12.9732 1.00195 13.6978 1.39456 14.3137 1.72825C14.4571 1.80594 14.5946 1.88044 14.728 1.94605C15.503 2.32729 16.6774 2.78014 19.0646 2.94144C20.6316 3.04732 22.0258 4.32298 21.9633 6.03782C21.8605 8.8586 21.5333 11.7445 20.8752 14.1763C20.2313 16.5559 19.2117 18.7274 17.5547 19.8321C15.97 20.8885 14.6667 21.8042 13.7947 22.4293C12.724 23.1969 11.276 23.1969 10.2053 22.4293C9.33329 21.8042 8.02992 20.8885 6.44528 19.8321C4.78826 18.7274 3.76867 16.5559 3.12474 14.1763C2.46666 11.7444 2.13944 8.85853 2.03666 6.03783C1.97417 4.32298 3.36833 3.04732 4.93538 2.94144C7.32256 2.78014 8.49696 2.32729 9.27198 1.94605C9.40536 1.88044 9.54287 1.80594 9.68627 1.72824Z" fill="currentColor"/>
+            </svg>
+          {% when 'custom' %}
+            {% if section.settings.custom_svg_code != blank %}
+              {{ section.settings.custom_svg_code }}
+            {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="80" height="80">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 16L4.35009 13.3929C2.24773 11.8912 1 9.46667 1 6.88306V3L8 0L15 3V6.88306C15 9.46667 13.7523 11.8912 11.6499 13.3929L8 16ZM12.2071 5.70711L10.7929 4.29289L7 8.08579L5.20711 6.29289L3.79289 7.70711L7 10.9142L12.2071 5.70711Z" fill="currentColor"/>
+              </svg>
+            {% endif %}
+          {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="80" height="80">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 16L4.35009 13.3929C2.24773 11.8912 1 9.46667 1 6.88306V3L8 0L15 3V6.88306C15 9.46667 13.7523 11.8912 11.6499 13.3929L8 16ZM12.2071 5.70711L10.7929 4.29289L7 8.08579L5.20711 6.29289L3.79289 7.70711L7 10.9142L12.2071 5.70711Z" fill="currentColor"/>
+            </svg>
+        {% endcase %}
+      </div>
+      
+      <h2 class="guarantee-section__heading">
+        <span class="risk-free-text">{{ section.settings.heading_risk_free }}</span> 
+        <span class="beauty-revolution-text" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.beauty_revolution_color }}{% endif %}">{{ section.settings.heading_beauty_revolution }}</span>
+      </h2>
+      
+      <p class="guarantee-section__description">
+        {{ section.settings.description_text | replace: 'Premium Product', section.settings.product_name }}
+      </p>
+      
+      <a href="#" class="guarantee-section__cta" onclick="scrollToProduct(event)">
+        {{ section.settings.button_text }}
+      </a>
+      
+      <div class="guarantee-section__benefits">
+        <div class="benefit">
+          <svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
+          </svg>
+          {{ section.settings.benefit_1 }}
+        </div>
+        <div class="benefit">
+          <svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
+          </svg>
+          {{ section.settings.benefit_2 }}
+        </div>
+        <div class="benefit">
+          <svg class="checkmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
+          </svg>
+          {{ section.settings.benefit_3 }}
+        </div>
+      </div>
+    </div>
+    
+    {% if section.settings.show_photos %}
+    <div class="guarantee-section__photos-right">
+      {% if section.settings.image_3 != blank %}
+        <div class="polaroid-photo polaroid-photo-1">
+          <img src="{{ section.settings.image_3 | img_url: '300x300', crop: 'center' }}" alt="{{ section.settings.product_name }}" loading="lazy">
+        </div>
+      {% endif %}
+      
+      {% if section.settings.image_4 != blank %}
+        <div class="polaroid-photo polaroid-photo-2">
+          <img src="{{ section.settings.image_4 | img_url: '300x300', crop: 'center' }}" alt="{{ section.settings.product_name }}" loading="lazy">
+        </div>
+      {% endif %}
+
+      {% if section.settings.image_5 != blank %}
+        <div class="polaroid-photo polaroid-photo-3">
+          <img src="{{ section.settings.image_5 | img_url: '300x300', crop: 'center' }}" alt="{{ section.settings.product_name }}" loading="lazy">
+        </div>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+
+  <style>
+  .guarantee-section {
+    width: 100%;
+    max-width: 100%;
+    font-family: var(--font-body-family-override);
+    font-weight: var(--font-weight-regular);
+    box-sizing: border-box;
+    letter-spacing: var(--letter-spacing-body);
+    {% if section.settings.use_theme_colors %}
+      {% if settings.global_section_use_gradient_background %}
+        background: linear-gradient(to right, {{ settings.global_section_gradient_color_1 }}, {{ settings.global_section_gradient_color_2 }});
+      {% elsif settings.global_section_gradient %}
+        background: {{ settings.global_section_gradient }};
+      {% else %}
+        background: {{ settings.global_section_background_color }};
+      {% endif %}
+    {% elsif section.settings.background != blank %}
+      background: {{ section.settings.background }};
+    {% else %}
+      background: #FFFFFF;
+    {% endif %}
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: {{ section.settings.margin_top_mobile }}px;
+    margin-bottom: {{ section.settings.margin_bottom_mobile }}px;
+    overflow: {% if section.settings.allow_overflow %}visible{% else %}hidden{% endif %};
+    position: relative;
+  }
+  .beauty-revolution-text {
+    margin-left: 3px;
+  }
+  /* Mobile Styles */
+  .guarantee-section__desktop {
+    display: none;
+  }
+  
+  .guarantee-section__mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 25px 15px 30px;
+    position: relative;
+  }
+  
+  .guarantee-section__mobile.no-photos {
+    padding-top: {{ section.settings.padding_top_no_photos }}px;
+  }
+  
+  .guarantee-section__photos-mobile {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+    height: 180px;
+    {% assign mobile_margin_extension = section.settings.margin_top_mobile | times: section.settings.image_extension | divided_by: 100 %}
+    {% assign mobile_top_offset = section.settings.margin_top_mobile | minus: mobile_margin_extension %}
+    margin-top: {{ mobile_top_offset | times: -1 | plus: section.settings.image_vertical_offset }}px;
+    margin-bottom: -40px;
+    z-index: 1;
+  }
+  
+  .guarantee-section__photos-mobile .polaroid-photo {
+    position: absolute;
+    transform-origin: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    width: {{ section.settings.polaroid_size_mobile }}px;
+    height: calc({{ section.settings.polaroid_size_mobile }}px * 1.2);
+    background: white;
+    padding: 8px 8px 15px 8px;
+  }
+  
+  .guarantee-section__photos-mobile .polaroid-photo-1 {
+    transform: rotate(-8deg);
+    left: 0;
+    z-index: 1;
+    top: 0;
+  }
+  
+  .guarantee-section__photos-mobile .polaroid-photo-2 {
+    transform: rotate(0deg);
+    left: 50%;
+    margin-left: calc(-{{ section.settings.polaroid_size_mobile }}px / 2);
+    z-index: 2;
+    top: 10px;
+  }
+  
+  .guarantee-section__photos-mobile .polaroid-photo-3 {
+    transform: rotate(8deg);
+    right: 80px;
+    z-index: 1;
+    top: 5px;
+  }
+  
+  .guarantee-section__photos-mobile .polaroid-photo-4 {
+    transform: rotate(8deg);
+    right: 0;
+    z-index: 1;
+    top: 0;
+  }
+  
+  .polaroid-photo {
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 8px 8px 15px 8px;
+    width: {{ section.settings.polaroid_size_mobile }}px;
+    height: calc({{ section.settings.polaroid_size_mobile }}px * 1.2);
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    {% if section.settings.allow_overflow %}
+    z-index: 2;
+    {% endif %}
+  }
+  
+  .polaroid-photo img {
+    width: calc(100% - 16px);
+    height: calc(100% - 23px);
+    object-fit: cover;
+    border-radius: 2px;
+    display: block;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
+  
+  .guarantee-section__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    padding-left: {{ section.settings.content_padding_mobile }}px;
+    padding-right: {{ section.settings.content_padding_mobile }}px;
+  }
+  
+  .shield-icon {
+    margin-bottom: 10px;
+    transform: scale(1);
+    height: 45px; /* Explicit height */
+    width: 45px; /* Explicit width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible; /* Ensure SVG visibility */
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.icon_color }}{% endif %};
+  }
+  
+  .shield-icon svg {
+    fill: currentColor;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.icon_color }}{% endif %};
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  
+  .guarantee-section__heading {
+    font-size: {{ section.settings.heading_size_mobile }}px;
+    margin-bottom: 8px;
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+    letter-spacing: var(--letter-spacing-heading);
+  }
+  
+  .risk-free-text {
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% elsif section.settings.risk_free_color %}{{ section.settings.risk_free_color }}{% else %}{{ settings.accent_text_color }}{% endif %};
+    font-family: {{ settings.accent_text_font.family }}, {{ settings.accent_text_font.fallback_families }};
+    font-weight: {{ settings.accent_text_weight }};
+    font-style: {{ settings.accent_text_style }};
+  }
+  
+  .guarantee-section__description {
+    font-size: {{ section.settings.description_size_mobile }}px;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.description_color }}{% endif %};
+    line-height: {{ section.settings.description_line_height }};
+    margin-bottom: 24px;
+  }
+  
+  .guarantee-section__cta {
+    {% if section.settings.use_global_button_style %}
+    font-size: var(--global-button-font-size);
+    padding-top: var(--global-button-padding-y);
+    padding-bottom: var(--global-button-padding-y);
+    font-weight: var(--global-button-font-weight);
+    letter-spacing: var(--global-button-letter-spacing) !important;
+    text-transform: var(--global-button-text-transform);
+    border-radius: var(--global-button-radius);
+    {% else %}
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    {% endif %}
+    background: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.button_color }}{% endif %};
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.button_text_color }}{% endif %};
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    border: {{ section.settings.button_border_width }}px solid {{ section.settings.button_border_color }};
+    transition: opacity 0.2s ease-in-out, background 0.2s ease-in-out;
+    text-align: center;
+  }
+  
+  .guarantee-section__cta:hover {
+    opacity: 0.9;
+    background: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color | color_darken: 10 }}{% else %}{{ section.settings.button_color | color_darken: 10 }}{% endif %};
+  }
+  
+  .guarantee-section__benefits {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 8px;
+    font-size: {{ section.settings.benefit_size_mobile }}px;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.benefit_text_color }}{% endif %};
+  }
+  
+  .benefit {
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .checkmark-icon {
+    margin-right: 4px;
+    flex-shrink: 0;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.button_color }}{% endif %};
+  }
+  
+  /* Desktop Styles */
+  @media (min-width: 768px) {
+    .guarantee-section {
+      margin-top: {{ section.settings.margin_top }}px;
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+    }
+    
+    .guarantee-section__mobile {
+      display: none;
+    }
+    
+    .guarantee-section__desktop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 30px;
+      position: relative;
+      min-height: 320px;
+      overflow: {% if section.settings.allow_overflow %}visible{% else %}hidden{% endif %};
+    }
+    
+    .guarantee-section__desktop.no-photos {
+      padding-top: {{ section.settings.padding_top_no_photos }}px;
+      padding-bottom: {{ section.settings.padding_top_no_photos }}px;
+    }
+    
+    .guarantee-section__photos-left,
+    .guarantee-section__photos-right {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      width: 25%;
+      position: relative;
+      z-index: 1;
+      {% assign margin_extension = section.settings.margin_top | times: section.settings.image_extension | divided_by: 100 %}
+      {% assign top_offset = section.settings.margin_top | minus: margin_extension | times: -1 | plus: section.settings.image_vertical_offset %}
+      {% assign bottom_margin_extension = section.settings.margin_bottom | times: section.settings.image_extension | divided_by: 100 %}
+      {% assign bottom_offset = section.settings.margin_bottom | minus: bottom_margin_extension | times: -1 | plus: section.settings.image_vertical_offset %}
+      margin-top: {{ top_offset }}px;
+      margin-bottom: {{ bottom_offset }}px;
+      {% if section.settings.allow_overflow %}
+      position: relative;
+      z-index: 10;
+      overflow: visible;
+      {% endif %}
+    }
+    
+    .guarantee-section__photos-left {
+      padding-right: 30px;
+      align-items: flex-start;
+    }
+    
+    .guarantee-section__photos-right {
+      padding-left: 30px;
+      align-items: flex-end;
+    }
+    
+    .guarantee-section__photos-left .polaroid-photo-1 {
+      transform: rotate(6deg);
+      margin-left: 5%;
+    }
+    
+    .guarantee-section__photos-left .polaroid-photo-2 {
+      transform: rotate(-5deg);
+      margin-left: 15%;
+    }
+    
+    .guarantee-section__photos-right .polaroid-photo-1 {
+      transform: rotate(-10deg);
+      margin-right: 15%;
+    }
+    
+    .guarantee-section__photos-right .polaroid-photo-2 {
+      transform: rotate(-6deg);
+      margin-right: 5%;
+    }
+    
+    .guarantee-section__photos-right .polaroid-photo-3 {
+      transform: rotate(8deg);
+    }
+    
+    .guarantee-section__content {
+      width: {% if section.settings.show_photos %}50{% else %}100{% endif %}%;
+      max-width: {% if section.settings.show_photos %}600{% else %}800{% endif %}px;
+      padding-left: {% if section.settings.show_photos %}{{ section.settings.content_padding_left }}{% else %}20{% endif %}px;
+      padding-right: {% if section.settings.show_photos %}{{ section.settings.content_padding_right }}{% else %}20{% endif %}px;
+    }
+    
+    /* Desktop shield styling */
+    .desktop-shield-container {
+      height: 40px;
+      margin-bottom: 10px;
+      display: block;
+      position: relative;
+    }
+    
+    .desktop-shield-icon {
+      display: block;
+    }
+    
+    .guarantee-section__heading {
+      font-size: {{ section.settings.heading_size_desktop }}px;
+      margin-bottom: 12px;
+      letter-spacing: var(--letter-spacing-heading);
+    }
+    
+    .guarantee-section__description {
+      font-size: {{ section.settings.description_size_desktop }}px;
+      max-width: 500px;
+      margin-bottom: 20px;
+      line-height: {{ section.settings.description_line_height }};
+      letter-spacing: var(--letter-spacing-body) !important;
+    }
+    
+    .guarantee-section__cta {
+      font-size: var(--global-button-font-size);
+      margin-bottom: 0px;
+    }
+    
+    .guarantee-section__benefits {
+      font-size: {{ section.settings.benefit_size_desktop }}px;
+      margin-top: 10px;
+    }
+    
+    .polaroid-photo {
+      width: {{ section.settings.polaroid_size_desktop }}px;
+      height: calc({{ section.settings.polaroid_size_desktop }}px * 1.2);
+    }
+    
+    .checkmark-icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 3px;
+    }
+  }
+  
+  /* Font fallback if the selected font fails to load */
+  .guarantee-section {
+    --font-fallback: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  }
+  </style>
+
+  <script>
+    function scrollToProduct(event) {
+      event.preventDefault();
+      
+      // Find the first product section on the page
+      const productSection = document.querySelector('.shopify-section .product, .shopify-section [data-section-type="product"], main#MainContent .product-template, main#MainContent .product, #ProductSection, #shopify-section-product-template, .product-section');
+      
+      if (productSection) {
+        // Scroll to the product section
+        productSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      } else {
+        // Fallback: just scroll to top if product section not found
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+      
+      return false;
+    }
+  </script>
+</div>

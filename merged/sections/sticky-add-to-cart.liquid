@@ -1,0 +1,338 @@
+{%- render 'sticky-add-to-cart',
+  button_text: section.settings.button_text | default: "CLAIM OFFER",
+  added_button_text: section.settings.added_button_text | default: "ADDED!",
+  delivery_days: section.settings.delivery_days | default: 5,
+  rating_text: section.settings.rating_text | default: "Excellent 4.8 | 1319 reviews",
+  guarantee_text: section.settings.guarantee_text | default: "",
+  button_bg_color: section.settings.button_bg_color | default: "#EF4A65",
+  button_hover_color: section.settings.button_hover_color | default: "#7BDBF1",
+  button_text_color: section.settings.button_text_color | default: "#FFFFFF",
+  star_color: section.settings.star_color | default: "#99E9FF",
+  mobile_star_color: section.settings.mobile_star_color | default: "#00D44E",
+  background_color: section.settings.background_color | default: "#FFFFFF",
+  border_radius: section.settings.border_radius | default: 6,
+  z_index: section.settings.z_index | default: 9900,
+  delivery_text_color: section.settings.delivery_text_color | default: "#333333",
+  title_color: section.settings.title_color | default: "#000000",
+  title_desktop_font_size: section.settings.title_desktop_font_size | default: 16,
+  title_mobile_font_size: section.settings.title_mobile_font_size | default: 14,
+  title_letter_spacing: section.settings.title_letter_spacing | default: 0,
+  rating_text_color: section.settings.rating_text_color | default: "#333333",
+  rating_text_font_weight: section.settings.rating_text_font_weight | default: "var(--font-weight-regular)",
+  rating_text_desktop_font_size: section.settings.rating_text_desktop_font_size | default: 14,
+  rating_text_mobile_font_size: section.settings.rating_text_mobile_font_size | default: 12,
+  rating_text_letter_spacing: section.settings.rating_text_letter_spacing | default: 0,
+  delivery_text_font_weight: section.settings.delivery_text_font_weight | default: "var(--font-weight-regular)",
+  delivery_text_desktop_font_size: section.settings.delivery_text_desktop_font_size | default: 14,
+  delivery_text_mobile_font_size: section.settings.delivery_text_mobile_font_size | default: 12,
+  delivery_text_letter_spacing: section.settings.delivery_text_letter_spacing | default: 0,
+  delivery_text_prefix: section.settings.delivery_text_prefix | default: "Arrives by",
+  delivery_date_display_format: section.settings.delivery_date_display_format | default: "weekday_month_day",
+  show_delivery_date: section.settings.show_delivery_date != false,
+  show_desktop_shipping: section.settings.show_desktop_shipping != false,
+  show_mobile_shipping: section.settings.show_mobile_shipping != false,
+  use_theme_colors: section.settings.use_theme_colors != false
+%}
+
+{% schema %}
+{
+  "name": "Sticky Add to Cart",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "This component displays a sticky add to cart bar when the main add to cart button scrolls out of view. Customize the appearance and text below."
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "CLAIM OFFER",
+      "info": "Enter plain text to display as-is, or use a translation key like 'sections.add_to_cart.button_text' to enable localization."
+    },
+    {
+      "type": "text",
+      "id": "added_button_text",
+      "label": "Button Text After Added",
+      "default": "ADDED!",
+      "info": "Enter plain text to display as-is, or use a translation key like 'sections.add_to_cart.added_text' to enable localization."
+    },
+    {
+      "type": "range",
+      "id": "delivery_days",
+      "min": 1,
+      "max": 14,
+      "step": 1,
+      "default": 5,
+      "label": "Delivery Days Ahead"
+    },
+    {
+      "type": "header",
+      "content": "Title Styling"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "title_desktop_font_size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Desktop Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "title_mobile_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Mobile Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "min": -2,
+      "max": 5,
+      "step": 0.1,
+      "unit": "px",
+      "label": "Title Letter Spacing",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Display Settings"
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Rating Text",
+      "default": "Excellent 4.8 | 1319 reviews",
+      "info": "Add your product's rating information here. Leave blank to completely hide the rating section."
+    },
+    {
+      "type": "header",
+      "content": "Style Settings"
+    },
+     {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use Theme Colors",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button Hover Color",
+      "default": "#7BDBF1"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Accent Color",
+      "default": "#99E9FF",
+      "info": "Used for shipping date and star colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 6,
+      "label": "Button Border Radius"
+    },
+    {
+      "type": "range",
+      "id": "z_index",
+      "min": 100,
+      "max": 9900,
+      "step": 100,
+      "default": 9900,
+      "label": "Z-Index Value",
+      "info": "Increase this value if the sticky bar appears behind other elements"
+    },
+    {
+      "type": "header",
+      "content": "Rating Text Styling"
+    },
+    {
+      "type": "color",
+      "id": "rating_text_color",
+      "label": "Rating Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "select",
+      "id": "rating_text_font_weight",
+      "label": "Rating Text Font Weight",
+      "options": [
+        { "value": "var(--font-weight-regular)", "label": "Regular" },
+        { "value": "var(--font-weight-medium)", "label": "Medium" },
+        { "value": "var(--font-weight-semibold)", "label": "Semi-bold" },
+        { "value": "var(--font-weight-bold)", "label": "Bold" }
+      ],
+      "default": "var(--font-weight-regular)"
+    },
+    {
+      "type": "range",
+      "id": "rating_text_desktop_font_size",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Rating Text Desktop Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "rating_text_mobile_font_size",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Rating Text Mobile Font Size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "rating_text_letter_spacing",
+      "min": -2,
+      "max": 3,
+      "step": 0.1,
+      "unit": "px",
+      "label": "Rating Text Letter Spacing",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Delivery Date Text Styling"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_delivery_date",
+      "label": "Show Delivery Date",
+      "default": true,
+      "info": "If unchecked, the delivery date calculation will be hidden."
+    },
+    {
+      "type": "text",
+      "id": "delivery_text_prefix",
+      "label": "Delivery Text Prefix",
+      "default": "Arrives by",
+      "info": "The text that appears before the calculated delivery date. For translations, you can either: 1) Enter plain text that will display as-is, or 2) Enter a translation key in the format 'general.shipping.arrives_by' that corresponds to an entry in your locale files."
+    },
+    {
+      "type": "color",
+      "id": "delivery_text_color",
+      "label": "Delivery Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "select",
+      "id": "delivery_text_font_weight",
+      "label": "Delivery Text Font Weight",
+      "options": [
+        { "value": "var(--font-weight-regular)", "label": "Regular" },
+        { "value": "var(--font-weight-medium)", "label": "Medium" },
+        { "value": "var(--font-weight-semibold)", "label": "Semi-bold" },
+        { "value": "var(--font-weight-bold)", "label": "Bold" }
+      ],
+      "default": "var(--font-weight-regular)"
+    },
+    {
+      "type": "range",
+      "id": "delivery_text_desktop_font_size",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Delivery Text Desktop Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "delivery_text_mobile_font_size",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Delivery Text Mobile Font Size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "delivery_text_letter_spacing",
+      "min": -2,
+      "max": 3,
+      "step": 0.1,
+      "unit": "px",
+      "label": "Delivery Text Letter Spacing",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "delivery_date_display_format",
+      "label": "Delivery Date Display Format",
+      "options": [
+        { "value": "weekday_month_day", "label": "Weekday, Month Day (e.g., Monday, Jan 5)" },
+        { "value": "month_day_weekday", "label": "Month Day, Weekday (e.g., Jan 5, Monday)" },
+        { "value": "month_day", "label": "Month Day (e.g., Jan 5)" },
+        { "value": "day_month", "label": "Day Month (e.g., 5 Jan)" }
+      ],
+      "default": "weekday_month_day",
+      "info": "Controls how the calculated delivery date is displayed."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_desktop_shipping",
+      "label": "Show Shipping Info on Desktop",
+      "default": true,
+      "info": "Controls the visibility of shipping/delivery date information in the desktop view."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mobile_shipping",
+      "label": "Show Shipping Info on Mobile",
+      "default": true,
+      "info": "Controls the visibility of shipping/delivery date information in the mobile view."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sticky Add to Cart",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %} 

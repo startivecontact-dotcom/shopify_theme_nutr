@@ -1,0 +1,36 @@
+<div class="customer">
+  <div class="customer__card">
+    <h1 class="customer__title">CRÉER UN COMPTE</h1>
+    <p class="customer__subtitle">Rejoignez la communauté MB Nutrition</p>
+
+    {% form 'create_customer', novalidate: 'novalidate' %}
+      {% if form.errors %}
+        <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
+      {% endif %}
+
+      <div class="field">
+        <label class="field__label" for="FirstName">Prénom</label>
+        <input type="text" name="customer[first_name]" id="FirstName" autocomplete="given-name" required>
+      </div>
+      <div class="field">
+        <label class="field__label" for="LastName">Nom</label>
+        <input type="text" name="customer[last_name]" id="LastName" autocomplete="family-name" required>
+      </div>
+      <div class="field">
+        <label class="field__label" for="CustomerEmail">E-mail</label>
+        <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label class="field__label" for="CustomerPassword">Mot de passe</label>
+        <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="new-password" required>
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--full">Créer mon compte</button>
+
+      <div class="customer__actions">
+        <span>Vous avez déjà un compte ?</span>
+        <a href="{{ routes.account_login_url }}">J'ai déjà un compte</a>
+      </div>
+    {% endform %}
+  </div>
+</div>

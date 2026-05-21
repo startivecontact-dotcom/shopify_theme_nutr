@@ -1,0 +1,342 @@
+{
+  "sections": {
+    "hero-split": {
+      "type": "hero-split",
+      "settings": {
+        "image_left_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-mb-whey-protein-pro-bananaTekengebied1.jpg?v=1750095413",
+        "image_left_alt": "Whey Protein Pro — Prise de masse",
+        "overlay_text_left": "PRISE DE MASSE",
+        "cta_text_left": "WHEY PROTEIN PRO →",
+        "cta_link_left": "/products/whey-protein-pro-450g",
+        "image_right_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-secret-burner-citrus-berriesTekengebied1.jpg?v=1748159891",
+        "image_right_alt": "Secret Burner — Perte de poids",
+        "overlay_text_right": "PERTE DE POIDS",
+        "cta_text_right": "SECRET BURNER →",
+        "cta_link_right": "/products/secret-burner-citrus-berries-300gr",
+        "height": 70
+      }
+    },
+    "bestsellers": {
+      "type": "bestsellers",
+      "settings": {
+        "label": "DÉCOUVREZ NOS MEILLEURES VENTES",
+        "title": "MB NUTRITION",
+        "view_all_link": "/collections/all"
+      },
+      "blocks": {
+        "bs-1": {
+          "type": "product",
+          "settings": {
+            "product_handle": "whey-protein-pro-450g",
+            "product_title": "Whey Protein Pro 450g",
+            "product_price": "22,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-mb-whey-protein-pro-bananaTekengebied1.jpg?v=1750095413",
+            "product_url": "/products/whey-protein-pro-450g",
+            "product_badge": "BEST-SELLER"
+          }
+        },
+        "bs-2": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-burner-citrus-berries-300gr",
+            "product_title": "Secret Burner — Citrus Berries 300g",
+            "product_price": "29,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-secret-burner-citrus-berriesTekengebied1.jpg?v=1748159891",
+            "product_url": "/products/secret-burner-citrus-berries-300gr"
+          }
+        },
+        "bs-3": {
+          "type": "product",
+          "settings": {
+            "product_handle": "creatine-monohydrate",
+            "product_title": "Créatine Monohydrate",
+            "product_price": "21,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/creatine-1.jpg?v=1748162398",
+            "product_url": "/products/creatine-monohydrate"
+          }
+        },
+        "bs-4": {
+          "type": "product",
+          "settings": {
+            "product_handle": "m3-pre-workout-tropical-fruit-punch",
+            "product_title": "Pré-Entraînement M3 — Tropical Fruit Punch",
+            "product_price": "29,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/Screenshot_2025-05-25_at_11.05.13.png?v=1754389995",
+            "product_url": "/products/m3-pre-workout-tropical-fruit-punch",
+            "product_badge": "POPULAIRE"
+          }
+        },
+        "bs-5": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-balance-red-fruits",
+            "product_title": "Secret Balance — Fruits Rouges",
+            "product_price": "31,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/secret-balanceTekengebied1.jpg?v=1755713727",
+            "product_url": "/products/secret-balance-red-fruits"
+          }
+        },
+        "bs-6": {
+          "type": "product",
+          "settings": {
+            "product_handle": "m4-pre-workout-blueberry",
+            "product_title": "Pré-Entraînement M4 Extreme — Blueberry",
+            "product_price": "32,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/pwo-blueberry.jpg?v=1748160789",
+            "product_url": "/products/m4-pre-workout-blueberry"
+          }
+        },
+        "bs-7": {
+          "type": "product",
+          "settings": {
+            "product_handle": "eaa-green-apple",
+            "product_title": "EAA — Acides Aminés Essentiels",
+            "product_price": "24,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-eaaTekengebied1.jpg?v=1748162484",
+            "product_url": "/products/eaa-green-apple"
+          }
+        },
+        "bs-8": {
+          "type": "product",
+          "settings": {
+            "product_handle": "diet-shakes",
+            "product_title": "Diet Shakes 450g",
+            "product_price": "19,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/listing-mb-dietshakeTekengebied1.jpg?v=1750095608",
+            "product_url": "/products/diet-shakes"
+          }
+        }
+      },
+      "block_order": ["bs-1","bs-2","bs-3","bs-4","bs-5","bs-6","bs-7","bs-8"]
+    },
+    "bundle-banner": {
+      "type": "bundle-banner",
+      "settings": {
+        "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/pwo-combi.jpg?v=1774451813",
+        "tag": "PACKS & BUNDLES",
+        "title": "Maintenant à prix imbattable",
+        "subtitle": "Économisez jusqu'à 20% sur nos packs exclusifs",
+        "button_text": "Voir tous les packs",
+        "button_link": "/collections/all"
+      }
+    },
+    "shop-by-goal": {
+      "type": "shop-by-goal",
+      "blocks": {
+        "goal-1": {
+          "type": "goal",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/secret-balanceTekengebied1.jpg?v=1755713727",
+            "title": "Perte de poids",
+            "count": "6 produits",
+            "link": "/collections/perte-de-poids",
+            "button_text": "DÉCOUVRIR"
+          }
+        },
+        "goal-2": {
+          "type": "goal",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-mb-whey-protein-pro-bananaTekengebied1.jpg?v=1750095413",
+            "title": "Prise de masse",
+            "count": "6 produits",
+            "link": "/collections/prise-de-masse",
+            "button_text": "DÉCOUVRIR"
+          }
+        },
+        "goal-3": {
+          "type": "goal",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/multivitaminesTekengebied1.jpg?v=1748162661",
+            "title": "Lifestyle & Santé",
+            "count": "7 produits",
+            "link": "/collections/lifestyle",
+            "button_text": "DÉCOUVRIR"
+          }
+        },
+        "goal-4": {
+          "type": "goal",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-pre-workout-m3Tekengebied_1.jpg?v=1774381058",
+            "title": "Endurance",
+            "count": "4 produits",
+            "link": "/collections/endurance",
+            "button_text": "DÉCOUVRIR"
+          }
+        }
+      },
+      "block_order": ["goal-1","goal-2","goal-3","goal-4"],
+      "settings": {
+        "heading": "PAR OBJECTIF"
+      }
+    },
+    "cat-perte-de-poids": {
+      "type": "category-products",
+      "settings": {
+        "eyebrow": "MINCEUR & DÉFINITION",
+        "title": "Perte de poids",
+        "description": "Brûleurs de graisses, substituts de repas et compléments minceur pour atteindre vos objectifs.",
+        "view_all_link": "/collections/perte-de-poids"
+      },
+      "blocks": {
+        "pdp-1": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-burner-citrus-berries-300gr",
+            "product_title": "Secret Burner — Citrus Berries",
+            "product_price": "29,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-secret-burner-citrus-berriesTekengebied1.jpg?v=1748159891",
+            "product_url": "/products/secret-burner-citrus-berries-300gr",
+            "product_badge": "POPULAIRE"
+          }
+        },
+        "pdp-2": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-balance-red-fruits",
+            "product_title": "Secret Balance — Fruits Rouges",
+            "product_price": "31,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/secret-balanceTekengebied1.jpg?v=1755713727",
+            "product_url": "/products/secret-balance-red-fruits"
+          }
+        },
+        "pdp-3": {
+          "type": "product",
+          "settings": {
+            "product_handle": "diet-shakes",
+            "product_title": "Diet Shakes 450g",
+            "product_price": "19,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/listing-mb-dietshakeTekengebied1.jpg?v=1750095608",
+            "product_url": "/products/diet-shakes"
+          }
+        },
+        "pdp-4": {
+          "type": "product",
+          "settings": {
+            "product_handle": "sleep-shredder",
+            "product_title": "Sleep Shredder — Framboise Rose",
+            "product_price": "29,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-sleepshredderTekengebied1.jpg?v=1748166389",
+            "product_url": "/products/sleep-shredder",
+            "product_badge": "NUIT"
+          }
+        },
+        "pdp-5": {
+          "type": "product",
+          "settings": {
+            "product_handle": "cla",
+            "product_title": "CLA — Acide Linoléique Conjugué",
+            "product_price": "17,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/CLA-MB-Nutrition.jpg?v=1748159784",
+            "product_url": "/products/cla"
+          }
+        },
+        "pdp-6": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-balance-burner",
+            "product_title": "Pack Secret Balance + Secret Burner",
+            "product_price": "59,95 €",
+            "product_compare_price": "71,90 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/afvallen-combi.jpg?v=1774451842",
+            "product_url": "/products/secret-balance-burner",
+            "product_badge": "PACK"
+          }
+        }
+      },
+      "block_order": ["pdp-1","pdp-2","pdp-3","pdp-4","pdp-5","pdp-6"]
+    },
+    "cat-prise-de-masse": {
+      "type": "category-products",
+      "settings": {
+        "eyebrow": "FORCE & VOLUME",
+        "title": "Prise de masse",
+        "description": "Protéines, créatine et pré-entraînements pour maximiser chaque séance et booster votre croissance musculaire.",
+        "view_all_link": "/collections/prise-de-masse"
+      },
+      "blocks": {
+        "pm-1": {
+          "type": "product",
+          "settings": {
+            "product_handle": "whey-protein-pro-450g",
+            "product_title": "Whey Protein Pro 450g",
+            "product_price": "22,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-mb-whey-protein-pro-bananaTekengebied1.jpg?v=1750095413",
+            "product_url": "/products/whey-protein-pro-450g",
+            "product_badge": "BEST-SELLER"
+          }
+        },
+        "pm-2": {
+          "type": "product",
+          "settings": {
+            "product_handle": "creatine-monohydrate",
+            "product_title": "Créatine Monohydrate",
+            "product_price": "21,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/creatine-1.jpg?v=1748162398",
+            "product_url": "/products/creatine-monohydrate"
+          }
+        },
+        "pm-3": {
+          "type": "product",
+          "settings": {
+            "product_handle": "m3-pre-workout-tropical-fruit-punch",
+            "product_title": "Pré-Entraînement M3 — Tropical Fruit Punch",
+            "product_price": "29,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/Screenshot_2025-05-25_at_11.05.13.png?v=1754389995",
+            "product_url": "/products/m3-pre-workout-tropical-fruit-punch"
+          }
+        },
+        "pm-4": {
+          "type": "product",
+          "settings": {
+            "product_handle": "m4-pre-workout-blueberry",
+            "product_title": "Pré-Entraînement M4 Extreme — Blueberry",
+            "product_price": "32,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/pwo-blueberry.jpg?v=1748160789",
+            "product_url": "/products/m4-pre-workout-blueberry",
+            "product_badge": "EXTREME"
+          }
+        },
+        "pm-5": {
+          "type": "product",
+          "settings": {
+            "product_handle": "eaa-green-apple",
+            "product_title": "EAA — Acides Aminés Essentiels",
+            "product_price": "24,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-eaaTekengebied1.jpg?v=1748162484",
+            "product_url": "/products/eaa-green-apple"
+          }
+        },
+        "pm-6": {
+          "type": "product",
+          "settings": {
+            "product_handle": "starter-pack",
+            "product_title": "Starter Pack — Pack de Démarrage",
+            "product_price": "49,95 €",
+            "product_compare_price": "62,90 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/starterpack_44647d83-cead-4228-b6bd-e6c1256b0efe.jpg?v=1755945355",
+            "product_url": "/products/starter-pack",
+            "product_badge": "PACK"
+          }
+        }
+      },
+      "block_order": ["pm-1","pm-2","pm-3","pm-4","pm-5","pm-6"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "COMMUNAUTÉ MB NUTRITION",
+        "title": "REJOIGNEZ LA COMMUNAUTÉ",
+        "subtitle": "Inscrivez-vous et recevez -10% sur votre première commande, nos conseils nutrition et nos offres exclusives."
+      }
+    }
+  },
+  "order": [
+    "hero-split",
+    "bestsellers",
+    "bundle-banner",
+    "shop-by-goal",
+    "cat-perte-de-poids",
+    "cat-prise-de-masse",
+    "newsletter"
+  ]
+}

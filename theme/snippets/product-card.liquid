@@ -1,0 +1,45 @@
+<div class="product-card">
+  <a href="{{ product.url }}" class="product-card__full-link" aria-label="{{ product.title | escape | append: ' — voir le produit' }}"></a>
+
+  <a href="{{ product.url }}" class="product-card__image-wrap" tabindex="-1" aria-hidden="true">
+    {% if product.featured_image %}
+      <img src="{{ product.featured_image | image_url: width: 600 }}"
+           alt="{{ product.featured_image.alt | default: product.title | escape }}"
+           loading="lazy" width="600" height="600">
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+    {% if product.available == false %}
+      <span class="product-card__badge" style="background:#999;">Épuisé</span>
+    {% elsif product.compare_at_price > product.price %}
+      <span class="product-card__badge">Soldes</span>
+    {% elsif product.tags contains 'new' or product.tags contains 'nouveau' %}
+      <span class="product-card__badge product-card__badge--new">Nouveau</span>
+    {% endif %}
+  </a>
+
+  <div class="product-card__body">
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">{{ product.title | upcase }}</a>
+    </h3>
+    <div class="product-card__price {% if product.compare_at_price > product.price %}product-card__price--sale{% endif %}">
+      {% if product.compare_at_price > product.price %}
+        {{ product.price | money }}<s>{{ product.compare_at_price | money }}</s>
+      {% else %}
+        {{ product.price | money }}
+      {% endif %}
+    </div>
+    {% if product.available %}
+      <button class="product-card__atc"
+              data-product-id="{{ product.variants.first.id }}"
+              data-add-to-cart
+              aria-label="Ajouter {{ product.title | escape }} au panier">
+        Ajouter au panier
+      </button>
+    {% else %}
+      <button class="product-card__atc" disabled>
+        Rupture de stock
+      </button>
+    {% endif %}
+  </div>
+</div>

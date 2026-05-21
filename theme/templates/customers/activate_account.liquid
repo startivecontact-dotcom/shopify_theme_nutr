@@ -1,0 +1,21 @@
+<div class="customer">
+  <div class="customer__card">
+    <h1 class="customer__title">ACTIVER MON COMPTE</h1>
+    <p class="customer__subtitle">Définissez un mot de passe pour finaliser votre inscription</p>
+
+    {% form 'activate_customer_password' %}
+      {% if form.errors %}<div class="form-message form-message--error">{{ form.errors | default_errors }}</div>{% endif %}
+
+      <div class="field">
+        <label class="field__label" for="Password">Mot de passe</label>
+        <input type="password" name="customer[password]" id="Password" autocomplete="new-password" required>
+      </div>
+      <div class="field">
+        <label class="field__label" for="PasswordConfirm">Confirmer le mot de passe</label>
+        <input type="password" name="customer[password_confirmation]" id="PasswordConfirm" autocomplete="new-password" required>
+      </div>
+      <button type="submit" class="btn btn--primary btn--full">Activer mon compte</button>
+      <button type="submit" name="decline" class="btn btn--outline btn--full" style="margin-top:0.5rem;">Refuser l'invitation</button>
+    {% endform %}
+  </div>
+</div>

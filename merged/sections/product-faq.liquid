@@ -1,0 +1,175 @@
+{% assign blocks = section.blocks %}
+{% assign items_limit = section.settings.items_limit %}
+{% assign image_size = section.settings.image_size %}
+{% assign image_border_radius = section.settings.image_border_radius %}
+{% assign image_fit = section.settings.image_fit %}
+{% assign margin_top = section.settings.margin_top %}
+{% assign margin_bottom = section.settings.margin_bottom %}
+{% assign border_radius = section.settings.border_radius %}
+{% assign border_color = section.settings.border_color %}
+{% assign question_color = section.settings.question_color %}
+{% assign question_bg_color = section.settings.question_bg_color %}
+{% assign answer_color = section.settings.answer_color %}
+{% assign answer_bg_color = section.settings.answer_bg_color %}
+{% assign accordion_mode = section.settings.accordion_mode %}
+
+{% include 'product-faq' %}
+
+{% schema %}
+{
+  "name": "Product FAQ",
+  "settings": [
+    {
+      "type": "range",
+      "id": "items_limit",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 10,
+      "label": "Maximum FAQ items to show"
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "label": "Question image size (px)"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 4,
+      "label": "Image border radius (px)"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover (crop to fill)"
+        },
+        {
+          "value": "contain",
+          "label": "Contain (show entire image)"
+        }
+      ],
+      "default": "cover",
+      "label": "Image fit style"
+    },
+    {
+      "type": "checkbox",
+      "id": "accordion_mode",
+      "default": true,
+      "label": "Enable accordion mode (only one FAQ open at a time)"
+    },
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20,
+      "label": "Top margin (px)"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20,
+      "label": "Bottom margin (px)"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 8,
+      "label": "Border radius (px)"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "default": "#e0e0e0",
+      "label": "Border color"
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "default": "#333333",
+      "label": "Question text color"
+    },
+    {
+      "type": "color",
+      "id": "question_bg_color",
+      "default": "#f9f9f9",
+      "label": "Question background color"
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "default": "#555555",
+      "label": "Answer text color"
+    },
+    {
+      "type": "color",
+      "id": "answer_bg_color",
+      "default": "#ffffff",
+      "label": "Answer background color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Frequently asked question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Provide the answer to the question here. Keep it clear and concise.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "question_image",
+          "label": "Question image (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product FAQ",
+      "blocks": [
+        {
+          "type": "faq"
+        },
+        {
+          "type": "faq"
+        },
+        {
+          "type": "faq"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

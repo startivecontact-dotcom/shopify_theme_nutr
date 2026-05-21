@@ -1,0 +1,46 @@
+<div class="customer">
+  <div class="customer__card">
+    <h1 class="customer__title">SE CONNECTER</h1>
+    <p class="customer__subtitle">Accédez à votre compte MB Nutrition</p>
+
+    {% form 'customer_login', novalidate: 'novalidate' %}
+      {% if form.errors %}
+        <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
+      {% endif %}
+
+      <div class="field">
+        <label class="field__label" for="CustomerEmail">E-mail</label>
+        <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" required>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="CustomerPassword">Mot de passe</label>
+        <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="current-password" required>
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--full">Connexion</button>
+
+      <div class="customer__actions">
+        <a href="#recover" onclick="document.getElementById('RecoverForm').style.display='block'; return false;">Mot de passe oublié ?</a>
+        <a href="{{ routes.account_register_url }}">Créer un compte</a>
+      </div>
+    {% endform %}
+
+    <div id="RecoverForm" style="display:none; margin-top:1.5rem;">
+      <h2 style="font-size:1rem; margin-bottom:0.75rem;">Réinitialiser le mot de passe</h2>
+      {% form 'recover_customer_password' %}
+        {% if form.posted_successfully? %}
+          <div class="form-message form-message--success">Nous vous avons envoyé un e-mail pour réinitialiser votre mot de passe.</div>
+        {% endif %}
+        <div class="field">
+          <label class="field__label" for="RecoverEmail">E-mail</label>
+          <input type="email" name="email" id="RecoverEmail" required>
+        </div>
+        <button type="submit" class="btn btn--outline btn--full">Envoyer le lien</button>
+      {% endform %}
+    </div>
+
+    <div class="customer__divider"><span>OU</span></div>
+    <a href="/checkout" class="btn btn--outline btn--full">Commander en tant qu'invité</a>
+  </div>
+</div>

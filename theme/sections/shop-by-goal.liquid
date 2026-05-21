@@ -1,0 +1,66 @@
+<section class="shop-by-goal">
+
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="bestsellers__title" style="margin-bottom:2rem; text-align:center;">{{ section.settings.heading }}</h2>
+    {% endif %}
+    <div class="shop-by-goal__grid">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.link | default: '#' }}" class="goal-card" {{ block.shopify_attributes }}>
+          {% if block.settings.image %}
+            <img src="{{ block.settings.image | image_url: width: 900 }}"
+                 alt="{{ block.settings.title | escape }}" loading="lazy" width="900" height="1100">
+          {% elsif block.settings.image_url != blank %}
+            <img src="{{ block.settings.image_url }}"
+                 alt="{{ block.settings.title | escape }}" loading="lazy" width="900" height="1100">
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag }}
+          {% endif %}
+          <div class="goal-card__inner">
+            {% if block.settings.count != blank %}
+              <span class="goal-card__count">{{ block.settings.count }}</span>
+            {% endif %}
+            <h3 class="goal-card__title">{{ block.settings.title }}</h3>
+            <span class="goal-card__btn">{{ block.settings.button_text | default: 'DÉCOUVRIR' }}</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Par objectif",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre de section", "default": "PAR OBJECTIF" }
+  ],
+  "blocks": [
+    {
+      "type": "goal",
+      "name": "Objectif",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (upload)" },
+        { "type": "text", "id": "image_url", "label": "URL image (CDN)", "info": "Utilisé si aucune image uploadée" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Perte de poids" },
+        { "type": "text", "id": "count", "label": "Nombre de produits (ex: 6 produits)" },
+        { "type": "text", "id": "button_text", "label": "Texte du bouton", "default": "DÉCOUVRIR" },
+        { "type": "url", "id": "link", "label": "Lien" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Par objectif",
+      "blocks": [
+        { "type": "goal", "settings": { "title": "Perte de poids" } },
+        { "type": "goal", "settings": { "title": "Prise de masse" } },
+        { "type": "goal", "settings": { "title": "Lifestyle" } },
+        { "type": "goal", "settings": { "title": "Endurance" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

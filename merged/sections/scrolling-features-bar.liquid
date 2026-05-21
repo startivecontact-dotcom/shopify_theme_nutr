@@ -1,0 +1,431 @@
+<style>
+  {% if section.settings.use_theme_colors %}
+    .section-{{ section.id }} {
+      background-color: {{ settings.global_section_accent_1_color }} !important;
+      color: {{ settings.global_section_background_color }} !important;
+    }
+
+    .section-{{ section.id }} .feature-item {
+      color: {{ settings.global_section_background_color }} !important;
+    }
+
+    .section-{{ section.id }} .feature-icon svg {
+      fill: {{ settings.global_section_text_color }} !important;
+    }
+  {% else %}
+    .section-{{ section.id }} {
+      background-color: {{ section.settings.background_color }} !important;
+      color: {{ section.settings.text_color }} !important;
+    }
+
+    .section-{{ section.id }} .feature-item {
+      color: {{ section.settings.text_color }} !important;
+    }
+
+    .section-{{ section.id }} .feature-icon svg {
+      fill: {{ section.settings.icon_color }} !important;
+    }
+  {% endif %}
+  
+  .section-{{ section.id }} {
+    padding: {{ section.settings.vertical_padding }}px 0;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    font-family: var(--font-body-family-override);
+  }
+
+  .section-{{ section.id }} .features-track-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .section-{{ section.id }} .features-track {
+    display: flex;
+    white-space: nowrap;
+    position: relative;
+    animation: scrollFeatures-{{ section.id }} {{ section.settings.scroll_speed }}s linear infinite;
+  }
+
+  .section-{{ section.id }} .feature-items {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  .section-{{ section.id }} .feature-item {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-size: {{ section.settings.font_size }}px;
+    margin: 0;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: {{ section.settings.letter_spacing }}px;
+    padding: 0 calc({{ section.settings.item_gap }}px / 2);
+    {% if section.settings.uppercase_text %}
+      text-transform: uppercase;
+    {% endif %}
+  }
+
+  .section-{{ section.id }} .feature-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: {{ section.settings.icon_spacing }}px;
+    flex-shrink: 0;
+  }
+
+  .section-{{ section.id }} .feature-icon svg {
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+  }
+
+  .section-{{ section.id }} .feature-icon img.icon-image {
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+    object-fit: contain;
+  }
+
+  .section-{{ section.id }} .feature-item-separator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    opacity: 0.5;
+    margin: 0 calc({{ section.settings.item_gap }}px / 2);
+    flex-shrink: 0;
+  }
+
+  @keyframes scrollFeatures-{{ section.id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-25%);
+    }
+  }
+
+  {% if section.settings.pause_on_hover %}
+  .section-{{ section.id }}:hover .features-track {
+    animation-play-state: paused;
+  }
+  {% endif %}
+
+  @media (max-width: 768px) {
+    .section-{{ section.id }} .feature-item {
+      font-size: {{ section.settings.mobile_font_size }}px;
+      padding: 0 calc({{ section.settings.mobile_item_gap }}px / 2);
+    }
+
+    .section-{{ section.id }} .feature-icon svg,
+    .section-{{ section.id }} .feature-icon img.icon-image {
+      width: {{ section.settings.mobile_icon_size }}px;
+      height: {{ section.settings.mobile_icon_size }}px;
+    }
+    
+    .section-{{ section.id }} .feature-item-separator {
+      width: 4px;
+      height: 4px;
+      margin: 0 calc({{ section.settings.mobile_item_gap }}px / 2);
+    }
+  }
+</style>
+
+<div class="section-{{ section.id }}">
+  <div class="features-track-container">
+    <div class="features-track">
+      {% for i in (1..4) %}
+        <div class="feature-items">
+          {% for block in section.blocks %}
+            <div class="feature-item">
+              {% if block.settings.icon_type == 'image' and block.settings.icon_image != blank %}
+                <div class="feature-icon">
+                  <img src="{{ block.settings.icon_image | img_url: '50x' }}" alt="{{ block.settings.text }}" class="icon-image">
+                </div>
+              {% elsif block.settings.icon != blank %}
+                <div class="feature-icon">
+                  {{ block.settings.icon }}
+                </div>
+              {% endif %}
+              <span>{{ block.settings.text }}</span>
+            </div>
+            {% unless forloop.last %}
+              <div class="feature-item-separator"></div>
+            {% endunless %}
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function adjustScrollingFeatures() {
+      const trackContainer = document.querySelector('.section-{{ section.id }} .features-track-container');
+      const track = document.querySelector('.section-{{ section.id }} .features-track');
+      if (!trackContainer || !track) return;
+      
+      const wrapper = track.querySelector('.features-wrapper');
+      if (!wrapper) return;
+      
+      // Set container height based on track content
+      trackContainer.style.height = wrapper.offsetHeight + 'px';
+      
+      // Ensure animation works correctly
+      track.style.width = wrapper.offsetWidth * 2 + 'px';
+    }
+    
+    // Run on load
+    adjustScrollingFeatures();
+    
+    // Also run on resize
+    window.addEventListener('resize', adjustScrollingFeatures);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Scrolling Features Bar",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+     {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Apply Theme Colors",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ef4a65"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "vertical_padding",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 15,
+      "label": "Vertical Padding"
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "min": 20,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "label": "Space Between Items (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_item_gap",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "label": "Space Between Items (Mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "label": "Font Size (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 12,
+      "label": "Font Size (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 0.5,
+      "label": "Letter Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase_text",
+      "label": "Uppercase Text",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Icons"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 12,
+      "max": 36,
+      "step": 2,
+      "default": 20,
+      "label": "Icon Size (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_icon_size",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "default": 16,
+      "label": "Icon Size (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "icon_spacing",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 10,
+      "label": "Space After Icon"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 3,
+      "max": 60,
+      "step": 1,
+      "default": 10,
+      "label": "Scroll Speed (seconds)"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on Hover",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "icon_type",
+      "label": "Icon Type",
+      "options": [
+        {
+          "value": "svg",
+          "label": "SVG Code"
+        },
+        {
+          "value": "image",
+          "label": "Uploaded Image"
+        }
+      ],
+      "default": "svg",
+      "info": "Choose which type of icon to display"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_item",
+      "name": "Feature",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Feature Text",
+          "default": "Feature Text"
+        },
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon Type",
+          "options": [
+            {
+              "value": "svg",
+              "label": "SVG Code"
+            },
+            {
+              "value": "image",
+              "label": "Uploaded Image"
+            }
+          ],
+          "default": "svg",
+          "info": "Choose which type of icon to display"
+        },
+        {
+          "type": "html",
+          "id": "icon",
+          "label": "Icon (SVG)",
+          "info": "Paste SVG code here. SVG icons are vector graphics that scale perfectly at any size and can be customized with CSS. You can find free SVG icons at websites like Feather Icons, Heroicons, or Font Awesome."
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon Image",
+          "info": "Use this option if you prefer to upload an image instead of using SVG code. If both SVG and image are provided, SVG will be used."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling Features Bar",
+      "blocks": [
+        {
+          "type": "feature_item",
+          "settings": {
+            "text": "PREMIUM QUALITY",
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z\"/></svg>",
+            "icon_image": ""
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "text": "FAST SHIPPING",
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zm-6 0H5V6h9v2zm-9 11.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm12 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z\"/></svg>",
+            "icon_image": ""
+          }
+        },
+        {
+          "type": "feature_item",
+          "settings": {
+            "text": "SATISFACTION GUARANTEED",
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z\"/></svg>",
+            "icon_image": ""
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

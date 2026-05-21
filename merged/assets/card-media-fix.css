@@ -1,0 +1,33 @@
+/* Card Media Border Radius Fix */
+
+/* Use attribute selectors to increase specificity */
+[class*="card"] [class*="media"],
+[class*="card__media"],
+[class*="media"],
+.product-grid [class*="card__media"],
+.collection .card__media,
+ul#product-grid .card__media,
+div.card.card--standard .card__media,
+div.card__media,
+.card-wrapper .media {
+  border-radius: var(--media-radius, 10px) !important;
+  overflow: hidden !important;
+}
+
+/* Also target the media container */
+.media.media--transparent.media--adapt.media--hover-effect,
+.grid__item .card-wrapper .card .card__inner .card__media,
+.media--transparent {
+  border-radius: var(--media-radius, 10px) !important;
+  overflow: hidden !important;
+}
+
+/* Target any image inside the media elements */
+[class*="card"] [class*="media"] img,
+[class*="media"] img,
+.card__media img,
+.media img {
+  border-radius: var(--media-radius, 10px) !important;
+}
+
+/* The !important flag ensures these styles override any others */

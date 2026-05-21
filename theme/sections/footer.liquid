@@ -1,0 +1,160 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer__main">
+
+      <!-- Marque / Adresse -->
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+            {% if section.settings.logo %}
+              <img src="{{ section.settings.logo | image_url: width: 200 }}"
+                   alt="{{ shop.name }}" width="160" height="40" loading="lazy">
+            {% else %}
+              <span class="logo-text">
+                <span class="logo-bars">&#x2016;</span>MB NUTRITION<span class="logo-bars">&#x2016;</span>
+              </span>
+            {% endif %}
+          </a>
+        </div>
+        <div class="footer__address">
+          <strong>{{ section.settings.company_name | default: 'MB Nutrition' }}</strong><br>
+          {{ section.settings.address_line_1 | default: '12 Rue de la Performance' }}<br>
+          {{ section.settings.address_line_2 | default: '75001 Paris' }}<br>
+          {{ section.settings.address_country | default: 'France' }}
+        </div>
+        <div class="footer__social">
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+          {% endif %}
+          {% if section.settings.facebook_url != blank %}
+            <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>
+          {% endif %}
+          {% if section.settings.tiktok_url != blank %}
+            <a href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok">TikTok</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="footer__col">
+        <h4>NAVIGATION</h4>
+        <ul class="footer__links">
+          <li><a href="{{ routes.root_url }}">Accueil</a></li>
+          <li><a href="{{ routes.collections_url }}">Boutique</a></li>
+          <li><a href="/collections/bundles">Combideals</a></li>
+          <li><a href="/collections/new">Nouveautés</a></li>
+          <li><a href="/collections/sale">Soldes</a></li>
+          <li><a href="/blogs/news">Blog</a></li>
+        </ul>
+      </div>
+
+      <!-- Service client -->
+      <div class="footer__col">
+        <h4>SERVICE CLIENT</h4>
+        <ul class="footer__links">
+          <li><a href="{{ routes.account_url }}">Mon compte</a></li>
+          <li><a href="/account/orders">Mes commandes</a></li>
+          <li><a href="/pages/contact">Contact</a></li>
+          <li><a href="/pages/retours">Retours</a></li>
+          <li><a href="/pages/livraison">Livraison</a></li>
+          <li><a href="/pages/faq">FAQ</a></li>
+          <li><a href="/pages/politique-de-confidentialite">Politique de confidentialité</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="footer__col">
+        <h4>NEWSLETTER</h4>
+        <p class="footer__newsletter-label">Restez informé de nos offres et actualités.</p>
+        {% form 'customer', class: 'footer-newsletter-form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="footer__newsletter-form">
+            <input type="email"
+                   name="contact[email]"
+                   id="FooterEmail"
+                   class="footer__newsletter-input"
+                   placeholder="Votre adresse e-mail..."
+                   required
+                   aria-label="Adresse e-mail newsletter">
+            <button type="submit" class="footer__newsletter-btn">OK</button>
+          </div>
+          {% if form.posted_successfully? %}
+            <p class="footer__form-success">Merci pour votre inscription !</p>
+          {% endif %}
+        {% endform %}
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">&copy; {{ 'now' | date: '%Y' }} MB Nutrition. Tous droits réservés.</p>
+      <div class="footer__payments">
+        <span class="payment-badge">VISA</span>
+        <span class="payment-badge">MC</span>
+        <span class="payment-badge">CARTE BLEUE</span>
+        <span class="payment-badge">PAYPAL</span>
+        <span class="payment-badge">KLARNA</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pied de page",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo du pied de page"
+    },
+    {
+      "type": "header",
+      "content": "Adresse"
+    },
+    {
+      "type": "text",
+      "id": "company_name",
+      "label": "Nom de la société",
+      "default": "MB Nutrition"
+    },
+    {
+      "type": "text",
+      "id": "address_line_1",
+      "label": "Adresse ligne 1",
+      "default": "12 Rue de la Performance"
+    },
+    {
+      "type": "text",
+      "id": "address_line_2",
+      "label": "Adresse ligne 2",
+      "default": "75001 Paris"
+    },
+    {
+      "type": "text",
+      "id": "address_country",
+      "label": "Pays",
+      "default": "France"
+    },
+    {
+      "type": "header",
+      "content": "Réseaux sociaux"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "URL Instagram"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "URL Facebook"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "URL TikTok"
+    }
+  ]
+}
+{% endschema %}

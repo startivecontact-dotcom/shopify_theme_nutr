@@ -1,0 +1,583 @@
+{{ 'section-statistics.css' | asset_url | stylesheet_tag }}
+
+<section class="statistics-section" style="{% if section.settings.use_theme_colors %}background-color: {{ settings.global_section_accent_1_color }};{% elsif section.settings.use_gradient %}background: linear-gradient({{ section.settings.gradient_angle }}deg, {{ section.settings.gradient_start_color }}, {{ section.settings.gradient_end_color }});{% else %}background-color: {{ section.settings.background_color }};{% endif %} padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    <div class="statistics-section-header text-center">
+      <h2 class="statistics-section-title" style="font-size: {{ section.settings.heading_font_size }}px; letter-spacing: var(--letter-spacing-heading); font-weight: var(--font-weight-bold);">
+        <span style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.heading_color }}{% endif %};">{{ section.settings.heading_part_1 }}</span>
+        <span style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.heading_accent_color }}{% endif %}; margin-left: 2px;">{{ section.settings.heading_part_2 }}</span>
+      </h2>
+      {% if section.settings.subheading != blank %}
+        <div class="statistics-section-subheading" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.subtitle_color }}{% endif %} !important; font-size: {{ section.settings.text_font_size }}px; letter-spacing: var(--letter-spacing-body);">
+          {{ section.settings.subheading }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="statistics-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'statistic' %}
+          <div class="statistic-item" {{ block.shopify_attributes }}>
+            <div class="statistic-card">
+              <div class="statistic-circle-container">
+                <div class="statistic-circle" data-percentage="{{ block.settings.percentage }}">
+                  <svg class="circle-svg" viewBox="0 0 120 120">
+                    <circle class="circle-bg" cx="60" cy="60" r="50"></circle>
+                    <circle class="circle-progress" cx="60" cy="60" r="50"></circle>
+                  </svg>
+                  <div class="percentage-text">{{ block.settings.percentage }}%</div>
+                </div>
+              </div>
+              <div class="statistic-content">
+                <h3 class="statistic-title" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.statistic_title_color }}{% endif %} !important;">{{ block.settings.title }}</h3>
+                <div class="statistic-description" style="color: {% if section.settings.use_theme_colors %}{{ settings.global_section_text_color }}{% else %}{{ section.settings.statistic_description_color }}{% endif %} !important;">{{ block.settings.description }}</div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .statistics-section {
+    text-align: center;
+  }
+  
+  .statistics-section-header {
+    margin-bottom: 40px;
+  }
+  
+  .statistics-section-title {
+    margin-bottom: 15px;
+    letter-spacing: var(--letter-spacing-heading) !important;
+  }
+  
+  .statistics-section-subheading {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 8px;
+    margin-top: 30px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .statistic-item {
+    aspect-ratio: 1/1.15;
+    max-width: 220px; /* Adjusted for 4-column layout */
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .statistic-card {
+    background-color: {% if section.settings.use_theme_colors %}{{ settings.global_section_background_color }}{% else %}{{ section.settings.card_background_color }}{% endif %};
+    border-radius: 10px;
+    padding: 17.5px 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1/1.15;
+    max-width: 100%;
+    max-height: none;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  
+  .statistic-circle-container {
+    margin-bottom: 5px;
+    width: 50%;
+    max-width: 100px;
+  }
+  
+  .statistic-circle {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+  }
+  
+  .circle-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  
+  .circle-bg {
+    fill: none;
+    stroke: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_2_color }}{% else %}{{ section.settings.circle_bg_color }}{% endif %};
+    stroke-width: 8;
+  }
+  
+  .circle-progress {
+    fill: none;
+    stroke: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.accent_color }}{% endif %};
+    stroke-width: 8;
+    stroke-dasharray: 314;
+    stroke-dashoffset: 314;
+    transition: stroke-dashoffset 1s ease-in-out;
+  }
+  
+  .percentage-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+    font-weight: var(--font-weight-semibold) !important;
+    color: {% if section.settings.use_theme_colors %}{{ settings.global_section_accent_1_color }}{% else %}{{ section.settings.accent_color }}{% endif %};
+  }
+  
+  .statistic-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    letter-spacing: var(--letter-spacing-body);
+    color: inherit !important;
+  }
+  
+  .statistic-description {
+    font-size: 14px;
+    line-height: 1.4;
+    color: inherit !important;
+  }
+  
+  .statistic-content {
+    width: 100%;
+    text-align: center;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  @media screen and (max-width: 989px) and (min-width: 750px) {
+    .statistics-grid {
+      max-width: 500px;
+      grid-auto-rows: 1fr;
+      grid-template-columns: repeat(2, 1fr);
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .statistic-item {
+      max-width: 245px;
+    }
+    
+    .statistic-circle-container {
+      width: 55%;
+    }
+    
+    .percentage-text {
+      font-size: 22px;
+    }
+    
+    .statistic-title {
+      font-size: 17px;
+    }
+    
+    .statistic-description {
+      font-size: 13px;
+    }
+    
+    .statistic-item,
+    .statistic-card {
+      aspect-ratio: 1/1.15;
+    }
+  }
+  
+  @media screen and (max-width: 749px) and (min-width: 500px) {
+    .statistics-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 1fr;
+      gap: 8px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+    }
+    
+    .statistic-item {
+      max-width: 245px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .statistic-card {
+      max-width: none;
+      max-height: none;
+      padding: 14.5px 8px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .statistic-circle-container {
+      width: 60%;
+      margin-bottom: 0px;
+    }
+    
+    .percentage-text {
+      font-size: 20px;
+    }
+    
+    .statistic-title {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    
+    .statistic-description {
+      font-size: 12px;
+      line-height: 1.3;
+    }
+    
+    .statistic-item,
+    .statistic-card {
+      aspect-ratio: 1/1.15;
+    }
+  }
+  
+  @media screen and (max-width: 499px) {
+    .statistics-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 1fr;
+      gap: 8px;
+      max-width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+      justify-content: center;
+    }
+    
+    .statistic-item {
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .statistic-card {
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+    .statistic-circle-container {
+      width: 65%;
+    }
+    
+    .percentage-text {
+      font-size: 24px;
+    }
+    
+    .statistic-title {
+      font-size: 14px;
+    }
+    
+    .statistic-description {
+      font-size: 11px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Function to animate circles based on percentage
+    function animateStatCircles() {
+      const circles = document.querySelectorAll('.statistic-circle');
+      
+      circles.forEach(circle => {
+        const percentage = parseInt(circle.getAttribute('data-percentage'));
+        const circumference = 2 * Math.PI * 50; // r = 50
+        const progressCircle = circle.querySelector('.circle-progress');
+        
+        // Calculate the offset based on percentage
+        const offset = circumference - (percentage / 100) * circumference;
+        
+        // Set the dash offset to show the correct percentage
+        setTimeout(() => {
+          progressCircle.style.strokeDasharray = circumference;
+          progressCircle.style.strokeDashoffset = offset;
+        }, 100);
+      });
+    }
+    
+    // Initialize the animation
+    animateStatCircles();
+    
+    // Re-animate when they come into view
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateStatCircles();
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.statistics-section').forEach(section => {
+      observer.observe(section);
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Statistics Grid",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_theme_colors",
+      "label": "Use Theme Colors",
+      "default": true,
+      "info": "Apply the global theme colors in inverse manner (accent color as background)"
+    },
+    {
+      "type": "text",
+      "id": "heading_part_1",
+      "label": "Heading - Part 1",
+      "default": "Statistics"
+    },
+    {
+      "type": "text",
+      "id": "heading_part_2",
+      "label": "Heading - Part 2 (Accent)",
+      "default": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Add a subheading to introduce your statistics and provide context."
+    },
+    {
+      "type": "header",
+      "content": "Background Options"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section Background Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "card_background_color",
+      "label": "Card Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient",
+      "label": "Use Gradient Background",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "gradient_start_color",
+      "label": "Gradient Start Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "gradient_end_color",
+      "label": "Gradient End Color",
+      "default": "#D81B60"
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle",
+      "min": 0,
+      "max": 360,
+      "step": 5,
+      "unit": "°",
+      "label": "Gradient Angle",
+      "default": 90
+    },
+    {
+      "type": "header",
+      "content": "Circle Colors"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Progress Circle Color",
+      "default": "#EF4A65"
+    },
+    {
+      "type": "color",
+      "id": "circle_bg_color",
+      "label": "Background Circle Color",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "header",
+      "content": "Text Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color (Part 1)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_accent_color",
+      "label": "Heading Accent Color (Part 2)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "statistic_title_color",
+      "label": "Statistic Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "statistic_description_color",
+      "label": "Statistic Description Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "text_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Font Size",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "statistic",
+      "name": "Statistic",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "range",
+          "id": "percentage",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Percentage",
+          "default": 75
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Statistic Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Brief description about this statistic"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Statistics Grid",
+      "blocks": [
+        {
+          "type": "statistic",
+          "settings": {
+            "percentage": 75,
+            "title": "First Statistic",
+            "description": "Brief description about the first statistic."
+          }
+        },
+        {
+          "type": "statistic",
+          "settings": {
+            "percentage": 82,
+            "title": "Second Statistic",
+            "description": "Brief description about the second statistic."
+          }
+        },
+        {
+          "type": "statistic",
+          "settings": {
+            "percentage": 68,
+            "title": "Third Statistic",
+            "description": "Brief description about the third statistic."
+          }
+        },
+        {
+          "type": "statistic",
+          "settings": {
+            "percentage": 90,
+            "title": "Fourth Statistic",
+            "description": "Brief description about the fourth statistic."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 

@@ -1,0 +1,45 @@
+<section class="newsletter-section">
+  <div class="newsletter-section__content">
+    {% if section.settings.eyebrow != blank %}
+      <div class="newsletter-section__eyebrow">{{ section.settings.eyebrow }}</div>
+    {% endif %}
+    <h2 class="newsletter-section__title">{{ section.settings.title | default: 'REJOIGNEZ LA COMMUNAUTÉ' }}</h2>
+    <p class="newsletter-section__subtitle">{{ section.settings.subtitle | default: 'Restez informé de nos offres et actualités.' }}</p>
+    {% form 'customer', class: 'newsletter-form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="newsletter-section__form">
+        <input type="email" name="contact[email]" required placeholder="Votre adresse e-mail" class="newsletter-section__input" aria-label="E-mail">
+        <button type="submit" class="btn btn--gold">S'INSCRIRE</button>
+      </div>
+      {% if form.posted_successfully? %}
+        <p style="margin-top:0.75rem; color: var(--color-accent);">Merci pour votre inscription !</p>
+      {% endif %}
+      {% if form.errors %}
+        <p style="margin-top:0.75rem; color: #f88;">{{ form.errors | default_errors }}</p>
+      {% endif %}
+    {% endform %}
+  </div>
+  <div class="newsletter-section__image">
+    {% if section.settings.image %}
+      <img src="{{ section.settings.image | image_url: width: 1200 }}"
+           alt="{{ section.settings.image.alt | default: 'Communauté MB Nutrition' | escape }}"
+           loading="lazy" width="1200" height="900">
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Étiquette", "default": "COMMUNAUTÉ" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "REJOIGNEZ LA COMMUNAUTÉ" },
+    { "type": "textarea", "id": "subtitle", "label": "Sous-titre", "default": "Restez informé de nos offres et actualités." },
+    { "type": "image_picker", "id": "image", "label": "Image" }
+  ],
+  "presets": [
+    { "name": "Newsletter" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,74 @@
+<div class="customer customer--wide">
+
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="{{ routes.account_url }}">Mon compte</a>
+    <span class="breadcrumb__separator">/</span>
+    <span>Mes adresses</span>
+  </nav>
+
+  <h1 style="font-size:clamp(1.5rem,4vw,2.25rem); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2rem;">MES ADRESSES</h1>
+
+  {% paginate customer.addresses by 6 %}
+    <div style="display:grid; grid-template-columns:1fr; gap:1rem;" class="addresses-grid">
+      {% for address in customer.addresses %}
+        <div style="background:#fff; border:1px solid var(--color-border); padding:1.25rem;">
+          {% if address == customer.default_address %}
+            <div style="display:inline-block; background:var(--color-accent); color:#fff; padding:0.15rem 0.5rem; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem;">Par défaut</div>
+          {% endif %}
+          <div style="font-size:0.9rem; line-height:1.6;">
+            {{ address | format_address }}
+          </div>
+          <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+            <button type="button" class="btn btn--outline btn--sm" onclick="document.getElementById('EditAddress-{{ address.id }}').style.display='block';">Modifier</button>
+            {% form 'customer_address', address %}
+              <button type="submit" class="btn btn--outline btn--sm" data-confirm-message="Supprimer cette adresse ?" onclick="return confirm('Supprimer cette adresse ?');" name="_method" value="delete">Supprimer</button>
+            {% endform %}
+          </div>
+
+          <div id="EditAddress-{{ address.id }}" style="display:none; margin-top:1rem;">
+            {% form 'customer_address', address %}
+              <div class="field"><label class="field__label">Prénom</label><input type="text" name="address[first_name]" value="{{ address.first_name }}"></div>
+              <div class="field"><label class="field__label">Nom</label><input type="text" name="address[last_name]" value="{{ address.last_name }}"></div>
+              <div class="field"><label class="field__label">Adresse</label><input type="text" name="address[address1]" value="{{ address.address1 }}"></div>
+              <div class="field"><label class="field__label">Code postal</label><input type="text" name="address[zip]" value="{{ address.zip }}"></div>
+              <div class="field"><label class="field__label">Ville</label><input type="text" name="address[city]" value="{{ address.city }}"></div>
+              <div class="field"><label class="field__label">Pays</label><input type="text" name="address[country]" value="{{ address.country }}"></div>
+              <label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;"><input type="checkbox" name="address[default]" {% if address.default %}checked{% endif %}> Définir comme adresse par défaut</label>
+              <button type="submit" class="btn btn--primary">Enregistrer</button>
+            {% endform %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <nav class="pagination">
+        {% if paginate.previous %}<a href="{{ paginate.previous.url }}">&larr;</a>{% endif %}
+        {% for part in paginate.parts %}{% if part.is_link %}<a href="{{ part.url }}">{{ part.title }}</a>{% else %}<span class="{% if part.title == paginate.current_page %}page--current{% endif %}">{{ part.title }}</span>{% endif %}{% endfor %}
+        {% if paginate.next %}<a href="{{ paginate.next.url }}">&rarr;</a>{% endif %}
+      </nav>
+    {% endif %}
+  {% endpaginate %}
+
+  <section style="margin-top:3rem; max-width:560px;">
+    <h2 style="font-size:1.05rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:1rem;">Ajouter une nouvelle adresse</h2>
+    {% form 'customer_address', customer.new_address %}
+      {% if form.errors %}<div class="form-message form-message--error">{{ form.errors | default_errors }}</div>{% endif %}
+      <div class="field"><label class="field__label">Prénom</label><input type="text" name="address[first_name]"></div>
+      <div class="field"><label class="field__label">Nom</label><input type="text" name="address[last_name]"></div>
+      <div class="field"><label class="field__label">Société (optionnel)</label><input type="text" name="address[company]"></div>
+      <div class="field"><label class="field__label">Adresse</label><input type="text" name="address[address1]" required></div>
+      <div class="field"><label class="field__label">Complément (optionnel)</label><input type="text" name="address[address2]"></div>
+      <div class="field"><label class="field__label">Code postal</label><input type="text" name="address[zip]" required></div>
+      <div class="field"><label class="field__label">Ville</label><input type="text" name="address[city]" required></div>
+      <div class="field"><label class="field__label">Pays</label><input type="text" name="address[country]" value="France" required></div>
+      <div class="field"><label class="field__label">Téléphone</label><input type="tel" name="address[phone]"></div>
+      <label style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;"><input type="checkbox" name="address[default]"> Définir comme adresse par défaut</label>
+      <button type="submit" class="btn btn--primary">Ajouter cette adresse</button>
+    {% endform %}
+  </section>
+
+  <div style="margin-top:2rem;"><a href="{{ routes.account_url }}" class="btn btn--outline">&larr; Retour à mon compte</a></div>
+</div>
+
+<style>@media (min-width: 768px) { .addresses-grid { grid-template-columns: repeat(2, 1fr); } }</style>

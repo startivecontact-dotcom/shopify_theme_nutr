@@ -1,0 +1,49 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "MB Nutrition Theme",
+    "theme_version": "1.1.0",
+    "theme_author": "MB Nutrition",
+    "theme_documentation_url": "https://mbnutrition.com",
+    "theme_support_url": "https://mbnutrition.com/pages/contact"
+  },
+  {
+    "name": "Général",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      { "type": "color", "id": "color_bg", "label": "Arrière-plan", "default": "#ffffff" },
+      { "type": "color", "id": "color_text", "label": "Texte principal", "default": "#1a1a1a" },
+      { "type": "color", "id": "color_accent", "label": "Couleur d'accent (or)", "default": "#C8A84B" },
+      { "type": "color", "id": "color_header_bg", "label": "Fond pied de page", "default": "#1a1a1a" }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      { "type": "range", "id": "font_base_size", "label": "Taille de base (px)", "min": 14, "max": 20, "step": 1, "default": 16 }
+    ]
+  },
+  {
+    "name": "Livraison",
+    "settings": [
+      { "type": "number", "id": "free_shipping_threshold", "label": "Seuil livraison gratuite (€)", "default": 80 }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      { "type": "url", "id": "social_instagram", "label": "Instagram" },
+      { "type": "url", "id": "social_facebook", "label": "Facebook" },
+      { "type": "url", "id": "social_tiktok", "label": "TikTok" }
+    ]
+  }
+]

@@ -1,0 +1,66 @@
+<div class="cart-drawer" id="CartDrawer" role="dialog" aria-modal="true" aria-label="Panier">
+  <div class="cart-drawer__header">
+    <h2 class="cart-drawer__title">MON PANIER</h2>
+    <button class="cart-drawer__close" id="CartDrawerClose" aria-label="Fermer le panier">&#x2715;</button>
+  </div>
+
+  <div class="cart-drawer__body" id="CartDrawerBody">
+    {% if cart.item_count == 0 %}
+      <div class="cart-drawer__empty">
+        <p>Votre panier est vide.</p>
+        <a href="/collections/all" class="btn btn--primary btn--sm" style="margin-top:1rem;">Continuer mes achats</a>
+      </div>
+    {% else %}
+      {% for item in cart.items %}
+        <div class="cart-item" data-key="{{ item.key }}">
+          <div class="cart-item__image">
+            {% if item.image %}
+              <img src="{{ item.image | image_url: width: 150 }}" alt="{{ item.title | escape }}" loading="lazy">
+            {% endif %}
+          </div>
+          <div class="cart-item__info">
+            <div class="cart-item__title">{{ item.product_title | upcase }}</div>
+            {% if item.variant_title %}
+              <div class="cart-item__variant">{{ item.variant_title }}</div>
+            {% endif %}
+            <div class="cart-item__price">{{ item.final_line_price | money }}</div>
+            <div class="cart-item__controls">
+              <button class="qty-btn" data-cart-change="{{ item.key }}" data-delta="-1" aria-label="Moins">&#x2212;</button>
+              <input class="qty-input" type="number" value="{{ item.quantity }}" min="0" data-cart-qty="{{ item.key }}" aria-label="Quantité">
+              <button class="qty-btn" data-cart-change="{{ item.key }}" data-delta="1" aria-label="Plus">+</button>
+              <button class="cart-item__remove" data-cart-remove="{{ item.key }}" aria-label="Supprimer">Supprimer</button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="cart-drawer__footer">
+    <div class="shipping-bar">
+      <div class="shipping-bar__text" id="ShippingText">
+        {% assign threshold = 8000 %}
+        {% assign remaining = threshold | minus: cart.total_price %}
+        {% if remaining <= 0 %}
+          <strong>&#x2713; Livraison gratuite !</strong>
+        {% else %}
+          Plus que <strong>{{ remaining | money }}</strong> pour la livraison gratuite
+        {% endif %}
+      </div>
+      <div class="shipping-bar__track">
+        <div class="shipping-bar__fill" id="ShippingFill"
+             style="width:{{ cart.total_price | times: 100 | divided_by: threshold | at_most: 100 }}%;"></div>
+      </div>
+    </div>
+
+    <div class="cart-drawer__subtotal">
+      <span>Sous-total</span>
+      <span class="cart-drawer__subtotal-price" id="CartSubtotal">{{ cart.total_price | money }}</span>
+    </div>
+
+    <div class="cart-drawer__actions">
+      <a href="{{ routes.cart_url }}" class="btn btn--outline btn--full">Voir le panier</a>
+      <a href="/checkout" class="btn btn--primary btn--full">Commander</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,532 @@
+{
+  "sections": {
+    "mb-ticker": {
+      "type": "scrolling-features-bar",
+      "settings": {
+        "use_theme_colors": false,
+        "background_color": "#C8A84B",
+        "text_color": "#000000",
+        "icon_color": "#000000",
+        "font_size": 12,
+        "letter_spacing": 0.1,
+        "uppercase_text": true,
+        "scroll_speed": 30,
+        "pause_on_hover": true,
+        "icon_type": "none"
+      },
+      "blocks": {
+        "tick-1": {
+          "type": "feature_item",
+          "settings": {
+            "text": "LIVRAISON GRATUITE DÈS 80€",
+            "icon_type": "none"
+          }
+        },
+        "tick-2": {
+          "type": "feature_item",
+          "settings": {
+            "text": "COMMANDÉ AVANT 23H45 = LIVRÉ DEMAIN",
+            "icon_type": "none"
+          }
+        },
+        "tick-3": {
+          "type": "feature_item",
+          "settings": {
+            "text": "PAIEMENT EN 3X SANS FRAIS AVEC KLARNA",
+            "icon_type": "none"
+          }
+        },
+        "tick-4": {
+          "type": "feature_item",
+          "settings": {
+            "text": "SATISFAIT OU REMBOURSÉ 30 JOURS",
+            "icon_type": "none"
+          }
+        }
+      },
+      "block_order": [
+        "tick-1",
+        "tick-2",
+        "tick-3",
+        "tick-4"
+      ]
+    },
+    "mb-hero": {
+      "type": "mb-hero-split",
+      "settings": {
+        "image_left_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-mb-whey-protein-pro-bananaTekengebied1.jpg?v=1750095413",
+        "image_left_alt": "Whey Protein Pro — Prise de masse",
+        "overlay_text_left": "",
+        "cta_text_left": "",
+        "cta_link_left": "/collections/prise-de-masse",
+        "image_right_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-secret-burner-citrus-berriesTekengebied1.jpg?v=1748159891",
+        "image_right_alt": "Secret Burner — Perte de poids",
+        "overlay_text_right": "",
+        "cta_text_right": "",
+        "cta_link_right": "/collections/perte-de-poids",
+        "height": 65
+      }
+    },
+    "mb-best": {
+      "type": "mb-bestsellers",
+      "settings": {
+        "label": "DÉCOUVREZ NOS MEILLEURES VENTES",
+        "title": "MB NUTRITION",
+        "view_all_link": "/collections/all"
+      },
+      "blocks": {
+        "bs-1": {
+          "type": "product",
+          "settings": {
+            "product_handle": "starter-pack",
+            "product_title": "Starter Pack",
+            "product_price": "49,95 €",
+            "product_compare_price": "62,90 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/starterpack_44647d83-cead-4228-b6bd-e6c1256b0efe.jpg?v=1755945355",
+            "product_url": "/products/starter-pack"
+          }
+        },
+        "bs-2": {
+          "type": "product",
+          "settings": {
+            "product_handle": "m3-m4-support",
+            "product_title": "M3 + M4 Support",
+            "product_price": "59,95 €",
+            "product_compare_price": "72,90 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/pwo-combi.jpg?v=1774451813",
+            "product_url": "/collections/bundels"
+          }
+        },
+        "bs-3": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-balance-burner",
+            "product_title": "Secret Balance + Burner",
+            "product_price": "59,95 €",
+            "product_compare_price": "71,90 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/afvallen-combi.jpg?v=1774451842",
+            "product_url": "/products/secret-balance-burner"
+          }
+        },
+        "bs-4": {
+          "type": "product",
+          "settings": {
+            "product_handle": "whey-protein-pro-450g",
+            "product_title": "Whey Protein Pro",
+            "product_price": "22,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-mb-whey-protein-pro-bananaTekengebied1.jpg?v=1750095413",
+            "product_url": "/products/whey-protein-pro-450g",
+            "product_badge": "BEST-SELLER"
+          }
+        },
+        "bs-5": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-burner-citrus-berries-300gr",
+            "product_title": "Secret Burner",
+            "product_price": "29,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-secret-burner-citrus-berriesTekengebied1.jpg?v=1748159891",
+            "product_url": "/products/secret-burner-citrus-berries-300gr"
+          }
+        },
+        "bs-6": {
+          "type": "product",
+          "settings": {
+            "product_handle": "m4-pre-workout-blueberry",
+            "product_title": "M4 Pré-Entraînement",
+            "product_price": "32,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/pwo-blueberry.jpg?v=1748160789",
+            "product_url": "/products/m4-pre-workout-blueberry",
+            "product_badge": "EXTREME"
+          }
+        },
+        "bs-7": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-balance-red-fruits",
+            "product_title": "Secret Balance",
+            "product_price": "31,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/secret-balanceTekengebied1.jpg?v=1755713727",
+            "product_url": "/products/secret-balance-red-fruits"
+          }
+        },
+        "bs-8": {
+          "type": "product",
+          "settings": {
+            "product_handle": "creatine-monohydrate",
+            "product_title": "Créatine Monohydrate",
+            "product_price": "21,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/creatine-1.jpg?v=1748162398",
+            "product_url": "/products/creatine-monohydrate"
+          }
+        }
+      },
+      "block_order": [
+        "bs-1",
+        "bs-2",
+        "bs-3",
+        "bs-4",
+        "bs-5",
+        "bs-6",
+        "bs-7",
+        "bs-8"
+      ]
+    },
+    "mb-bundles": {
+      "type": "mb-bundle-banner",
+      "settings": {
+        "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/pwo-combi.jpg?v=1774451813",
+        "tag": "",
+        "title": "",
+        "subtitle": "",
+        "button_text": "VOIR TOUS LES PACKS",
+        "button_link": "/collections/bundels"
+      }
+    },
+    "mb-goals": {
+      "type": "mb-shop-by-goal",
+      "settings": {
+        "heading": "PAR OBJECTIF"
+      },
+      "blocks": {
+        "g1": {
+          "type": "goal",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-secret-burner-citrus-berriesTekengebied1.jpg?v=1748159891",
+            "title": "Perte de poids",
+            "count": "6 produits",
+            "link": "/collections/perte-de-poids",
+            "button_text": "SHOP NU"
+          }
+        },
+        "g2": {
+          "type": "goal",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-mb-whey-protein-pro-bananaTekengebied1.jpg?v=1750095413",
+            "title": "Prise de masse",
+            "count": "6 produits",
+            "link": "/collections/prise-de-masse",
+            "button_text": "SHOP NU"
+          }
+        },
+        "g3": {
+          "type": "goal",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/listing-mb-dietshakeTekengebied1.jpg?v=1750095608",
+            "title": "Lifestyle",
+            "count": "7 produits",
+            "link": "/collections/lifestyle",
+            "button_text": "SHOP NU"
+          }
+        },
+        "g4": {
+          "type": "goal",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-pre-workout-m3Tekengebied_1.jpg?v=1774381058",
+            "title": "Stamina",
+            "count": "4 produits",
+            "link": "/collections/endurance",
+            "button_text": "SHOP NU"
+          }
+        }
+      },
+      "block_order": [
+        "g1",
+        "g2",
+        "g3",
+        "g4"
+      ]
+    },
+    "mb-pdp": {
+      "type": "mb-category-products",
+      "settings": {
+        "eyebrow": "MINCEUR & DÉFINITION",
+        "title": "Perte de poids",
+        "description": "Brûleurs, substituts de repas et compléments minceur pour atteindre vos objectifs.",
+        "view_all_link": "/collections/perte-de-poids"
+      },
+      "blocks": {
+        "p1": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-burner-citrus-berries-300gr",
+            "product_title": "Secret Burner Citrus Berries",
+            "product_price": "29,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-secret-burner-citrus-berriesTekengebied1.jpg?v=1748159891",
+            "product_url": "/products/secret-burner-citrus-berries-300gr",
+            "product_badge": "POPULAIRE"
+          }
+        },
+        "p2": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-balance-red-fruits",
+            "product_title": "Secret Balance Fruits Rouges",
+            "product_price": "31,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/secret-balanceTekengebied1.jpg?v=1755713727",
+            "product_url": "/products/secret-balance-red-fruits"
+          }
+        },
+        "p3": {
+          "type": "product",
+          "settings": {
+            "product_handle": "diet-shakes",
+            "product_title": "Diet Shakes 450g",
+            "product_price": "19,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/listing-mb-dietshakeTekengebied1.jpg?v=1750095608",
+            "product_url": "/products/diet-shakes"
+          }
+        },
+        "p4": {
+          "type": "product",
+          "settings": {
+            "product_handle": "sleep-shredder",
+            "product_title": "Sleep Shredder",
+            "product_price": "29,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-sleepshredderTekengebied1.jpg?v=1748166389",
+            "product_url": "/products/sleep-shredder",
+            "product_badge": "NUIT"
+          }
+        },
+        "p5": {
+          "type": "product",
+          "settings": {
+            "product_handle": "cla",
+            "product_title": "CLA Acide Linoléique",
+            "product_price": "17,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/CLA-MB-Nutrition.jpg?v=1748159784",
+            "product_url": "/products/cla"
+          }
+        },
+        "p6": {
+          "type": "product",
+          "settings": {
+            "product_handle": "secret-balance-burner",
+            "product_title": "Pack Secret Balance + Burner",
+            "product_price": "59,95 €",
+            "product_compare_price": "71,90 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/afvallen-combi.jpg?v=1774451842",
+            "product_url": "/products/secret-balance-burner",
+            "product_badge": "PACK"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6"
+      ]
+    },
+    "mb-pm": {
+      "type": "mb-category-products",
+      "settings": {
+        "eyebrow": "FORCE & VOLUME",
+        "title": "Prise de masse",
+        "description": "Protéines, créatine et pré-entraînements pour maximiser chaque séance.",
+        "view_all_link": "/collections/prise-de-masse"
+      },
+      "blocks": {
+        "m1": {
+          "type": "product",
+          "settings": {
+            "product_handle": "whey-protein-pro-450g",
+            "product_title": "Whey Protein Pro",
+            "product_price": "22,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-mb-whey-protein-pro-bananaTekengebied1.jpg?v=1750095413",
+            "product_url": "/products/whey-protein-pro-450g",
+            "product_badge": "BEST-SELLER"
+          }
+        },
+        "m2": {
+          "type": "product",
+          "settings": {
+            "product_handle": "creatine-monohydrate",
+            "product_title": "Créatine Monohydrate",
+            "product_price": "21,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/creatine-1.jpg?v=1748162398",
+            "product_url": "/products/creatine-monohydrate"
+          }
+        },
+        "m3": {
+          "type": "product",
+          "settings": {
+            "product_handle": "m3-pre-workout-tropical-fruit-punch",
+            "product_title": "Pré-Entraînement M3",
+            "product_price": "29,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/Screenshot_2025-05-25_at_11.05.13.png?v=1754389995",
+            "product_url": "/products/m3-pre-workout-tropical-fruit-punch"
+          }
+        },
+        "m4": {
+          "type": "product",
+          "settings": {
+            "product_handle": "m4-pre-workout-blueberry",
+            "product_title": "Pré-Entraînement M4 Extreme",
+            "product_price": "32,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/pwo-blueberry.jpg?v=1748160789",
+            "product_url": "/products/m4-pre-workout-blueberry",
+            "product_badge": "EXTREME"
+          }
+        },
+        "m5": {
+          "type": "product",
+          "settings": {
+            "product_handle": "eaa-green-apple",
+            "product_title": "EAA Acides Aminés Essentiels",
+            "product_price": "24,95 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/productlisting-eaaTekengebied1.jpg?v=1748162484",
+            "product_url": "/products/eaa-green-apple"
+          }
+        },
+        "m6": {
+          "type": "product",
+          "settings": {
+            "product_handle": "starter-pack",
+            "product_title": "Starter Pack Démarrage",
+            "product_price": "49,95 €",
+            "product_compare_price": "62,90 €",
+            "product_image_url": "https://cdn.shopify.com/s/files/1/0830/5878/6645/files/starterpack_44647d83-cead-4228-b6bd-e6c1256b0efe.jpg?v=1755945355",
+            "product_url": "/products/starter-pack",
+            "product_badge": "PACK"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6"
+      ]
+    },
+    "customer_reviews_carousel_iXbYKH": {
+      "type": "customer-reviews-carousel",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "J'utilise le Whey Protein Pro depuis 3 mois et les résultats sont incroyables ! Goût excellent, se mélange parfaitement. Je recommande à 100%.",
+            "reviewer_name": "Thomas",
+            "reviewer_age": "28",
+            "show_verified_badge": true,
+            "show_purchased_product": true,
+            "product_title": "Whey Protein Pro 450g",
+            "product_price": "22,95 €"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Le Secret Burner m'a aidé à perdre 6 kg en 2 mois combiné à une bonne alimentation. Produit de qualité, livraison très rapide.",
+            "reviewer_name": "Sophie",
+            "reviewer_age": "32",
+            "show_verified_badge": true,
+            "show_purchased_product": true,
+            "product_title": "Secret Burner Citrus Berries",
+            "product_price": "29,95 €"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "MB Nutrition c'est la référence ! Le M4 Pre-Workout est dingue, une énergie de ouf pendant toute la séance. Je commande depuis 1 an.",
+            "reviewer_name": "Kevin",
+            "reviewer_age": "25",
+            "show_verified_badge": true,
+            "show_purchased_product": true,
+            "product_title": "M4 Pré-Entraînement",
+            "product_price": "32,95 €"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "settings": {
+        "use_theme_colors": false,
+        "section_background": "#ffffff",
+        "title_text": "Avis",
+        "accent_text": "Clients",
+        "title_color": "#C8A84B",
+        "accent_color": "#000000",
+        "custom_heading_styling": false,
+        "heading_font_size": 48,
+        "heading_font_size_mobile": 36,
+        "heading_line_height": 1.2,
+        "show_description": false,
+        "star_filled_color": "#C8A84B",
+        "star_empty_color": "#e0e0e0",
+        "prev_button_bg": "#ffffff",
+        "prev_button_color": "#1a1a1a",
+        "prev_button_border": "#e0e0e0",
+        "next_button_bg": "#1a1a1a",
+        "next_button_color": "#ffffff",
+        "next_button_border": "#1a1a1a",
+        "card_border_radius": 8,
+        "card_border_color": "#e0e0e0",
+        "card_background": "#ffffff",
+        "review_text_color": "#333333",
+        "reviewer_info_color": "#444444",
+        "verified_badge_text": "Acheteur vérifié",
+        "verified_badge_color": "#C8A84B",
+        "rating_number": "4.9",
+        "review_count": "2,341",
+        "rating_prefix": "Noté",
+        "based_on_text": "basé sur",
+        "summary_star_color": "#C8A84B",
+        "rating_summary_bg_color": "#fdf8ee"
+      }
+    },
+    "satisfaction_guarantee_8heP99": {
+      "type": "satisfaction-guarantee",
+      "settings": {
+        "use_theme_colors": false,
+        "show_photos": false,
+        "allow_overflow": false,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_top_mobile": 30,
+        "margin_bottom_mobile": 0,
+        "padding_top_no_photos": 0,
+        "icon_style": "original",
+        "icon_color": "#1a1a1a",
+        "heading_risk_free": "Remboursement",
+        "heading_beauty_revolution": "Garanti",
+        "risk_free_color": "#1a1a1a",
+        "beauty_revolution_color": "#C8A84B",
+        "description_text": "Nous sommes convaincus de la qualité de nos produits MB Nutrition. Si vous n'êtes pas entièrement satisfait de votre achat, retournez-le dans les 30 jours pour un remboursement complet — sans questions.",
+        "description_color": "#4a4a4a",
+        "benefit_text_color": "#4a4a4a",
+        "product_name": "MB Nutrition",
+        "description_line_height": 1.6,
+        "heading_size_desktop": 28,
+        "heading_size_mobile": 22,
+        "button_text": "Commander en toute sécurité",
+        "button_color": "#1a1a1a",
+        "button_text_color": "#ffffff",
+        "benefit_1": "100% de satisfaction",
+        "benefit_2": "Expédition 24-48h",
+        "benefit_3": "Retours faciles 30j",
+        "background": "linear-gradient(90deg, #fdf8ee, #fffdf5 96%)"
+      }
+    }
+  },
+  "order": [
+    "mb-ticker",
+    "mb-hero",
+    "mb-best",
+    "mb-bundles",
+    "mb-goals",
+    "customer_reviews_carousel_iXbYKH",
+    "satisfaction_guarantee_8heP99"
+  ]
+}

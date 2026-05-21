@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "show_vendor": true,
+        "show_rating": true,
+        "show_trust_badges": true
+      }
+    }
+  },
+  "order": ["main"]
+}

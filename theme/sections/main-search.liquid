@@ -1,0 +1,70 @@
+<div class="search-page">
+  <div class="container">
+
+    <h1 class="page__title">RECHERCHE</h1>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+      <input type="hidden" name="type" value="product,page,article">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Rechercher..." aria-label="Recherche">
+      <button type="submit" class="btn btn--primary">Rechercher</button>
+    </form>
+
+    {% if search.performed %}
+      <h2 class="search-page__heading">
+        {{ search.results_count }} résultat{% if search.results_count != 1 %}s{% endif %} pour « {{ search.terms | escape }} »
+      </h2>
+
+      {% if search.results_count == 0 %}
+        <p>Aucun résultat. Essayez avec d'autres mots-clés.</p>
+      {% else %}
+
+        {% assign products = search.results | where: 'object_type', 'product' %}
+        {% assign pages = search.results | where: 'object_type', 'page' %}
+        {% assign articles = search.results | where: 'object_type', 'article' %}
+
+        {% if products.size > 0 %}
+          <section class="search-page__section">
+            <h3>Produits</h3>
+            <div class="collection__grid">
+              {% for product in products %}
+                {% render 'product-card', product: product %}
+              {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+
+        {% if pages.size > 0 %}
+          <section class="search-page__section">
+            <h3>Pages</h3>
+            <ul class="search-page__results-pages">
+              {% for page in pages %}
+                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </section>
+        {% endif %}
+
+        {% if articles.size > 0 %}
+          <section class="search-page__section">
+            <h3>Articles</h3>
+            <ul class="search-page__results-articles">
+              {% for article in articles %}
+                <li><a href="{{ article.url }}">{{ article.title }}</a><div style="font-size:0.85rem;color:var(--color-text-muted);">{{ article.published_at | date: '%d %B %Y' }}</div></li>
+              {% endfor %}
+            </ul>
+          </section>
+        {% endif %}
+
+      {% endif %}
+    {% endif %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Recherche",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}
